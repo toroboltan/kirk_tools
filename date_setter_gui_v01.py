@@ -133,13 +133,13 @@ while True:  # Event Loop
         for script_file in script_list:
             os.system('python ' + script_file)
 
-    paramList = ScreenerArgumnets(event)
-    print(paramList)
-
-    if (event != 'File') and (event == 'Execute') and (len(paramList) > 1):
-        screenResult = TktScreeenTable(sectorsTktList, paramList[0], paramList[1])
-        sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
-        print(screenResult)
-        sg.Print( do_not_reroute_stdout=True)
+    if (event != 'File') and (event != 'Execute'):
+        paramList = ScreenerArgumnets(event)
+        print(paramList)
+        if len(paramList) > 1:
+            screenResult = TktScreeenTable(sectorsTktList, paramList[0], paramList[1])
+            sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
+            print(screenResult)
+            sg.Print( do_not_reroute_stdout=True)
       
 window.close()
