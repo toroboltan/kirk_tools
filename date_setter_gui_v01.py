@@ -5,8 +5,7 @@ Created on Apr 11, 2020
 '''
 import PySimpleGUI as sg
 
-from finviz.screener import Screener
-from etfutils import DailySectorsScreen, WeeklySectorsScreen, YTDSectorsScreen, TktScreeenTable
+from etfutils import TktScreeenTable
 
 
 import os
@@ -137,7 +136,7 @@ while True:  # Event Loop
     paramList = ScreenerArgumnets(event)
     print(paramList)
 
-    if len(paramList) > 1:
+    if (event != 'File') and (event == 'Execute') and (len(paramList) > 1):
         screenResult = TktScreeenTable(sectorsTktList, paramList[0], paramList[1])
         sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
         print(screenResult)
