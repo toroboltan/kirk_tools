@@ -99,39 +99,40 @@ while True:  # Event Loop
         fileinfo = values['-IN-']
         print(type(fileinfo))
         fileinfoList = fileinfo.split("/")
-        newDate = fileinfoList[len(fileinfoList) - 1].split("_")[0]
-        print('this is new date')
-        print(newDate)
+        if len(fileinfoList) > 0:
+            newDate = fileinfoList[len(fileinfoList) - 1].split("_")[0]
+            print('this is new date')
+            print(newDate)
 
-        os.chdir(script_path)
+            os.chdir(script_path)
         
-        for script_file in script_list:
-            print('BEGIN Filename is ' + script_file)
-            f = open(script_file,"r")
-            lines = f.readlines()
-            f.close()
-            for i, line in enumerate(lines):
-                if(line.startswith(lineStartToChange1) or line.startswith(lineStartToChange2)):
-                    line_list = line.split("=")
-                    if line.startswith(lineStartToChange1):
-                        print("line 1 before" + line_list[1])
-                        newString = newDate
-                        olString = line_list[1][4:12]
-                        line_list[1] = line_list[1].replace(olString, newString)
-                        print("line 1 after" + line_list[1])
-                    if line.startswith(lineStartToChange2):
-                        newString = newDate[0:4]
-                        olString = line_list[2][2:6]
-                        line_list[2] = line_list[2].replace(olString, newString)
-                    lines[i] =  "=".join(line_list)
-            f = open(script_file, "w")
-            f.write("".join(lines))
-            f.close()
-            print('END Filename is ' + script_file)
+            for script_file in script_list:
+                print('BEGIN Filename is ' + script_file)
+                f = open(script_file,"r")
+                lines = f.readlines()
+                f.close()
+                for i, line in enumerate(lines):
+                    if(line.startswith(lineStartToChange1) or line.startswith(lineStartToChange2)):
+                        line_list = line.split("=")
+                        if line.startswith(lineStartToChange1):
+                            print("line 1 before" + line_list[1])
+                            newString = newDate
+                            olString = line_list[1][4:12]
+                            line_list[1] = line_list[1].replace(olString, newString)
+                            print("line 1 after" + line_list[1])
+                        if line.startswith(lineStartToChange2):
+                            newString = newDate[0:4]
+                            olString = line_list[2][2:6]
+                            line_list[2] = line_list[2].replace(olString, newString)
+                        lines[i] =  "=".join(line_list)
+                f = open(script_file, "w")
+                f.write("".join(lines))
+                f.close()
+                print('END Filename is ' + script_file)
             
-        # Execute the file
-        for script_file in script_list:
-            os.system('python ' + script_file)
+            # Execute the file
+            for script_file in script_list:
+                os.system('python ' + script_file)
 
     if (event != 'File') and (event != 'Execute'):
         paramList = ScreenerArgumnets(event)
