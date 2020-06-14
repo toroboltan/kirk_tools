@@ -73,8 +73,14 @@ sg.theme('BluePurple')
 
 layout = [[sg.Text('Your typed chars appear here:'), sg.Text(size=(40,1), key='-OUTPUT-')],
           [sg.Input(key='-IN-')],
-          [sg.Button('File'),sg.Button('Execute'), 
-           sg.Button('Sectors Daily'), sg.Button('Sectors 1W'), sg.Button('Sectors 4W'),  sg.Button('Sectors 13W'), sg.Button('Sectors 26W'), sg.Button('Sectors 52W'),  sg.Button('Sectors YTD'), sg.Button('Exit')]]
+          [sg.Button('File'), sg.Button('Execute'), sg.Button('Exit')], 
+          [sg.Button('Sectors Daily'), 
+           sg.Button('Sectors 1W'), 
+           sg.Button('Sectors 4W'),  
+           sg.Button('Sectors 13W'), 
+           sg.Button('Sectors 26W'), 
+           sg.Button('Sectors 52W'),  
+           sg.Button('Sectors YTD')]]
 
 window = sg.Window('Pattern 2B', layout)
 
