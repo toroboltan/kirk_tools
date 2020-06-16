@@ -9,24 +9,13 @@ The purpose of this app is from a list of TKTs introduced in a list:
    2) Create an entry in an excel file to calculate faster risk/reward
 '''
 import PySimpleGUI as sg
+import pandas as pd
+import os
+import sys
 
 from etfutils import TktScreeenTable
 
-
-import os
-import sys
-'''
-This window will change the value assigned to new_date and old_date_header in date_setter.py script to the value 
-what the user introduces
-
-new_date = r"'20200409'"
-old_date_header = "filePrefix = '2020"
-
-and then it will run date_setter.py
-'''
-
 # Parameters to be used for GUI presentation
-
 sectorsOverWindow = (157,28)
 sectorsPerfWindow = (190,28)
 tktApp = 'tkt_eval_gui'
@@ -37,52 +26,31 @@ outputKey = '-OUTPUT-'
 execKey = 'Execute'
 exitKey = 'Exit'
 
-script_path = r'C:\EclipseWorkspaces\csse120\kirk_tools'
-script_list = ['date_setter.py']
+# Parameters to be used to pull Bucktes Information
+listPath = r'C:\Users\jeron\Google Drive\trading\kirk\2019\Listas'
+listFile = '2018_ListasTrack.xlsx'
 tktPath = r'D:\jeronimo\trading\etf'
+listSheet = 'ListasTrack'
+balanceSheet = 'BalancesShort'
 
-
-lineStartToChange1 = 'new_date =' 
-lineStartToChange2 = 'old_date_header ='
-
-# Sectors List
-sectorsTktList = ['IWM','XLF','EEM','XLE','XLK',
-                  'XLV','IYT','XLU','XLI','XLY',
-                  'IYR','XLP','XLB','TLT','GLD',
-                  'UUP','RTH','IYZ','SMH','DBC','USO']
-
-# Parameters to be used for Performance Table
-performanceTable = "Performance"
-perf1w = "-perf1w"
-perf4w = "-perf4w"
-perf13w = "-perf13w"
-perf26w = "-perf26w"
-perf52w = "-perf52w"
-perfytd = "-perfytd"
-
-# Parameters to be used for Overview Table
-overviewTable = "Overview"
-change = "-change"
 
 # To implement a case
+# This class will have two main fields
+#  1) screen
+#  2) tktlist
 
-def ScreenerArgumnets(eventPressed): 
-    switcher = { 
-        'Sectors Daily': [overviewTable, change], 
-        'Sectors 1W': [performanceTable, perf1w],
-        'Sectors 4W': [performanceTable, perf4w],
-        'Sectors 13W': [performanceTable, perf13w],
-        'Sectors 26W': [performanceTable, perf26w], 
-        'Sectors 52W': [performanceTable, perf52w],
-        'Sectors YTD': [performanceTable, perfytd] 
-    } 
-    # get() method of dictionary data type returns  
-    # value of passed argument if it is present  
-    # in dictionary otherwise second argument will 
-    # be assigned as default value of passed argument 
-    return switcher.get(eventPressed, "nothing")
+class screenTktItem():
 
-# Nain Program
+    nameScreen_s = ''
+    tktScreenList = []
+    sep_s = '->'
+    
+    def __init__(self, line):
+        intermList = line.split(self.sep_s)
+        self.nameScreen_s = intermList[0]
+        self.tktScreenList = intermList[1].split(',')
+
+# Main Program
 
 sg.theme('BluePurple')
 
@@ -110,16 +78,27 @@ while True:  # Event Loop
             window['-IN-'].update(fname)
             
     if event == execKey:
+        # Read the values and stored them as a list
         tktList = values['-IN-']
-        print(tktList)
-        
-    if (event != 'File') and (event != 'Execute'):
-        paramList = ScreenerArgumnets(event)
-        print(paramList)
-        if len(paramList) > 1:
-            screenResult = TktScreeenTable(sectorsTktList, paramList[0], paramList[1])
-            sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
-            print(screenResult)
-            sg.Print( do_not_reroute_stdout=True)
-      
+        tktLines = tktList.splitlines()
+        # if there are elements in the list
+        if(len(tktLines) > 0):
+            sourceTktList = []
+            for col in tktLines:
+                sourceTktList.append(screenTktItem(col))
+            for item in sourceTktList:
+                print(item.nameScreen_s)
+                print(item.tktScreenList)
+                
+            # goto path where list files are
+            os.chdir(listPath)
+            pdTktList = pd.read_excel(listFile, sheet_name= listSheet)
+            pdBalList = pd.read_excel(listFile, sheet_name= balanceSheet)
+            # printing cash available per bucket
+            for col in pdBalList.columns:
+                print(pdBalList.loc[0].at[col])
+                print(type(pdBalList.loc[0].at[col]))
+            for col in pdTktList.columns:
+                print(pdTktList[col].dropna().to_list())
+                
 window.close()
