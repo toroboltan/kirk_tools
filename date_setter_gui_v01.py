@@ -1,16 +1,7 @@
 '''
 Created on Apr 11, 2020
 
-@author: CEVDEA
-'''
-import PySimpleGUI as sg
 
-from etfutils import TktScreeenTable
-
-
-import os
-import sys
-'''
 This window will change the value assigned to new_date and old_date_header in date_setter.py script to the value 
 what the user introduces
 
@@ -18,8 +9,15 @@ new_date = r"'20200409'"
 old_date_header = "filePrefix = '2020"
 
 and then it will run date_setter.py
-'''
+''
 
+@author: CEVDEA
+'''
+import PySimpleGUI as sg
+import os
+import sys
+import webbrowser
+from etfutils import TktScreeenTable
 
 script_path = r'C:\EclipseWorkspaces\csse120\kirk_tools'
 script_list = ['date_setter.py']
@@ -49,7 +47,10 @@ perfytd = "-perfytd"
 overviewTable = "Overview"
 change = "-change"
 
-# To implement a case
+# Webpage Links
+etfPerLnk = "https://www.etfscreen.com/performance.php?wl=0&s=Rtn-1d%7Cdesc&t=6&d=i&ftS=yes&ftL=no&vFf=dolVol21&vFl=gt&vFv=500000&udc=default&d=e"
+
+# Functions
 
 def ScreenerArgumnets(eventPressed): 
     switcher = { 
@@ -67,13 +68,21 @@ def ScreenerArgumnets(eventPressed):
     # be assigned as default value of passed argument 
     return switcher.get(eventPressed, "nothing")
 
-# Nain Program
+
+def openweb(browser="", sites=[]):
+    if browser == "chrome":
+        chromedir= 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
+    for site in sites:
+        webbrowser.get(chromedir).open(site)
+        
+# Main Program
 
 sg.theme('BluePurple')
 
-layout = [[sg.Text('Your typed chars appear here:'), sg.Text(size=(40,1), key='-OUTPUT-')],
+layout = [[sg.Text('ETF Performance:'), sg.Text(size=(40,1), key='-OUTPUT-')],
           [sg.Input(key='-IN-')],
-          [sg.Button('File'), sg.Button('Execute'), sg.Button('Exit')], 
+          [sg.Button('Open etfscreen age'), sg.Button('File'), sg.Button('Execute'), sg.Button('Exit')], 
+          [sg.Text('Sectors Performance')], 
           [sg.Button('Sectors Daily'), 
            sg.Button('Sectors 1W'), 
            sg.Button('Sectors 4W'),  
@@ -91,12 +100,15 @@ while True:  # Event Loop
     if event in  (None, 'Exit'):
         break
     
+    if event == 'Open etfscreen age':
+        openweb("chrome", [etfPerLnk])
+    
     if event == 'File':
         fname = sys.argv[1] if len(sys.argv) > 1 else sg.popup_get_file('Document to open', initial_folder=tktPath)
         
         if not fname:
             sg.popup("Cancel", "No filename supplied")
-            raise SystemExit("Cancelling: no filename supplied")
+            raise SystemExit("Canceling: no filename supplied")
         else:
             window['-OUTPUT-'].update(fname)
             window['-IN-'].update(fname)
@@ -140,7 +152,7 @@ while True:  # Event Loop
             for script_file in script_list:
                 os.system('python ' + script_file)
 
-    if (event != 'File') and (event != 'Execute'):
+    if (event != 'File') and (event != 'Execute') and (event != 'Open etfscreen age'):
         paramList = ScreenerArgumnets(event)
         print(paramList)
         if len(paramList) > 1:
