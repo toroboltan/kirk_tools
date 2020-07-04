@@ -48,8 +48,7 @@ buttonChtList = ['Sector ETF',
                  'Simple Breakout Scan ETF',
                  'New High STK',
                  'New High ETF',
-                 'FATMAN',
-                 'FAGANMSN',
+                 'FATGANMSN',
                  'Long Breakout Setup ETF',
                  'Long Breakout Setup STK']
 sectorsTktList = ['IWM','XLF','EEM','XLE','XLK',
@@ -70,8 +69,7 @@ stkBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgv
 etfBrkCht = "https://www.finviz.com/screener.ashx?v=111&f=ind_exchangetradedfund,sh_avgvol_o100,sh_curvol_o500,sh_price_o5,ta_changeopen_u3,ta_highlow52w_nh,ta_perf_dup&ft=4&ta=0&o=-change"
 etfNewHighCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_exchangetradedfund,sh_avgvol_o100,ta_change_u2,ta_highlow52w_nh&ft=4&o=-change"
 stkNewHighCht ="https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgvol_o100,ta_change_u2,ta_highlow52w_nh&ft=4&o=-change"
-fatmanCht = "https://www.finviz.com/screener.ashx?v=351&t=AMZN,TSLA,MSFT,GOOGL,NFLX,FB&ta=0&o=perf1w"
-faganmsmCht = "https://www.finviz.com/screener.ashx?v=351&t=FB,AAPL,GOOGL,AMZN,NFLX,MSFT,SBUX,NKE&ta=0"
+fatganmsmCht = "https://www.finviz.com/screener.ashx?v=351&t=FB,AAPL,GOOGL,AMZN,NFLX,MSFT,SBUX,NKE,TSLA&o=-change"
 etfLongBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_exchangetradedfund,sh_avgvol_o400,sh_price_o5,ta_averagetruerange_o1.5,ta_change_u2,ta_highlow20d_b0to3h,ta_highlow50d_b0to3h,ta_sma20_pa,ta_sma200_pa,ta_sma50_pa&ft=4&ta=0&o=-change"
 stkLongBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgvol_o400,sh_price_o5,ta_averagetruerange_o1.5,ta_change_u2,ta_highlow20d_b0to3h,ta_highlow50d_b0to3h,ta_sma20_pa,ta_sma200_pa,ta_sma50_pa&ft=4&ta=0&o=-change"
 
@@ -106,8 +104,7 @@ def chartsArgumnets(eventPressed):
         'Simple Breakout Scan STK': stkBrkCht,
         'New High ETF': etfNewHighCht,
         'New High STK': stkNewHighCht,
-        'FATMAN': fatmanCht,
-        'FAGANMSN': faganmsmCht,
+        'FATGANMSN': fatganmsmCht,
         'Long Breakout Setup ETF': etfLongBrkCht,
         'Long Breakout Setup STK': stkLongBrkCht, 
     }
@@ -140,12 +137,19 @@ layout = [[sg.Text('ETF Performance:'), sg.Text(size=(40,1), key='-OUTPUT-')],
            sg.Button('New High STK'),
            sg.Button('Long Breakout Setup ETF'),
            sg.Button('Long Breakout Setup STK'),
-           sg.Button('FATMAN'),
-           sg.Button('FAGANMSN')],
-          [sg.Text('Close')],
+           sg.Button('FATGANMSN')],
+          [sg.Text('*** Candidates ***')],
+          [sg.Text('From Sectors :'), sg.InputText()],
+          [sg.Text('From ETF Performance :'), sg.InputText()],
+          [sg.Text('From Simple Breakout ETF :'), sg.InputText()],
+          [sg.Text('From Simple Breakout STK :'), sg.InputText()],
+          [sg.Text('From New High ETF :'), sg.InputText()],
+          [sg.Text('From New High STK :'), sg.InputText()],
+          [sg.Text('Long Breakout Setup ETF :'), sg.InputText()],
+          [sg.Text('Long Breakout setup STK :'), sg.InputText()],
           [sg.Button('Exit')]]
 
-window = sg.Window('Pattern 2B', layout)
+window = sg.Window('TorolGui', layout)
 
 while True:  # Event Loop
     event, values = window.read()
