@@ -43,7 +43,8 @@ buttonSecList = ['Sectors Daily',
                  'Sectors 26W',
                  'Sectors 52W',
                  'Sectors YTD']
-buttonChtList = ['Sector ETF',
+buttonChtList = ['US Markets',
+                 'Sector ETF',
                  'Simple Breakout Scan STK',
                  'Simple Breakout Scan ETF',
                  'New High STK',
@@ -63,7 +64,9 @@ overviewTable = "Overview"
 change = "-change"
 
 # Webpages Links
+
 etfPerLnk = "https://www.etfscreen.com/performance.php?wl=0&s=Rtn-1d%7Cdesc&t=6&d=i&ftS=yes&ftL=no&vFf=dolVol21&vFl=gt&vFv=500000&udc=default&d=e"
+etfUsMarkets = "https://www.finviz.com/screener.ashx?v=351&ft=4&t=SPY,IWC,IWM,DIA,OEF,MDY,QQQ&o=-change"
 etfSecCht = "https://www.finviz.com/screener.ashx?v=351&ft=4&t=IWM,XLF,EEM,XLE,XLK,XLV,IYT,XLU,XLI,XLY,IYR,XLP,XLB,TLT,GLD,UUP,RTH,IYZ,SMH,DBC,USO&o=-change"
 stkBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgvol_o100,sh_curvol_o500,sh_price_o5,ta_change_u2,ta_changeopen_u3,ta_highlow52w_nh,ta_perf_dup&ft=4&ta=0&o=-change"
 etfBrkCht = "https://www.finviz.com/screener.ashx?v=111&f=ind_exchangetradedfund,sh_avgvol_o100,sh_curvol_o500,sh_price_o5,ta_changeopen_u3,ta_highlow52w_nh,ta_perf_dup&ft=4&ta=0&o=-change"
@@ -99,6 +102,7 @@ def openweb(browser="", sites=[]):
 
 def chartsArgumnets(eventPressed): 
     switcher = {
+        'US Markets': etfUsMarkets,
         'Sector ETF': etfSecCht,
         'Simple Breakout Scan ETF': etfBrkCht,
         'Simple Breakout Scan STK': stkBrkCht,
@@ -106,7 +110,7 @@ def chartsArgumnets(eventPressed):
         'New High STK': stkNewHighCht,
         'FATGANMSN': fatganmsmCht,
         'Long Breakout Setup ETF': etfLongBrkCht,
-        'Long Breakout Setup STK': stkLongBrkCht, 
+        'Long Breakout Setup STK': stkLongBrkCht 
     }
     # get() method of dictionary data type returns  
     # value of passed argument if it is present  
@@ -130,7 +134,8 @@ layout = [[sg.Text('ETF Performance:'), sg.Text(size=(40,1), key='-OUTPUT-')],
            sg.Button('Sectors 52W'),  
            sg.Button('Sectors YTD')],
           [sg.Text('Charts')],
-          [sg.Button('Sector ETF'),
+          [sg.Button('US Markets'),
+           sg.Button('Sector ETF'),
            sg.Button('Simple Breakout Scan ETF'),
            sg.Button('Simple Breakout Scan STK'),
            sg.Button('New High ETF'),
@@ -139,14 +144,16 @@ layout = [[sg.Text('ETF Performance:'), sg.Text(size=(40,1), key='-OUTPUT-')],
            sg.Button('Long Breakout Setup STK'),
            sg.Button('FATGANMSN')],
           [sg.Text('*** Candidates ***')],
-          [sg.Text('From Sectors :'), sg.InputText()],
-          [sg.Text('From ETF Performance :'), sg.InputText()],
-          [sg.Text('From Simple Breakout ETF :'), sg.InputText()],
-          [sg.Text('From Simple Breakout STK :'), sg.InputText()],
-          [sg.Text('From New High ETF :'), sg.InputText()],
-          [sg.Text('From New High STK :'), sg.InputText()],
-          [sg.Text('Long Breakout Setup ETF :'), sg.InputText()],
-          [sg.Text('Long Breakout setup STK :'), sg.InputText()],
+          [sg.Text('From US Markets :'), sg.InputText(key='etfUsMarkets')],
+          [sg.Text('From Sectors :'), sg.InputText(key='etfSecCht')],
+          [sg.Text('From ETF Performance :'), sg.InputText(key='etfPerf')],
+          [sg.Text('From Simple Breakout ETF :'), sg.InputText(key='etfBrkCht')],
+          [sg.Text('From Simple Breakout STK :'), sg.InputText(key='stkBrkCht')],
+          [sg.Text('From New High ETF :'), sg.InputText(key='etfNewHighCht')],
+          [sg.Text('From New High STK :'), sg.InputText(key='stkNewHighCht')],
+          [sg.Text('From Long Breakout Setup ETF :'), sg.InputText(key='etfLongBrkCht')],
+          [sg.Text('From Long Breakout setup STK :'), sg.InputText(key='stkLongBrkCht')],
+          [sg.Text('From FATGANMSN :'), sg.InputText(key='fatganmsn')],
           [sg.Button('Exit')]]
 
 window = sg.Window('TorolGui', layout)
