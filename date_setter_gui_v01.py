@@ -18,8 +18,79 @@ import os
 import sys
 import webbrowser
 from etfutils import TktScreeenTable
+import pandas as pd
+from pandas import ExcelWriter
+from pandas import ExcelFile
+
+# Functions
+def ScreenerArgumnets(eventPressed): 
+    switcher = { 
+        'Sectors Daily': [overviewTable, change], 
+        'Sectors 1W': [performanceTable, perf1w],
+        'Sectors 4W': [performanceTable, perf4w],
+        'Sectors 13W': [performanceTable, perf13w],
+        'Sectors 26W': [performanceTable, perf26w], 
+        'Sectors 52W': [performanceTable, perf52w],
+        'Sectors YTD': [performanceTable, perfytd] 
+    } 
+    # get() method of dictionary data type returns  
+    # value of passed argument if it is present  
+    # in dictionary otherwise second argument will 
+    # be assigned as default value of passed argument 
+    return switcher.get(eventPressed, "nothing")
+
+def openweb(browser="", sites=[]):
+    if browser == "chrome":
+        chromedir= 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
+    for site in sites:
+        webbrowser.get(chromedir).open(site)
+
+def chartsArgumnets(eventPressed): 
+    switcher = {
+        'US Markets': etfUsMarkets,
+        'Sector ETF': etfSecCht,
+        'Simple Breakout Scan ETF': etfBrkCht,
+        'Simple Breakout Scan STK': stkBrkCht,
+        'New High ETF': etfNewHighCht,
+        'New High STK': stkNewHighCht,
+        'FATGANMSN': fatganmsmCht,
+        'Long Breakout Setup ETF': etfLongBrkCht,
+        'Long Breakout Setup STK': stkLongBrkCht 
+    }
+    # get() method of dictionary data type returns  
+    # value of passed argument if it is present  
+    # in dictionary otherwise second argument will 
+    # be assigned as default value of passed argument 
+    return switcher.get(eventPressed, "nothing")
+
+def candList(textTkts):
+    return textTkts.replace(" ", "").split(",")
+
+def printBuckets(etfSet, stkSet, listPath, fileList, sheetList):
+    # Reading the file
+    os.chdir(listPath)
+    df = pd.read_excel(fileList, sheet_name=sheetList)
+    listBuckets = list(df.columns)
+    # Finding buckets for etfs
+    etfSetAssigned = set()
+    for bucket in listBuckets:
+        print(bucket + ":")
+        for tkt in etfSet:
+            if (tkt in df[bucket].to_list()):
+                print(tkt)
+                etfSetAssigned.add(tkt)
+    # Printing Weekly Tkts
+    print('Weekly:')
+    etfSetWeekly = etfSet.difference(etfSetAssigned)
+    for tkt in etfSetWeekly:
+        print(tkt)
+    for tkt in stkSet:
+        print(tkt)
 
 # Environment variables
+listPath = r'C:\Users\jeron\Google Drive\trading\kirk\2019\Listas'
+fileList = "2018_ListasTrack.xlsx"
+sheetList = "Symbols"
 script_path = r'C:\EclipseWorkspaces\csse120\kirk_tools'
 script_list = ['date_setter.py']
 tktPath = r'D:\jeronimo\trading\etf'
@@ -27,6 +98,9 @@ sectorsOverWindow = (157,28)
 sectorsPerfWindow = (190,28)
 lineStartToChange1 = 'new_date =' 
 lineStartToChange2 = 'old_date_header ='
+etfPref = "etf"
+etfSet = set()
+stkSet = set()
 
 # Parameters to be used for Performance Table
 performanceTable = "Performance"
@@ -58,13 +132,23 @@ sectorsTktList = ['IWM','XLF','EEM','XLE','XLK',
                   'IYR','XLP','XLB','TLT','GLD',
                   'IYR','XLP','XLB','TLT','GLD',
                   'UUP','RTH','IYZ','SMH','DBC','USO']
+textBoxList = ['etfUsMarkets',
+               'etfSecCht',
+               'etfPerf',
+               'etfBrkCht',
+               'stkBrkCht',
+               'etfNewHighCht', 
+               'stkNewHighCht', 
+               'etfLongBrkCht', 
+               'stkLongBrkCht', 
+               'fatganmsn']
+buttonProcess = 'Process Candidates'
 
 # Parameters to be used for Overview Table
 overviewTable = "Overview"
 change = "-change"
 
 # Webpages Links
-
 etfPerLnk = "https://www.etfscreen.com/performance.php?wl=0&s=Rtn-1d%7Cdesc&t=6&d=i&ftS=yes&ftL=no&vFf=dolVol21&vFl=gt&vFv=500000&udc=default&d=e"
 etfUsMarkets = "https://www.finviz.com/screener.ashx?v=351&ft=4&t=SPY,IWC,IWM,DIA,OEF,MDY,QQQ&o=-change"
 etfSecCht = "https://www.finviz.com/screener.ashx?v=351&ft=4&t=IWM,XLF,EEM,XLE,XLK,XLV,IYT,XLU,XLI,XLY,IYR,XLP,XLB,TLT,GLD,UUP,RTH,IYZ,SMH,DBC,USO&o=-change"
@@ -75,49 +159,7 @@ stkNewHighCht ="https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_a
 fatganmsmCht = "https://www.finviz.com/screener.ashx?v=351&t=FB,AAPL,GOOGL,AMZN,NFLX,MSFT,SBUX,NKE,TSLA&o=-change"
 etfLongBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_exchangetradedfund,sh_avgvol_o400,sh_price_o5,ta_averagetruerange_o1.5,ta_change_u2,ta_highlow20d_b0to3h,ta_highlow50d_b0to3h,ta_sma20_pa,ta_sma200_pa,ta_sma50_pa&ft=4&ta=0&o=-change"
 stkLongBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgvol_o400,sh_price_o5,ta_averagetruerange_o1.5,ta_change_u2,ta_highlow20d_b0to3h,ta_highlow50d_b0to3h,ta_sma20_pa,ta_sma200_pa,ta_sma50_pa&ft=4&ta=0&o=-change"
-
-# Functions
-def ScreenerArgumnets(eventPressed): 
-    switcher = { 
-        'Sectors Daily': [overviewTable, change], 
-        'Sectors 1W': [performanceTable, perf1w],
-        'Sectors 4W': [performanceTable, perf4w],
-        'Sectors 13W': [performanceTable, perf13w],
-        'Sectors 26W': [performanceTable, perf26w], 
-        'Sectors 52W': [performanceTable, perf52w],
-        'Sectors YTD': [performanceTable, perfytd] 
-    } 
-    # get() method of dictionary data type returns  
-    # value of passed argument if it is present  
-    # in dictionary otherwise second argument will 
-    # be assigned as default value of passed argument 
-    return switcher.get(eventPressed, "nothing")
-
-def openweb(browser="", sites=[]):
-    if browser == "chrome":
-        chromedir= 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
-    for site in sites:
-        webbrowser.get(chromedir).open(site)
-
-
-def chartsArgumnets(eventPressed): 
-    switcher = {
-        'US Markets': etfUsMarkets,
-        'Sector ETF': etfSecCht,
-        'Simple Breakout Scan ETF': etfBrkCht,
-        'Simple Breakout Scan STK': stkBrkCht,
-        'New High ETF': etfNewHighCht,
-        'New High STK': stkNewHighCht,
-        'FATGANMSN': fatganmsmCht,
-        'Long Breakout Setup ETF': etfLongBrkCht,
-        'Long Breakout Setup STK': stkLongBrkCht 
-    }
-    # get() method of dictionary data type returns  
-    # value of passed argument if it is present  
-    # in dictionary otherwise second argument will 
-    # be assigned as default value of passed argument 
-    return switcher.get(eventPressed, "nothing")
-        
+      
 # Main Program
 
 sg.theme('BluePurple')
@@ -154,6 +196,8 @@ layout = [[sg.Text('ETF Performance:'), sg.Text(size=(40,1), key='-OUTPUT-')],
           [sg.Text('From Long Breakout Setup ETF :'), sg.InputText(key='etfLongBrkCht')],
           [sg.Text('From Long Breakout setup STK :'), sg.InputText(key='stkLongBrkCht')],
           [sg.Text('From FATGANMSN :'), sg.InputText(key='fatganmsn')],
+          [sg.Text('******************')],
+          [sg.Button(buttonProcess)],
           [sg.Button('Exit')]]
 
 window = sg.Window('TorolGui', layout)
@@ -228,6 +272,19 @@ while True:  # Event Loop
             screenResult = TktScreeenTable(sectorsTktList, paramList[0], paramList[1])
             sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
             print(screenResult)
-            sg.Print( do_not_reroute_stdout=True)
-      
+            sg.Print(do_not_reroute_stdout=True)
+    else:
+        if (event == buttonProcess):
+            for textTkts in textBoxList:
+                if (len(values[textTkts]) > 0):
+                    listCand = candList(values[textTkts])
+                    if (len(listCand) > 0):
+                        if (textTkts.startswith(etfPref)):
+                            etfSet.update(listCand)
+                        else:
+                            stkSet.update(listCand)
+            print("etfSet" + ' ' + str(etfSet))
+            print("stkSet" + ' ' + str(stkSet))
+            printBuckets(etfSet, stkSet, listPath, fileList, sheetList)
+            
 window.close()
