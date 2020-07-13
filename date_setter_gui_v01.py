@@ -72,20 +72,21 @@ def printBuckets(etfSet, stkSet, listPath, fileList, sheetList):
     df = pd.read_excel(fileList, sheet_name=sheetList)
     listBuckets = list(df.columns)
     # Finding buckets for etfs
-    etfSetAssigned = set()
+    tktSetAssigned = set()
+    tktSet = etfSet.union(stkSet)
     for bucket in listBuckets:
         print(bucket + ":")
-        for tkt in etfSet:
+        for tkt in tktSet:
             if (tkt in df[bucket].to_list()):
-                print(tkt)
-                etfSetAssigned.add(tkt)
+                print('\t' + tkt)
+                tktSetAssigned.add(tkt)
+    # Remove from combined set tkts already classified in bucktes
+    for tkt in tktSetAssigned:
+        tktSet.remove(tkt)
     # Printing Weekly Tkts
     print('Weekly:')
-    etfSetWeekly = etfSet.difference(etfSetAssigned)
-    for tkt in etfSetWeekly:
-        print(tkt)
-    for tkt in stkSet:
-        print(tkt)
+    for tkt in tktSet:
+        print('\t' + tkt)
 
 # Environment variables
 listPath = r'C:\Users\jeron\Google Drive\trading\kirk\2019\Listas'
@@ -149,7 +150,7 @@ overviewTable = "Overview"
 change = "-change"
 
 # Webpages Links
-etfPerLnk = "https://www.etfscreen.com/performance.php?wl=0&s=Rtn-1d%7Cdesc&t=6&d=i&ftS=yes&ftL=no&vFf=dolVol21&vFl=gt&vFv=500000&udc=default&d=e"
+etfPerLnk = "https://www.etfscreen.com/performance.php?wl=0&s=Rtn-1d%7Cdesc&t=6&d=e&ftS=yes&ftL=no&vFf=dolVol21&vFl=gt&vFv=500000&udc=default&d=i"
 etfUsMarkets = "https://www.finviz.com/screener.ashx?v=351&ft=4&t=SPY,IWC,IWM,DIA,OEF,MDY,QQQ&o=-change"
 etfSecCht = "https://www.finviz.com/screener.ashx?v=351&ft=4&t=IWM,XLF,EEM,XLE,XLK,XLV,IYT,XLU,XLI,XLY,IYR,XLP,XLB,TLT,GLD,UUP,RTH,IYZ,SMH,DBC,USO&o=-change"
 stkBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgvol_o100,sh_curvol_o500,sh_price_o5,ta_change_u2,ta_changeopen_u3,ta_highlow52w_nh,ta_perf_dup&ft=4&ta=0&o=-change"
