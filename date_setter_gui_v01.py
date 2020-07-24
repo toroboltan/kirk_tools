@@ -19,8 +19,6 @@ import sys
 import webbrowser
 from etfutils import TktScreeenTable
 import pandas as pd
-from pandas import ExcelWriter
-from pandas import ExcelFile
 
 # Functions
 def ScreenerArgumnets(eventPressed): 
@@ -49,6 +47,8 @@ def chartsArgumnets(eventPressed):
     switcher = {
         'US Markets': etfUsMarkets,
         'Sector ETF': etfSecCht,
+        'ETF Perf Daily' : etfPerfDaily,
+        'ETF Perf Weekly' : etfPerfWeekly,       
         'Simple Breakout Scan ETF': etfBrkCht,
         'Simple Breakout Scan STK': stkBrkCht,
         'New High ETF': etfNewHighCht,
@@ -120,6 +120,8 @@ buttonSecList = ['Sectors Daily',
                  'Sectors YTD']
 buttonChtList = ['US Markets',
                  'Sector ETF',
+                 'ETF Perf Daily',
+                 'ETF Perf Weekly',                 
                  'Simple Breakout Scan STK',
                  'Simple Breakout Scan ETF',
                  'New High STK',
@@ -135,7 +137,8 @@ sectorsTktList = ['IWM','XLF','EEM','XLE','XLK',
                   'UUP','RTH','IYZ','SMH','DBC','USO']
 textBoxList = ['etfUsMarkets',
                'etfSecCht',
-               'etfPerf',
+               'etfPerfDaily',
+               'etfPerfWeekly',
                'etfBrkCht',
                'stkBrkCht',
                'etfNewHighCht', 
@@ -160,8 +163,27 @@ stkNewHighCht ="https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_a
 fatganmsmCht = "https://www.finviz.com/screener.ashx?v=351&t=FB,AAPL,GOOGL,AMZN,NFLX,MSFT,SBUX,NKE,TSLA&o=-change"
 etfLongBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_exchangetradedfund,sh_avgvol_o400,sh_price_o5,ta_averagetruerange_o1.5,ta_change_u2,ta_highlow20d_b0to3h,ta_highlow50d_b0to3h,ta_sma20_pa,ta_sma200_pa,ta_sma50_pa&ft=4&ta=0&o=-change"
 stkLongBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgvol_o400,sh_price_o5,ta_averagetruerange_o1.5,ta_change_u2,ta_highlow20d_b0to3h,ta_highlow50d_b0to3h,ta_sma20_pa,ta_sma200_pa,ta_sma50_pa&ft=4&ta=0&o=-change"
-      
-# Main Program
+etfPerfDaily = ""
+etfPerfWeekly = ""
+tkts_up_str = 'tkts_up_str'
+
+# Constants related to etfperf files
+newDate = ''
+const1D = '1D'
+const1W = '1W'
+const1M = '1M'
+const1Q = '1Q'
+const1H = '1H'
+const1Y = '1Y'
+midFileName = '_etfperf_'
+extFileName = '.txt'
+constList = [const1D,
+             const1W,
+             const1M,
+             const1Q,
+             const1H,
+             const1Y]
+
 
 sg.theme('BluePurple')
 
@@ -179,6 +201,8 @@ layout = [[sg.Text('ETF Performance:'), sg.Text(size=(40,1), key='-OUTPUT-')],
           [sg.Text('Charts')],
           [sg.Button('US Markets'),
            sg.Button('Sector ETF'),
+           sg.Button('ETF Perf Daily'),
+           sg.Button('ETF Perf Weekly'),         
            sg.Button('Simple Breakout Scan ETF'),
            sg.Button('Simple Breakout Scan STK'),
            sg.Button('New High ETF'),
@@ -200,6 +224,9 @@ layout = [[sg.Text('ETF Performance:'), sg.Text(size=(40,1), key='-OUTPUT-')],
           [sg.Text('******************')],
           [sg.Button(buttonProcess)],
           [sg.Button('Exit')]]
+
+
+# Main Program
 
 window = sg.Window('TorolGui', layout)
 
@@ -264,7 +291,35 @@ while True:  # Event Loop
             # Execute the file
             for script_file in script_list:
                 os.system('python ' + script_file)
-
+            
+            # Print in a window the result from performance files
+            os.chdir(tktPath)
+            totalLines = ''
+            for etfTf in constList:
+                etfFileName = newDate + midFileName + etfTf + extFileName
+                f = open(etfFileName,"r")
+                lines = f.readlines()
+                for linea in lines:
+                    if ((etfTf == const1D) or (etfTf == const1W)):
+                        print(etfTf)
+                        if (linea.startswith(tkts_up_str)):
+                            print(linea)
+                            linea_link = linea.split(' ')[2].rstrip("\n")
+                            print(linea_link)
+                            if (etfTf == const1D):
+                                etfPerfDaily = linea_link
+                                print('etfPerfDaily ' + etfPerfDaily)
+                            else:
+                                etfPerfWeekly = linea_link
+                                print('etfPerfWeekly ' + etfPerfWeekly)
+                    totalLines += linea
+                f.close()
+            sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
+            print('*** ETF ***')
+            print(totalLines)
+            # set output back to console
+            sys.stdout = sys.__stdout__
+            
     # Performance printing on Windows
     if (event in buttonSecList):
         paramList = ScreenerArgumnets(event)
@@ -273,7 +328,8 @@ while True:  # Event Loop
             screenResult = TktScreeenTable(sectorsTktList, paramList[0], paramList[1])
             sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
             print(screenResult)
-            sg.Print(do_not_reroute_stdout=True)
+            # set output back to console
+            sys.stdout = sys.__stdout__
     else:
         if (event == buttonProcess):
             for textTkts in textBoxList:
@@ -286,6 +342,10 @@ while True:  # Event Loop
                             stkSet.update(listCand)
             print("etfSet" + ' ' + str(etfSet))
             print("stkSet" + ' ' + str(stkSet))
+            sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
+            print('*** CANDIDATES  ***')
             printBuckets(etfSet, stkSet, listPath, fileList, sheetList)
+            # set output back to console
+            sys.stdout = sys.__stdout__
             
 window.close()
