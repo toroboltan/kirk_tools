@@ -102,7 +102,7 @@ def tktParserFromTktListToDataframeList(tktList):
     This function prints Top/Bottom numberToPrintInt from a pandas 
     dataframe based on timeRange 
 '''
-def tktDfPrintTopBottom(tkt_dataframe, numberToPrintInt, timeRange):
+def tktDfPrintTopBottom(tkt_dataframe, numberToPrintInt, timeRange, filePrefix, outputDir):
     #     Name    Symbol    RSf    Rtn-1d    Rtn-5d    Rtn-1mo    Rtn-3mo    Rtn-6mo    Rtn-1yr    $vol-21
     lenTktList = len(tkt_dataframe.index)
     if(lenTktList > 0) and (lenTktList >= numberToPrintInt) and (numberToPrintInt):
@@ -133,21 +133,38 @@ def tktDfPrintTopBottom(tkt_dataframe, numberToPrintInt, timeRange):
             final_up_df = tkt_dataframe[tkt_dataframe['Rtn-1yr'] > 0.0].sort_values(by=['Rtn-1yr'], ascending = False)
             final_dw_df = tkt_dataframe[tkt_dataframe['Rtn-1yr'] <= 0.0].sort_values(by=['Rtn-1yr'], ascending = True)
             columnVal = 'Rtn-1yr'
-        #frames = [final_df_1, final_df_2]
-        #final_df_3 = pd.concat(frames)
+        # set output directory and open output file
+        os.chdir(outputDir)
+        etfFileName = filePrefix + '_etfperf_' + timeRange + '.txt'
+        etfFile = open(etfFileName, 'w')
+        # Print to the file and also to the console
         tkts_str =''
-        print('*** Print ETF UP - ' + timeRange + ' - (' + str(numberToPrintInt) + ') ***')
+        etfStartLine = '*** Print ETF UP - ' + timeRange + ' - (' + str(numberToPrintInt) + ') ***'
+        print(etfStartLine)
+        etfFile.write(etfStartLine + '\n')
         for row in final_up_df.head(numberToPrintInt).iterrows():
-            print(row[1]['Symbol'] + '\t' + row[1]['Name'] + '\t' + str(row[1]['Price']) + '\t' + str(row[1][columnVal]))
+            etfLine = row[1]['Symbol'] + '\t' + row[1]['Name'] + '\t' + str(row[1]['Price']) + '\t' + str(row[1][columnVal])
+            print(etfLine)
+            etfFile.write(etfLine + '\n')
             tkts_str = tkts_str + row[1]['Symbol'] + ','
-        print("tkts_up_str = https://www.finviz.com/screener.ashx?v=351&ft=4&t=" + tkts_str[:(len(tkts_str)-1)] + "&o=-change")
+        etfFinalLine = "tkts_up_str = https://www.finviz.com/screener.ashx?v=351&ft=4&t=" + tkts_str[:(len(tkts_str)-1)] + "&o=-change"
+        print(etfFinalLine)
+        etfFile.write(etfFinalLine + '\n')
 
         tkts_str =''
-        print('*** Print ETF DOWN - ' + timeRange + ' - (' + str(numberToPrintInt) + ') ***')
+        etfStartLine = '*** Print ETF DOWN - ' + timeRange + ' - (' + str(numberToPrintInt) + ') ***'
+        print(etfStartLine)
+        etfFile.write(etfStartLine + '\n')        
         for row in final_dw_df.head(numberToPrintInt).iterrows():
-            print(row[1]['Symbol'] + '\t' + row[1]['Name'] + '\t' + str(row[1]['Price']) + '\t' + str(row[1][columnVal]))
+            etfLine = row[1]['Symbol'] + '\t' + row[1]['Name'] + '\t' + str(row[1]['Price']) + '\t' + str(row[1][columnVal])
+            print(etfLine)
+            etfFile.write(etfLine + '\n')
             tkts_str = tkts_str + row[1]['Symbol'] + ','
-        print("tkts_up_str = https://www.finviz.com/screener.ashx?v=351&ft=4&t=" + tkts_str[:(len(tkts_str)-1)] + "&o=-change")
+        etfFinalLine = "tkts_down_str = https://www.finviz.com/screener.ashx?v=351&ft=4&t=" + tkts_str[:(len(tkts_str)-1)] + "&o=-change"
+        print(etfFinalLine)
+        etfFile.write(etfFinalLine + '\n')
+        #close the file
+        etfFile.close()
 '''
     This  function store in a CSV file values from finviz
     Specifically:

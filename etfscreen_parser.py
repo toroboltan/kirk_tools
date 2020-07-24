@@ -32,14 +32,23 @@ cons_flag_proto = 1
     Main program
 '''
 filePath_s = r'D:\jeronimo\trading\etf'
-filePrefix = '20200529'
+filePrefix = '20200723'
 fileName_s = filePrefix + '_etfp.txt'
+
 controlFlag = True
 formatSource = 'txt'
 flag_exec = 1
 columns_dataframe = ['Name', 'Symbol', 'RSf', 'Price', 'Rtn-1d' , 'Rtn-5d', 'Rtn-1mo', 'Rtn-3mo', 'Rtn-6mo', 'Rtn-1yr', 'vol-21']
 htmlLine1 = '<tr><td><input type="checkbox" name="cSyms[]" value="MLPA" ></td><td  class="taL"><img src="/images/chartBtn.gif" class="popChtLink" style="float: right;" data-sym="MLPA" alt="popup"><a href="/price-chart.php?s=MLPA">Global X MLP ETF</a></td><td>MLPA</td><td bgcolor="#c5eac5">21.27</td><td bgcolor="#c9ecc9">2.41</td><td bgcolor="#def8de">3.79</td><td bgcolor="#dff8df">4.81</td><td bgcolor="#ffebeb">-0.12</td><td bgcolor="#e7fde7">1.89</td><td bgcolor="#ffdcdc">-6.67</td><td bgcolor="#ebffeb">6m</td></tr>'
 htmlLine2 = '<tr><td><input type="checkbox" name="cSyms[]" value="VSGX" ></td><td  class="taL"><img src="/images/chartBtn.gif" class="popChtLink" style="float: right;" data-sym="VSGX" alt="popup"><a href="/price-chart.php?s=VSGX">Vanguard ESG International Stock ETF</a></td><td>VSGX</td><td bgcolor="#9ad29a">44.79</td><td bgcolor="#e3fae3">0.59</td><td bgcolor="#e4fbe4">2.03</td><td bgcolor="#d8f5d8">7.48</td><td bgcolor="#e4fbe4">3.01</td><td bgcolor="#e6fce6">2.28</td><td>n/a</td><td bgcolor="#ebffeb">2m</td></tr>'
+
+topNumber = 10
+const1D = '1D'
+const1W = '1W'
+const1M = '1M'
+const1Q = '1Q'
+const1H = '1H'
+const1Y = '1Y'
 
 tktLines_L = []
 tktList_L=[]
@@ -69,17 +78,17 @@ if flag_exec == cons_flag_normal :
             tkt_dataframe = pd.DataFrame(values_dataframe, columns = columns_dataframe)
     
             print('************************')
-            tktDfPrintTopBottom(tkt_dataframe, 10, '1D')
+            tktDfPrintTopBottom(tkt_dataframe, topNumber, const1D, filePrefix, outputDir)
             print('------------------------')
-            tktDfPrintTopBottom(tkt_dataframe, 10, '1W')
+            tktDfPrintTopBottom(tkt_dataframe, topNumber, const1W, filePrefix, outputDir)
             print('------------------------')
-            tktDfPrintTopBottom(tkt_dataframe, 10, '1M')
+            tktDfPrintTopBottom(tkt_dataframe, topNumber, const1M, filePrefix, outputDir)
             print('------------------------')
-            tktDfPrintTopBottom(tkt_dataframe, 10, '1Q')
+            tktDfPrintTopBottom(tkt_dataframe, topNumber, const1Q, filePrefix, outputDir)
             print('------------------------')
-            tktDfPrintTopBottom(tkt_dataframe, 10, '1H')
+            tktDfPrintTopBottom(tkt_dataframe, topNumber, const1H, filePrefix, outputDir)
             print('------------------------')
-            tktDfPrintTopBottom(tkt_dataframe, 10, '1Y')
+            tktDfPrintTopBottom(tkt_dataframe, topNumber, const1Y, filePrefix, outputDir)
             print('************************')
     
     current_dt = datetime.datetime.now()
@@ -105,17 +114,17 @@ elif flag_exec == cons_flag_proto:
             tkt_dataframe = pd.DataFrame(values_dataframe, columns = columns_dataframe)
     
             print('************************')
-            tktDfPrintTopBottom(tkt_dataframe, 10, '1D')
+            tktDfPrintTopBottom(tkt_dataframe, topNumber, const1D, filePrefix, outputDir)
             print('------------------------')
-            tktDfPrintTopBottom(tkt_dataframe, 10, '1W')
+            tktDfPrintTopBottom(tkt_dataframe, topNumber, const1W, filePrefix, outputDir)
             print('------------------------')
-            tktDfPrintTopBottom(tkt_dataframe, 10, '1M')
+            tktDfPrintTopBottom(tkt_dataframe, topNumber, const1M, filePrefix, outputDir)
             print('------------------------')
-            tktDfPrintTopBottom(tkt_dataframe, 10, '1Q')
+            tktDfPrintTopBottom(tkt_dataframe, topNumber, const1Q, filePrefix, outputDir)
             print('------------------------')
-            tktDfPrintTopBottom(tkt_dataframe, 10, '1H')
+            tktDfPrintTopBottom(tkt_dataframe, topNumber, const1H, filePrefix, outputDir)
             print('------------------------')
-            tktDfPrintTopBottom(tkt_dataframe, 10, '1Y')
+            tktDfPrintTopBottom(tkt_dataframe, topNumber, const1Y, filePrefix, outputDir)
             print('************************')
     
     current_dt = datetime.datetime.now()
