@@ -19,9 +19,10 @@ import sys
 import webbrowser
 from etfutils import TktScreeenTable
 import pandas as pd
+import update_mms as up
 
 # Functions
-def ScreenerArgumnets(eventPressed): 
+def ScreenerArguments(eventPressed): 
     switcher = { 
         'Sectors Daily': [overviewTable, change], 
         'Sectors 1W': [performanceTable, perf1w],
@@ -102,6 +103,7 @@ lineStartToChange2 = 'old_date_header ='
 etfPref = "etf"
 etfSet = set()
 stkSet = set()
+list_tktOpen = list()
 
 # Parameters to be used for Performance Table
 performanceTable = "Performance"
@@ -147,6 +149,9 @@ textBoxList = ['etfUsMarkets',
                'stkLongBrkCht', 
                'fatganmsn']
 buttonProcess = 'Process Candidates'
+buttonUpdatePrecios = 'Update Precios'
+buttonShowCharts = 'Show Charts'
+
 
 # Parameters to be used for Overview Table
 overviewTable = "Overview"
@@ -166,6 +171,7 @@ stkLongBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_
 etfPerfDaily = ""
 etfPerfWeekly = ""
 tkts_up_str = 'tkts_up_str'
+showChartsLnk = "https://www.finviz.com/screener.ashx?v=351&t="
 
 # Constants related to etfperf files
 newDate = ''
@@ -184,21 +190,19 @@ constList = [const1D,
              const1H,
              const1Y]
 
-
+# GUI
 sg.theme('BluePurple')
 
-layout = [[sg.Text('ETF Performance:'), sg.Text(size=(40,1), key='-OUTPUT-')],
+layout = [[sg.Text('*** Posiciones Abiertas ***')],
+          [sg.Button(buttonUpdatePrecios), sg.Button(buttonShowCharts)], 
+          [sg.Text('*** ETF Performance: ***'), sg.Text(size=(40,1), key='-OUTPUT-')],
           [sg.Input(key='-IN-')],
           [sg.Button('Open etfscreen age'), sg.Button('File'), sg.Button('Execute')], 
-          [sg.Text('Sectors Performance')], 
-          [sg.Button('Sectors Daily'), 
-           sg.Button('Sectors 1W'), 
-           sg.Button('Sectors 4W'),  
-           sg.Button('Sectors 13W'), 
-           sg.Button('Sectors 26W'), 
-           sg.Button('Sectors 52W'),  
-           sg.Button('Sectors YTD')],
-          [sg.Text('Charts')],
+          [sg.Text('*** Sectors Performance ***')], 
+          [sg.Button('Sectors Daily'), sg.Button('Sectors 1W'), sg.Button('Sectors 4W')],  
+          [sg.Button('Sectors 13W'), sg.Button('Sectors 26W'), sg.Button('Sectors 52W')],  
+          [sg.Button('Sectors YTD')],
+          [sg.Text('*** Charts ***')],
           [sg.Button('US Markets'),
            sg.Button('Sector ETF'),
            sg.Button('ETF Perf Daily'),
@@ -222,8 +226,8 @@ layout = [[sg.Text('ETF Performance:'), sg.Text(size=(40,1), key='-OUTPUT-')],
           [sg.Text('From Long Breakout Setup ETF :'), sg.InputText(key='etfLongBrkCht')],
           [sg.Text('From Long Breakout setup STK :'), sg.InputText(key='stkLongBrkCht')],
           [sg.Text('From FATGANMSN :'), sg.InputText(key='fatganmsn')],
-          [sg.Text('******************')],
           [sg.Button(buttonProcess)],
+          [sg.Text('******************')],
           [sg.Button('Exit')]]
 
 
@@ -238,6 +242,15 @@ while True:  # Event Loop
     if event in (None, 'Exit'):
         break
     
+    if event == buttonUpdatePrecios:
+        list_tktOpen = up.UpdatePrices()
+        print(list_tktOpen)
+    
+    if event == buttonShowCharts:
+        if len(list_tktOpen) > 0:
+            print(showChartsLnk + str(list_tktOpen))
+            openweb("chrome", [showChartsLnk + str(list_tktOpen)])
+        
     if event == 'Open etfscreen age':
         openweb("chrome", [etfPerLnk])
     
@@ -323,7 +336,7 @@ while True:  # Event Loop
             
     # Performance printing on Windows
     if (event in buttonSecList):
-        paramList = ScreenerArgumnets(event)
+        paramList = ScreenerArguments(event)
         print(paramList)
         if len(paramList) > 1:
             screenResult = TktScreeenTable(sectorsTktList, paramList[0], paramList[1])
