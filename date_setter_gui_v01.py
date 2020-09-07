@@ -165,7 +165,8 @@ textBoxList = ['etfUsMarkets',
                'stkNewHighCht', 
                'etfLongBrkCht', 
                'stkLongBrkCht', 
-               'fatganmsn']
+               'fatganmsn',
+               'majorNewsCht']
 
 buttonProcess = 'Process Candidates'
 buttonUpdatePrecios = 'Update Precios'
@@ -235,19 +236,16 @@ layout = [[sg.Text('*** Posiciones Abiertas ***')],
            sg.Button('Long Breakout Setup STK'),
            sg.Button('FATGANMSN'),
            sg.Button('Major News')],
-          [sg.Text('*** Candidates ***')],
-          [sg.Text('From US Markets :'), sg.InputText(key='etfUsMarkets')],
-          [sg.Text('From Sectors :'), sg.InputText(key='etfSecCht')],
-          [sg.Text('From ETF Performance Daily :'), sg.InputText(key='etfPerfDaily')],
-          [sg.Text('From ETF Performance Weekly :'), sg.InputText(key='etfPerfWeekly')],
-          [sg.Text('From Simple Breakout ETF :'), sg.InputText(key='etfBrkCht')],
-          [sg.Text('From Simple Breakout STK :'), sg.InputText(key='stkBrkCht')],
-          [sg.Text('From New High ETF :'), sg.InputText(key='etfNewHighCht')],
-          [sg.Text('From New High STK :'), sg.InputText(key='stkNewHighCht')],
-          [sg.Text('From Long Breakout Setup ETF :'), sg.InputText(key='etfLongBrkCht')],
-          [sg.Text('From Long Breakout setup STK :'), sg.InputText(key='stkLongBrkCht')],
-          [sg.Text('From FATGANMSN :'), sg.InputText(key='fatganmsn')],
+          [sg.Text('*** Selected TKTs Per Chart ***')],
+          [sg.Text('From US Markets :'), sg.InputText(key='etfUsMarkets'),sg.Text('From Sectors :'), sg.InputText(key='etfSecCht')],
+          [sg.Text('From ETF Performance Daily :'), sg.InputText(key='etfPerfDaily'),sg.Text('From ETF Performance Weekly :'), sg.InputText(key='etfPerfWeekly')],
+          [sg.Text('From Simple Breakout ETF :'), sg.InputText(key='etfBrkCht'),sg.Text('From Simple Breakout STK :'), sg.InputText(key='stkBrkCht')],
+          [sg.Text('From New High ETF :'), sg.InputText(key='etfNewHighCht'),sg.Text('From New High STK :'), sg.InputText(key='stkNewHighCht')],
+          [sg.Text('From Long Breakout Setup ETF :'), sg.InputText(key='etfLongBrkCht'),sg.Text('From Long Breakout setup STK :'), sg.InputText(key='stkLongBrkCht')],
+          [sg.Text('From FATGANMSN :'), sg.InputText(key='fatganmsn'), sg.Text('From Major News :'), sg.InputText(key='majorNewsCht')],
           [sg.Button(buttonProcess)],
+          [sg.Text('******************')],
+          [sg.Text('Possible Candidates :'), sg.InputText(key='etfUsMarkets')],          
           [sg.Text('******************')],
           [sg.Button('Exit')]]
 
