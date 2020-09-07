@@ -248,7 +248,7 @@ layout = [[sg.Text('*** Posiciones Abiertas ***')],
           [sg.Button('Exit')]]
 
 
-# Main Program
+# Main Program V2
 
 window = sg.Window('TorolGui', layout)
 
