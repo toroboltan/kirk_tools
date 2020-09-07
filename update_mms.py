@@ -5,9 +5,7 @@ import os
 from openpyxl import load_workbook
 import kirkconstants
 
-# @TODO:
-# parameterize flag values related to type of
-# tool used to get prices
+# @TODO: parameterize flag values related to type of tool used to get prices
 
 # File information
 tablePath = kirkconstants.tablePath
@@ -40,8 +38,7 @@ def SaveWorkbook(workbook, tablePath, tableFileOut):
 
 # This function returns the latest price from finviz
 def GetPriceFvz(tkt):
-    # @TODO:
-    # parameterize 'Price'
+    # @TODO: parameterize 'Price'
     try:
         price = fvz.get_stock(tkt)['Price']
     except Exception:
@@ -51,8 +48,7 @@ def GetPriceFvz(tkt):
 
 # This function get trading data for a TKT from 
 def GetData(symbol, start='2000-01-01', interval='1d', end=None):
-    # @TODO:
-    # parameterize default values for start and interval
+    # @TODO: parameterize default values for start and interval
     data = yf.download(symbol, start=start, end=end, interval=interval, auto_adjust=True)
     return data
 

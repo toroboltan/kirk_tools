@@ -91,14 +91,14 @@ def printBuckets(etfSet, stkSet, listPath, fileList, sheetList):
     for tkt in tktSet:
         print('\t' + tkt)
 
-# Environment variables
-#listPath = r'C:\Users\jeron\Google Drive\trading\kirk\2019\Listas'
-#fileList = "2018_ListasTrack.xlsx"
-#sheetList = "Symbols"
-#script_path = r'C:\EclipseWorkspaces\csse120\kirk_tools'
-#script_list = ['date_setter.py']
-#tktPath = r'D:\jeronimo\trading\etf'
+def initializeSets():
+    # @TODO: This function has to initialize sets so candidates do not still have stored values for previos iteractions
+    print('TODO - initializeSets')
 
+def checkOpenPositions(tktToCheck_lst):
+    # @TODO: This function checks if there are candidates with positions already open in the MoneyManagementTable If that is the case they are removed from the list values for previos iteractions 
+    print('TODO - checkOpenPositions')   
+    return tktToCheck_lst    
 
 listPath = kirkconstants.listPath
 fileList = kirkconstants.fileList
@@ -106,8 +106,6 @@ sheetList = kirkconstants.sheetList
 script_path = kirkconstants.script_path
 script_list = kirkconstants.script_list
 tktPath = kirkconstants.tktPath
-
-
 
 sectorsOverWindow = (157,28)
 sectorsPerfWindow = (190,28)
@@ -245,7 +243,7 @@ layout = [[sg.Text('*** Posiciones Abiertas ***')],
           [sg.Text('From FATGANMSN :'), sg.InputText(key='fatganmsn'), sg.Text('From Major News :'), sg.InputText(key='majorNewsCht')],
           [sg.Button(buttonProcess)],
           [sg.Text('******************')],
-          [sg.Text('Possible Candidates :'), sg.InputText(key='etfUsMarkets')],          
+          [sg.Text('Possible Candidates :'), sg.InputText(key='possibleCand')],          
           [sg.Text('******************')],
           [sg.Button('Exit')]]
 
@@ -375,10 +373,17 @@ while True:  # Event Loop
                             stkSet.update(listCand)
             print("etfSet" + ' ' + str(etfSet))
             print("stkSet" + ' ' + str(stkSet))
+            if((len(etfSet) > 0) | (len(stkSet) > 0)):
+                totalSet = etfSet.union(stkSet)
+                finalCand_lst = checkOpenPositions(list(totalSet))
+                candString = ','.join(finalCand_lst)
+                window['possibleCand'].update(candString)
+                print(candString)
             sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
             print('*** CANDIDATES  ***')
             printBuckets(etfSet, stkSet, listPath, fileList, sheetList)
             # set output back to console
             sys.stdout = sys.__stdout__
+            initializeSets()
             
 window.close()
