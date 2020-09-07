@@ -3,28 +3,26 @@ import yfinance as yf
 import finviz as fvz
 import os
 from openpyxl import load_workbook
+import kirkconstants
 
-## Parameters & Constants
+# @TODO:
+# parameterize flag values related to type of
+# tool used to get prices
 
 # File information
-tablePath = r'C:\Users\jeron\Google Drive\trading\kirk\2019\active trading'
-tableFile = "2020_MoneyManagementSpreadsheet.xlsx"
-tableSheet = "trade_log"
-tableFileOut = "2020_MoneyManagementSpreadsheet_testb.xlsx"
+tablePath = kirkconstants.tablePath
+tableFile = kirkconstants.tableFile
+tableSheet = kirkconstants.tableSheet
+tableFileOut = kirkconstants.tableFileOut
 
 # Excel info
-code_col = 1
-date_col = 10
-price_col = 11
-start_row = 15
-
-# PySimpleGUI Parameters
-sectorsOverWindow = (157,28)
-sectorsPerfWindow = (190,28)
-buttonTradingTable = 'Open Trading Table'
+code_col = kirkconstants.code_col
+date_col = kirkconstants.date_col
+price_col = kirkconstants.price_col
+start_row = kirkconstants.start_row
 
 # Years to be selected
-year_prefix = 2020
+year_prefix = kirkconstants.year_prefix
 
 ## Functions
 
@@ -42,6 +40,8 @@ def SaveWorkbook(workbook, tablePath, tableFileOut):
 
 # This function returns the latest price from finviz
 def GetPriceFvz(tkt):
+    # @TODO:
+    # parameterize 'Price'
     try:
         price = fvz.get_stock(tkt)['Price']
     except Exception:
@@ -51,6 +51,8 @@ def GetPriceFvz(tkt):
 
 # This function get trading data for a TKT from 
 def GetData(symbol, start='2000-01-01', interval='1d', end=None):
+    # @TODO:
+    # parameterize default values for start and interval
     data = yf.download(symbol, start=start, end=end, interval=interval, auto_adjust=True)
     return data
 

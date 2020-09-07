@@ -20,6 +20,7 @@ import webbrowser
 from etfutils import TktScreeenTable
 import pandas as pd
 import update_mms as up
+import kirkconstants
 
 # Functions
 def ScreenerArguments(eventPressed): 
@@ -90,12 +91,23 @@ def printBuckets(etfSet, stkSet, listPath, fileList, sheetList):
         print('\t' + tkt)
 
 # Environment variables
-listPath = r'C:\Users\jeron\Google Drive\trading\kirk\2019\Listas'
-fileList = "2018_ListasTrack.xlsx"
-sheetList = "Symbols"
-script_path = r'C:\EclipseWorkspaces\csse120\kirk_tools'
-script_list = ['date_setter.py']
-tktPath = r'D:\jeronimo\trading\etf'
+#listPath = r'C:\Users\jeron\Google Drive\trading\kirk\2019\Listas'
+#fileList = "2018_ListasTrack.xlsx"
+#sheetList = "Symbols"
+#script_path = r'C:\EclipseWorkspaces\csse120\kirk_tools'
+#script_list = ['date_setter.py']
+#tktPath = r'D:\jeronimo\trading\etf'
+
+
+listPath = kirkconstants.listPath
+fileList = kirkconstants.fileList
+sheetList = kirkconstants.sheetList
+script_path = kirkconstants.script_path
+script_list = kirkconstants.script_list
+tktPath = kirkconstants.tktPath
+
+
+
 sectorsOverWindow = (157,28)
 sectorsPerfWindow = (190,28)
 lineStartToChange1 = 'new_date =' 
@@ -199,9 +211,9 @@ layout = [[sg.Text('*** Posiciones Abiertas ***')],
           [sg.Input(key='-IN-')],
           [sg.Button('Open etfscreen age'), sg.Button('File'), sg.Button('Execute')], 
           [sg.Text('*** Sectors Performance ***')], 
-          [sg.Button('Sectors Daily'), sg.Button('Sectors 1W'), sg.Button('Sectors 4W')],  
-          [sg.Button('Sectors 13W'), sg.Button('Sectors 26W'), sg.Button('Sectors 52W')],  
-          [sg.Button('Sectors YTD')],
+          [sg.Button('Sectors Daily'), sg.Button('Sectors 1W'), sg.Button('Sectors 4W'),  
+           sg.Button('Sectors 13W'), sg.Button('Sectors 26W'), sg.Button('Sectors 52W'),  
+           sg.Button('Sectors YTD')],
           [sg.Text('*** Charts ***')],
           [sg.Button('US Markets'),
            sg.Button('Sector ETF'),
