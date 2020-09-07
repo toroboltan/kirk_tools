@@ -57,7 +57,8 @@ def chartsArgumnets(eventPressed):
         'New High STK': stkNewHighCht,
         'FATGANMSN': fatganmsmCht,
         'Long Breakout Setup ETF': etfLongBrkCht,
-        'Long Breakout Setup STK': stkLongBrkCht 
+        'Long Breakout Setup STK': stkLongBrkCht,
+        'Major News':majorNewsCht
     }
     # get() method of dictionary data type returns  
     # value of passed argument if it is present  
@@ -125,6 +126,7 @@ perf13w = "-perf13w"
 perf26w = "-perf26w"
 perf52w = "-perf52w"
 perfytd = "-perfytd"
+
 buttonSecList = ['Sectors Daily',
                  'Sectors 1W',
                  'Sectors 4W',
@@ -132,6 +134,7 @@ buttonSecList = ['Sectors Daily',
                  'Sectors 26W',
                  'Sectors 52W',
                  'Sectors YTD']
+
 buttonChtList = ['US Markets',
                  'Sector ETF',
                  'ETF Perf Daily',
@@ -142,13 +145,16 @@ buttonChtList = ['US Markets',
                  'New High ETF',
                  'FATGANMSN',
                  'Long Breakout Setup ETF',
-                 'Long Breakout Setup STK']
+                 'Long Breakout Setup STK',
+                 'Major News']
+
 sectorsTktList = ['IWM','XLF','EEM','XLE','XLK',
                   'XLV','IYT','XLU','XLI','XLY',
                   'XLV','IYT','XLU','XLI','XLY',
                   'IYR','XLP','XLB','TLT','GLD',
                   'IYR','XLP','XLB','TLT','GLD',
                   'UUP','RTH','IYZ','SMH','DBC','USO']
+
 textBoxList = ['etfUsMarkets',
                'etfSecCht',
                'etfPerfDaily',
@@ -160,6 +166,7 @@ textBoxList = ['etfUsMarkets',
                'etfLongBrkCht', 
                'stkLongBrkCht', 
                'fatganmsn']
+
 buttonProcess = 'Process Candidates'
 buttonUpdatePrecios = 'Update Precios'
 buttonShowCharts = 'Show Charts'
@@ -177,9 +184,10 @@ stkBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgv
 etfBrkCht = "https://www.finviz.com/screener.ashx?v=111&f=ind_exchangetradedfund,sh_avgvol_o100,sh_curvol_o500,sh_price_o5,ta_changeopen_u3,ta_highlow52w_nh,ta_perf_dup&ft=4&ta=0&o=-change"
 etfNewHighCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_exchangetradedfund,sh_avgvol_o100,ta_change_u2,ta_highlow52w_nh&ft=4&o=-change"
 stkNewHighCht ="https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgvol_o100,ta_change_u2,ta_highlow52w_nh&ft=4&o=-change"
-fatganmsmCht = "https://www.finviz.com/screener.ashx?v=351&t=FB,AAPL,GOOGL,AMZN,NFLX,MSFT,SBUX,NKE,TSLA&o=-change"
 etfLongBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_exchangetradedfund,sh_avgvol_o400,sh_price_o5,ta_averagetruerange_o1.5,ta_change_u2,ta_highlow20d_b0to3h,ta_highlow50d_b0to3h,ta_sma20_pa,ta_sma200_pa,ta_sma50_pa&ft=4&ta=0&o=-change"
 stkLongBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgvol_o400,sh_price_o5,ta_averagetruerange_o1.5,ta_change_u2,ta_highlow20d_b0to3h,ta_highlow50d_b0to3h,ta_sma20_pa,ta_sma200_pa,ta_sma50_pa&ft=4&ta=0&o=-change"
+fatganmsmCht = "https://www.finviz.com/screener.ashx?v=351&t=FB,AAPL,GOOGL,AMZN,NFLX,MSFT,SBUX,NKE,TSLA&o=-change"
+majorNewsCht = "https://www.finviz.com/screener.ashx?v=320&s=n_majornews"
 etfPerfDaily = ""
 etfPerfWeekly = ""
 tkts_up_str = 'tkts_up_str'
@@ -225,7 +233,8 @@ layout = [[sg.Text('*** Posiciones Abiertas ***')],
            sg.Button('New High STK'),
            sg.Button('Long Breakout Setup ETF'),
            sg.Button('Long Breakout Setup STK'),
-           sg.Button('FATGANMSN')],
+           sg.Button('FATGANMSN'),
+           sg.Button('Major News')],
           [sg.Text('*** Candidates ***')],
           [sg.Text('From US Markets :'), sg.InputText(key='etfUsMarkets')],
           [sg.Text('From Sectors :'), sg.InputText(key='etfSecCht')],
