@@ -19,7 +19,7 @@ import sys
 import webbrowser
 from etfutils import TktScreeenTable
 import pandas as pd
-import update_mms as up
+import updatemms as up
 import kirkconstants
 
 # Functions
