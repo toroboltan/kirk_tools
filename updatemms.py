@@ -4,6 +4,7 @@ import finviz as fvz
 import os
 from openpyxl import load_workbook
 import kirkconstants
+import pandas as pd
 
 # @TODO: parameterize flag values related to type of tool used to get prices
 
@@ -35,6 +36,18 @@ def SaveWorkbook(workbook, tablePath, tableFileOut):
     file_name = os.path.join(tablePath, tableFileOut)
     print('saving... ' + file_name)
     workbook.save(filename=file_name)
+
+# This function opens an excel file located at a specific
+# location and returns a df
+def OpenExcelFile(excelPath, excelFile, excelSheet):
+    os.chdir(excelPath)
+    return pd.read_excel(excelFile, sheet_name=excelSheet)
+
+# This function saves a df on a csv    
+def ExportDfToCsv(df, path, filename):
+    file_name = os.path.join(path, filename)
+    print('saving... ' + file_name)
+    df.to_csv(file_name, index=False)
 
 # This function returns the latest price from finviz
 def GetPriceFvz(tkt):
