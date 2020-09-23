@@ -358,6 +358,8 @@ while True:  # Event Loop
         if len(paramList) > 1:
             screenResult = TktScreeenTable(sectorsTktList, paramList[0], paramList[1])
             sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
+            print('*** ' + event.upper()  + ' ***')
+            print(' ')
             print(screenResult)
             # set output back to console
             sys.stdout = sys.__stdout__
