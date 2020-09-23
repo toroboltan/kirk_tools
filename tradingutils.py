@@ -249,11 +249,13 @@ def GenerateCandidates(tradeType='Long',tradeFlag='LONG'):
     print('Begin GenerateCandidates')
     ExecuteCode(tradeType, tradeFlag)
     print('End GenerateCandidates')
+    return 0
 
 def main():
     # Formatting pandas to have 2 decimal points
     pd.options.display.float_format = "{:,.2f}".format
-    GenerateCandidates()
+    result = GenerateCandidates()
+    print(str(result))
 
 if __name__ == "__main__":
     try:

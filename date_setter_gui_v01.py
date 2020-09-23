@@ -20,6 +20,7 @@ import webbrowser
 from etfutils import TktScreeenTable
 import pandas as pd
 import updatemms as up
+import tradingutils as tu
 import kirkconstants
 
 # Functions
@@ -169,6 +170,7 @@ textBoxList = ['etfUsMarkets',
 buttonProcess = 'Process Candidates'
 buttonUpdatePrecios = 'Update Precios'
 buttonShowCharts = 'Show Charts'
+buttonChkPlays = 'Check Playbook'
 
 
 # Parameters to be used for Overview Table
@@ -229,9 +231,8 @@ layout = [[sg.Text('*** Posiciones Abiertas ***')],
           [sg.Button('Long Breakout Setup ETF'), sg.InputText(key='etfLongBrkCht'),sg.Button('Long Breakout Setup STK'), sg.InputText(key='stkLongBrkCht')],
           [sg.Button('FATGANMSN'), sg.InputText(key='fatganmsn'), sg.Button('Major News'), sg.InputText(key='majorNewsCht')],
           [sg.Text('******************')],
-          [sg.Button(buttonProcess)],
-          [sg.Text('******************')],
-          [sg.Text('Possible Candidates :'), sg.InputText(key='possibleCand')],          
+#          [sg.Button(buttonProcess)],
+          [sg.Button(buttonProcess), sg.InputText(key='possibleCand'), sg.Button(buttonChkPlays)],          
           [sg.Text('******************')],
           [sg.Button('Exit')]]
 
@@ -247,6 +248,12 @@ while True:  # Event Loop
     if event in (None, 'Exit'):
         break
     
+    if event == buttonChkPlays:
+        result = 1
+        result = tu.GenerateCandidates(tradeType='Long',tradeFlag='LONG')
+        if result == 0:
+            print('finished')
+        
     if event == buttonUpdatePrecios:
         list_tktOpen = up.UpdatePrices()
         print(list_tktOpen)
