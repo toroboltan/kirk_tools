@@ -58,3 +58,6 @@ code_col = 1
 date_col = 10
 price_col = 11
 start_row = 15
+
+# API keys
+alphavantage_key = '3SAVQIE3TDG93UDE'
