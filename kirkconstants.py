@@ -50,6 +50,9 @@ posTradesPath = r'C:\Users\jeron\Google Drive\trading\kirk\2020\possibleTrades'
 posTradeRawFileSfx = "PossibleTradesRaw.csv"
 posTradeFinalFileSfx = 'PossibleTradesFinal.csv'
 
+etfChkPath = r'C:\Users\jeron\Google Drive\trading\kirk\2020\possibleTrades'
+etfChkFileSfx = "EtfCheckRaw.csv"
+
 # Years to be selected
 year_prefix = 2020
 
@@ -59,5 +62,10 @@ date_col = 10
 price_col = 11
 start_row = 15
 
-# API keys
+# API keys - alphavantage
 alphavantage_key = '3SAVQIE3TDG93UDE'
+
+# API keys - alpaca
+ALPACA_API_KEY = 'PKZRT7YHIDBSQS36RCNX'
+ALPACA_SECRET_KEY = '4flYAGGWHI4eJ81OlBywLK3GTc1Lxu6I6gZgAOHu'
+ALPACA_PAPER_END_POINT = 'https://paper-api.alpaca.markets'
