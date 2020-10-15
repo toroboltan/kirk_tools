@@ -22,7 +22,7 @@ end_date = '2020-10-12'
 format_date = '%Y-%m-%dT%T-06:00'
 
 def GetAccount(api_key, secret_key):    
-    
+
     headers ={"APCA-API-KEY-ID" : api_key, "APCA-API-SECRET-KEY":secret_key}
     endpoint = "https://paper-api.alpaca.markets/v2/account"
     
@@ -70,22 +70,17 @@ def PrintMarketData(lst_market, start_date, end_date, apiKey, secretKey, tframe)
     dfs = GetHistory(str_market, startDate, endDate, apiKey, secretKey, timeframe=tframe)
     print(dfs['SPY'])
 
-def PrintMarketData30Min(lst_market, start_date, end_date, apiKey, secretKey):
-    str_market, startDate, endDate = FormatDateAndTktList(lst_market, start_date, end_date)
-    dfs = GetHistory(str_market, startDate, endDate, apiKey, secretKey, timeframe='day')
-    print(dfs['SPY'])
-
 def main():
     # Setting Keys
     apiKey = kc.ALPACA_API_KEY
     secretKey = kc.ALPACA_SECRET_KEY
     tframe1d = 'day'
-    tframe15m = '15min'
+    tframe15m = '15Min'
     # Testing
     PrintKeys(apiKey, secretKey)
     PrintAccount(apiKey, secretKey)
     PrintMarketData(lst_market, start_date, end_date, apiKey, secretKey, tframe1d)
-    #PrintMarketData(lst_market, start_date, end_date, apiKey, secretKey, tframe15m)
+    PrintMarketData(lst_market, start_date, end_date, apiKey, secretKey, tframe15m)
 
 if __name__ == "__main__":
     try:
