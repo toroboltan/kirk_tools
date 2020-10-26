@@ -3,9 +3,9 @@ import pandas as pd
 import updatemms as upm
 import kirkconstants as kc
 import pickle
-import pymysql
 import os
 import sys
+from sqlalchemy import create_engine
 
 url_etf = f'https://www.etfscreen.com/performance.php?wl=0&s=Rtn-1d%7Cdesc&t=6&d=i&ftS=yes&ftL=no&vFf=dolVol21&vFl=gt&vFv=100000&udc=default&d=i'
 
@@ -25,7 +25,6 @@ def ToNumeric(df, columns):
                 bill = (row[col]).upper().find('B') 
                 mill = (row[col]).upper().find('M')
                 thou = (row[col]).upper().find('K')
-
                 if  tril > 0:
                     count_T += 1
                     df.loc[idx, col] = float(row[col][:tril]) * 10**12
@@ -81,20 +80,42 @@ def ReadSerialEtfScreen(file_name, script_path):
     f.close()
     return data
 
+def TestCase01():
+    etf_df = ReadEtfScreen(url_etf, header_etf, index_etf)
+    WriteSerialEtfScreen(etf_df, kc.fileNamePickle, kc.testPath)
+    return etf_df
+
+def TestCase02():
+    etf_df = ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
+    etf_df = FormatEtfScreen(etf_df)
+    #Seteo el USER : PASS @ HOST / BBDD_NAME
+    sql_engine = create_engine('mysql+pymysql://root:@localhost/etfscreendb')
+    sql_conn = sql_engine.connect()
+    etf_df.to_sql(con=sql_conn, name='etfscreen', if_exists='replace')
+    return etf_df
+
+def ProcessEtfscreen():
+    etf_df = TestCase01()
+    etf_df = TestCase02()
+    return etf_df    
 
 def main(arg):
     # Formatting pandas to have 2 decimal points
     pd.options.display.float_format = "{:,.2f}".format
+    print('___Begin main()___')
     if arg == 'test01':
-        etf_df = ReadEtfScreen(url_etf, header_etf, index_etf)
-        WriteSerialEtfScreen(etf_df, kc.fileNamePickle, kc.testPath)
-    else:
-        etf_df = ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
-        etf_df = FormatEtfScreen(etf_df)
-    print('This is a test')
+        print('test 01')
+        etf_df = TestCas01()
+    if arg == 'test02':
+        print('test 02')
+        etf_df = TestCase02()
+    if arg == 'test03':
+        print('test 03')
+        etf_df = ProcessEtfscreen()
+    print('___End main()___')
 
 if __name__ == "__main__":
-    arg = 'test02'
+    arg = 'test03'
     try:
         main(arg)
     except SystemExit as e:
