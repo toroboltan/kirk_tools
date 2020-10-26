@@ -2,81 +2,100 @@ import requests
 import pandas as pd
 import updatemms as upm
 import kirkconstants as kc
+import pickle
+import pymysql
+import os
+import sys
 
-def FormatFinvizDf(df):
-    # Drop columns with numbers
-    df = df.drop(0 ,axis = 1)
-    # Dataframe headers
-    oldHeaders = df.columns.to_list()
-    newHeaders = df.loc[0,:].to_list()
-    # using dictionary comprehension 
-    # to convert lists to dictionary 
-    res = {oldHeaders[j]: newHeaders[j] for j in range(len(newHeaders))}
-    df.rename(columns = res, inplace = True)
-    df = df.drop(0)
-    return df
+url_etf = f'https://www.etfscreen.com/performance.php?wl=0&s=Rtn-1d%7Cdesc&t=6&d=i&ftS=yes&ftL=no&vFf=dolVol21&vFl=gt&vFv=100000&udc=default&d=i'
 
-def ReadFirstFinvizScreener(url, header):
-    ''' This function returns number of tickets and asociated dataframe '''
-    tablas = ReadFinvizTablas(url, header)
-    tabla = tablas[15]
-    tktTotal = int(tabla[0][0].split(' ')[1])
-    tabla = tablas[16]
-    dft = FormatFinvizDf(tabla)
-    return(tktTotal,dft)
-
-def ReadFinvizTablas(url, header):
-    r = requests.get(url, headers=header)
-    tablas = pd.read_html(r.text)
-    return tablas
-
-url_etf = f'https://finviz.com/screener.ashx?v=111&f=ind_exchangetradedfund&ft=4'
-url_stk = f'https://finviz.com/screener.ashx?v=111&f=ind_stocksonly&ft=4'
-
-header = {
+header_etf = {
   "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.75 Safari/537.36",
   "X-Requested-With": "XMLHttpRequest"
 }
 
-testPath = kc.testPath
-testFileOut = kc.testFileOut
+index_etf = 2
 
-i = 0
-tktTotal = 0
-tkt_per_page = 20
-dft = pd.DataFrame()
+def ToNumeric(df, columns):
+    for col in columns:
+        count_T, count_B, count_M, count_K = 0,0,0,0
+        for idx, row in df.iterrows():
+            try:
+                tril = (row[col]).upper().find('T') 
+                bill = (row[col]).upper().find('B') 
+                mill = (row[col]).upper().find('M')
+                thou = (row[col]).upper().find('K')
 
-url_base = url_stk
+                if  tril > 0:
+                    count_T += 1
+                    df.loc[idx, col] = float(row[col][:tril]) * 10**12
+                elif  bill > 0:
+                    count_B += 1
+                    df.loc[idx, col] = float(row[col][:bill]) * 10**9
+                elif  mill > 0:
+                    count_M += 1
+                    df.loc[idx, col] = float(row[col][:mill]) * 10**6
+                elif  thou > 0:
+                    count_K += 1
+                    df.loc[idx, col] = float(row[col][:thou]) * 10**3
+            except:
+                pass
+        print(f'column: {col}, T->{count_T}, B->{count_B}, M->{count_M}, K->{count_K}')
 
-tktTotal, dft = ReadFirstFinvizScreener(url_base, header)
+def ToFloat(df, columns):
+    for col in columns:
+        df[col] = df[col].astype(float)
 
-'''
-for tabla in tablas:
-    #print('tabla ' + str(i))
-    #print(tabla)
-    if i == 15:
-        print(type(tabla))
-        print(tabla[0][0])
-        tktTotal = int(tabla[0][0].split(' ')[1])
-        print(str(tktTotal))
-        #break
-    if i == 16:
-        dft = FormatFinvizDf(tabla)
-    i += 1
-'''
+def ReadEtfScreen(url, header, indexetf):
+    r = requests.get(url, headers=header)
+    tables = pd.read_html(r.text)
+    return tables[indexetf]
 
-for counter in range(tkt_per_page + 1 ,tktTotal, tkt_per_page):
-    dft2 = pd.DataFrame()
-    url_suffix = f'&r='+str(counter)
-    url_counter = url_base + url_suffix
-    print(url_counter)
-    #r = requests.get(url_counter, headers=header)
-    #tablas = pd.read_html(r.text)
-    tablas = ReadFinvizTablas(url_counter, header)
-    tabla = tablas[16]
-    dft2 = FormatFinvizDf(tabla)
-    dft = pd.concat([dft, dft2], ignore_index=True)
+def FormatEtfScreen(df):
+    # Drop first row
+    df.drop(0 ,axis=0 ,inplace=True)
+    # Drop first collum
+    df.drop('✓', axis=1, inplace=True)
+    # Format column names
+    oldColNames_lst = df.columns.to_list()
+    newColNames_lst = [x.lower() for x in oldColNames_lst]
+    newColNames_lst = [x.replace('-','_') for x in list(newColNames_lst)]
+    newColNames_lst = [x.replace('$','') for x in list(newColNames_lst)]
+    df.columns = newColNames_lst
+    ToNumeric(df, ['vol_21'])
+    ToFloat(df, ['vol_21'])
+    return df
 
-upm.ExportDfToCsv(dft, testPath, testFileOut)
+def WriteSerialEtfScreen(data, file_name, script_path):
+    os.chdir(script_path)
+    with open(file_name, 'wb') as f:
+        pickle.dump(data, f)
+
+def ReadSerialEtfScreen(file_name, script_path):
+    os.chdir(script_path)
+    # open a file, where you stored the pickled data
+    f = open(file_name, 'rb')
+    # dump information to that file
+    data = pickle.load(f)
+    # close the file
+    f.close()
+    return data
 
 
+def main(arg):
+    # Formatting pandas to have 2 decimal points
+    pd.options.display.float_format = "{:,.2f}".format
+    if arg == 'test01':
+        etf_df = ReadEtfScreen(url_etf, header_etf, index_etf)
+        WriteSerialEtfScreen(etf_df, kc.fileNamePickle, kc.testPath)
+    else:
+        etf_df = ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
+        etf_df = FormatEtfScreen(etf_df)
+    print('This is a test')
+
+if __name__ == "__main__":
+    arg = 'test02'
+    try:
+        main(arg)
+    except SystemExit as e:
+        print('Error Exception triggered')
