@@ -22,6 +22,7 @@ import pandas as pd
 import updatemms as up
 import tradingutils as tu
 import kirkconstants
+import scrapetfscreen as scetf
 
 # Functions
 def ScreenerArguments(eventPressed): 
@@ -222,7 +223,7 @@ layout = [[sg.Text('*** Posiciones Abiertas ***')],
           [sg.Button(buttonChkMarket)], 
           [sg.Text('*** ETF Performance: ***'), sg.Text(size=(40,1), key='-OUTPUT-')],
           [sg.Input(key='-IN-')],
-          [sg.Button('Open etfscreen age'), sg.Button('File'), sg.Button('Execute')], 
+          [sg.Button('Open etfscreen age'), sg.Button('File'), sg.Button('Execute'), sg.Button('Get ETF Info')], 
           [sg.Text('*** Sectors Performance ***')], 
           [sg.Button('Sectors Daily'), sg.Button('Sectors 1W'), sg.Button('Sectors 4W'),  
            sg.Button('Sectors 13W'), sg.Button('Sectors 26W'), sg.Button('Sectors 52W'),  
@@ -252,8 +253,10 @@ while True:  # Event Loop
     
     if event in (None, 'Exit'):
         break
+
     if event == buttonChkMarket:
         print('test check market')
+
     if event == buttonChkList:
         result = 1
         result = tu.CheckEtfsLists(tradeType='Long',tradeFlag='LONG')
@@ -275,12 +278,15 @@ while True:  # Event Loop
             print(showChartsLnk + str(list_tktOpen))
             openweb("chrome", [showChartsLnk + str(list_tktOpen)])
         
-    if event == 'Open etfscreen age':
-        openweb("chrome", [etfPerLnk])
-    
     if event in buttonChtList:
         openweb("chrome", [chartsArgumnets(event)])
-    
+
+    if event == 'Open etfscreen age':
+        openweb("chrome", [etfPerLnk])
+
+    if event == 'Get ETF Info':
+        etf_df = scetf.ProcessEtfscreen()
+
     if event == 'File':
         fname = sys.argv[1] if len(sys.argv) > 1 else sg.popup_get_file('Document to open', initial_folder=tktPath)
         
