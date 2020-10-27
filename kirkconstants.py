@@ -69,3 +69,20 @@ alphavantage_key = '3SAVQIE3TDG93UDE'
 ALPACA_API_KEY = 'PKZRT7YHIDBSQS36RCNX'
 ALPACA_SECRET_KEY = '4flYAGGWHI4eJ81OlBywLK3GTc1Lxu6I6gZgAOHu'
 ALPACA_PAPER_END_POINT = 'https://paper-api.alpaca.markets'
+
+
+## Parameters for scrapeetfscreen
+
+# File information
+testPath = r'C:\tmp\test'
+testFileIn = "testIn.csv"
+testSheet = "testSheet"
+testFileOut = "testOut.csv"
+
+# Pickle information
+fileNamePickle = 'etf_screen_df.pickle'
+
+# SQL information
+db_prefix = 'mysql+pymysql://root:@localhost/'
+db_struc_etf = 'etfscreendb'
+db_table_etf = 'etfscreen'

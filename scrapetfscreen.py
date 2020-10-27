@@ -3,8 +3,10 @@ import pandas as pd
 import updatemms as upm
 import kirkconstants as kc
 import pickle
+import tqdm
 import os
 import sys
+import finviz
 from sqlalchemy import create_engine
 
 url_etf = f'https://www.etfscreen.com/performance.php?wl=0&s=Rtn-1d%7Cdesc&t=6&d=i&ftS=yes&ftL=no&vFf=dolVol21&vFl=gt&vFv=100000&udc=default&d=i'
@@ -81,23 +83,52 @@ def ReadSerialEtfScreen(file_name, script_path):
     return data
 
 def TestCase01():
+    ''' Read data from etfscreen.com '''
     etf_df = ReadEtfScreen(url_etf, header_etf, index_etf)
     WriteSerialEtfScreen(etf_df, kc.fileNamePickle, kc.testPath)
     return etf_df
 
 def TestCase02():
+    ''' Format data from etfscreen.com and stores it into SQL db '''
     etf_df = ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
     etf_df = FormatEtfScreen(etf_df)
-    #Seteo el USER : PASS @ HOST / BBDD_NAME
-    sql_engine = create_engine('mysql+pymysql://root:@localhost/etfscreendb')
-    sql_conn = sql_engine.connect()
-    etf_df.to_sql(con=sql_conn, name='etfscreen', if_exists='replace')
+    sql_conn = ConnectSQLDb(kc.db_prefix, kc.db_struc_etf)
+    etf_df.to_sql(con=sql_conn, name=kc.db_table_etf, if_exists='replace')
     return etf_df
 
+def ConnectSQLDb(db_prefix ,db_struct):
+    ''' Connect to SQL database '''
+    #Seteo el USER : PASS @ HOST / BBDD_NAME
+    #sql_engine = create_engine('mysql+pymysql://root:@localhost/etfscreendb')
+    sql_engine = create_engine(db_prefix + db_struct)
+    sql_conn = sql_engine.connect()
+    return sql_conn
+
 def ProcessEtfscreen():
+    ''' Read data from etfscreen.com 
+        Format data from etfscreen.com and stores it into SQL db '''   
     etf_df = TestCase01()
     etf_df = TestCase02()
-    return etf_df    
+    return etf_df
+
+def ReadSQLTable(db_prefix ,db_struct, db_table):
+    ''' Read data from SQL db and returns pandas df '''
+    sql_conn = ConnectSQLDb(db_prefix, db_struct)
+    data_df = pd.read_sql(db_table, con=sql_conn)
+    return data_df
+
+def AddPriceEtfScreen():
+    df = ReadSQLTable(kc.db_prefix, kc.db_struc_etf, kc.db_table_etf)
+    with tqdm.tqdm(total=len(df), file=sys.stdout) as pbar:
+        for idx, row in df.iterrows():
+            try:
+                df.loc[idx, 'price'] = float(finviz.get_stock(row['symbol'])['Price'])
+            except:
+                print('passed ' + row['symbol'])
+                pass
+            pbar.update()
+    print('AddPriceEtfScreen')
+    return df
 
 def main(arg):
     # Formatting pandas to have 2 decimal points
@@ -105,17 +136,20 @@ def main(arg):
     print('___Begin main()___')
     if arg == 'test01':
         print('test 01')
-        etf_df = TestCas01()
+        etf_df = TestCase01()
     if arg == 'test02':
         print('test 02')
         etf_df = TestCase02()
     if arg == 'test03':
         print('test 03')
         etf_df = ProcessEtfscreen()
+    if arg == 'test04':
+        print('test04')
+        AddPriceEtfScreen()
     print('___End main()___')
 
 if __name__ == "__main__":
-    arg = 'test03'
+    arg = 'test04'
     try:
         main(arg)
     except SystemExit as e:

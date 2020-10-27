@@ -21,7 +21,7 @@ from etfutils import TktScreeenTable
 import pandas as pd
 import updatemms as up
 import tradingutils as tu
-import kirkconstants
+import kirkconstants as kc
 import scrapetfscreen as scetf
 
 # Functions
@@ -102,12 +102,12 @@ def checkOpenPositions(tktToCheck_lst):
     print('TODO - checkOpenPositions')   
     return tktToCheck_lst    
 
-listPath = kirkconstants.listPath
-fileList = kirkconstants.fileList
-sheetList = kirkconstants.sheetList
-script_path = kirkconstants.script_path
-script_list = kirkconstants.script_list
-tktPath = kirkconstants.tktPath
+listPath = kc.listPath
+fileList = kc.fileList
+sheetList = kc.sheetList
+script_path = kc.script_path
+script_list = kc.script_list
+tktPath = kc.tktPath
 
 sectorsOverWindow = (157,28)
 sectorsPerfWindow = (190,28)
@@ -223,7 +223,7 @@ layout = [[sg.Text('*** Posiciones Abiertas ***')],
           [sg.Button(buttonChkMarket)], 
           [sg.Text('*** ETF Performance: ***'), sg.Text(size=(40,1), key='-OUTPUT-')],
           [sg.Input(key='-IN-')],
-          [sg.Button('Open etfscreen age'), sg.Button('File'), sg.Button('Execute'), sg.Button('Get ETF Info')], 
+          [sg.Button('Open etfscreen age'), sg.Button('File'), sg.Button('Execute'), sg.Button('scrap etfscreen'), sg.Button('read etfscreendb'),sg.Button('Execute2')], 
           [sg.Text('*** Sectors Performance ***')], 
           [sg.Button('Sectors Daily'), sg.Button('Sectors 1W'), sg.Button('Sectors 4W'),  
            sg.Button('Sectors 13W'), sg.Button('Sectors 26W'), sg.Button('Sectors 52W'),  
@@ -284,8 +284,20 @@ while True:  # Event Loop
     if event == 'Open etfscreen age':
         openweb("chrome", [etfPerLnk])
 
-    if event == 'Get ETF Info':
+    if event == 'scrap etfscreen':
         etf_df = scetf.ProcessEtfscreen()
+        print('*** ' + event + ' ***')
+        print(etf_df)
+
+    if event == 'read etfscreendb':
+        etf_df = scetf.ReadSQLTable(kc.db_prefix, kc.db_struc_etf, kc.db_table_etf)
+        print('*** ' + event + ' ***')
+        print(etf_df)
+
+    if event == 'Execute2':
+        etf_df = scetf.ReadSQLTable(kc.db_prefix, kc.db_struc_etf, kc.db_table_etf)
+        print('*** ' + event + ' ***')
+        print(etf_df)
 
     if event == 'File':
         fname = sys.argv[1] if len(sys.argv) > 1 else sg.popup_get_file('Document to open', initial_folder=tktPath)
