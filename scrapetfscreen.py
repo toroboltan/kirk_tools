@@ -109,6 +109,7 @@ def ProcessEtfscreen():
         Format data from etfscreen.com and stores it into SQL db '''   
     etf_df = TestCase01()
     etf_df = TestCase02()
+    etf_df = AddPriceEtfScreen()
     return etf_df
 
 def ReadSQLTable(db_prefix ,db_struct, db_table):
@@ -116,6 +117,11 @@ def ReadSQLTable(db_prefix ,db_struct, db_table):
     sql_conn = ConnectSQLDb(db_prefix, db_struct)
     data_df = pd.read_sql(db_table, con=sql_conn)
     return data_df
+
+def WriteSQLTable(df, db_prefix ,db_struct, db_table):
+    ''' Read data from SQL db and returns pandas df '''
+    sql_conn = ConnectSQLDb(db_prefix, db_struct)
+    df.to_sql(con=sql_conn, name=db_table, if_exists='replace')
 
 def AddPriceEtfScreen():
     df = ReadSQLTable(kc.db_prefix, kc.db_struc_etf, kc.db_table_etf)
@@ -127,8 +133,64 @@ def AddPriceEtfScreen():
                 print('passed ' + row['symbol'])
                 pass
             pbar.update()
+    WriteSerialEtfScreen(df, kc.fileNamePickle, kc.testPath)
+    WriteSQLTable(df, kc.db_prefix ,kc.db_struc_etf, kc.db_table_etf)
     print('AddPriceEtfScreen')
     return df
+
+def EtfPrintTopBottom(tkt_dataframe, numberToPrintInt, timeRange):
+    #     name symbol    rsf  rtn_1d  rtn_5d  rtn_1mo  rtn_3mo  rtn_6mo  rtn_1yr       vol_21  price
+    lenTktList = len(tkt_dataframe.index)
+    if(lenTktList > 0) and (lenTktList >= numberToPrintInt) and (numberToPrintInt):
+        final_up_df = pd.DataFrame()
+        final_dw_df = pd.DataFrame()
+        columnVal = ''
+        if timeRange == '1D':
+            final_up_df = tkt_dataframe[tkt_dataframe['rtn_1d'] > 0.0].sort_values(by=['rtn_1d'], ascending = False)
+            final_dw_df = tkt_dataframe[tkt_dataframe['rtn_1d'] <= 0.0].sort_values(by=['rtn_1d'], ascending = True)
+            columnVal = 'rtn_1d'
+        if timeRange == '1W':
+            final_up_df = tkt_dataframe[tkt_dataframe['rtn_5d'] > 0.0].sort_values(by=['rtn_5d'], ascending = False)
+            final_dw_df = tkt_dataframe[tkt_dataframe['rtn_5d'] <= 0.0].sort_values(by=['rtn_5d'], ascending = True)
+            columnVal = 'rtn_5d'
+        if timeRange == '1M':
+            final_up_df = tkt_dataframe[tkt_dataframe['rtn_1mo'] > 0.0].sort_values(by=['rtn_1mo'], ascending = False)
+            final_dw_df = tkt_dataframe[tkt_dataframe['rtn_1mo'] <= 0.0].sort_values(by=['rtn_1mo'], ascending = True)
+            columnVal = 'rtn_1mo'
+        if timeRange == '1Q':
+            final_up_df = tkt_dataframe[tkt_dataframe['rtn_3mo'] > 0.0].sort_values(by=['rtn_3mo'], ascending = False)
+            final_dw_df = tkt_dataframe[tkt_dataframe['rtn_3mo'] <= 0.0].sort_values(by=['rtn_3mo'], ascending = True)
+            columnVal = 'rtn_3mo'
+        if timeRange == '1H':
+            final_up_df = tkt_dataframe[tkt_dataframe['rtn_6mo'] > 0.0].sort_values(by=['rtn_6mo'], ascending = False)
+            final_dw_df = tkt_dataframe[tkt_dataframe['rtn_6mo'] <= 0.0].sort_values(by=['rtn_6mo'], ascending = True)
+            columnVal = 'rtn_6mo'
+        if timeRange == '1Y':
+            final_up_df = tkt_dataframe[tkt_dataframe['rtn_1yr'] > 0.0].sort_values(by=['rtn_1yr'], ascending = False)
+            final_dw_df = tkt_dataframe[tkt_dataframe['rtn_1yr'] <= 0.0].sort_values(by=['rtn_1yr'], ascending = True)
+            columnVal = 'rtn_1yr'
+        # Print to the console
+        tkts_str =''
+        etfStartLine = '*** Print ETF UP - ' + timeRange + ' - (' + str(numberToPrintInt) + ') ***'
+        print(etfStartLine)
+        for row in final_up_df.head(numberToPrintInt).iterrows():
+            etfLine = row[1]['symbol'] + '\t' + row[1]['name'] + '\t' + str(row[1]['price']) + '\t' + str(row[1][columnVal])
+            print(etfLine)
+            tkts_str = tkts_str + row[1]['symbol'] + ','
+        etfFinalLineUp = "https://www.finviz.com/screener.ashx?v=351&ft=4&t=" + tkts_str[:(len(tkts_str)-1)] + "&o=-change"
+        print("tkts_up_str = " + etfFinalLineUp)
+
+        tkts_str =''
+        etfStartLine = '*** Print ETF DOWN - ' + timeRange + ' - (' + str(numberToPrintInt) + ') ***'
+        print(etfStartLine)    
+        for row in final_dw_df.head(numberToPrintInt).iterrows():
+            etfLine = row[1]['symbol'] + '\t' + row[1]['name'] + '\t' + str(row[1]['price']) + '\t' + str(row[1][columnVal])
+            print(etfLine)
+            tkts_str = tkts_str + row[1]['symbol'] + ','
+        etfFinalLineDown = "https://www.finviz.com/screener.ashx?v=351&ft=4&t=" + tkts_str[:(len(tkts_str)-1)] + "&o=-change"
+        print("tkts_down_str = " + etfFinalLineDown)
+        return(etfFinalLineUp, etfFinalLineDown)
+
 
 def main(arg):
     # Formatting pandas to have 2 decimal points

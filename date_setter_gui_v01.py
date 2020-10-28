@@ -51,8 +51,8 @@ def chartsArgumnets(eventPressed):
     switcher = {
         'US Markets': etfUsMarkets,
         'Sector ETF': etfSecCht,
-        'ETF Perf Daily' : etfPerfDaily,
-        'ETF Perf Weekly' : etfPerfWeekly,       
+        'ETF Perf Daily' : etfPerf1DUp,
+        'ETF Perf Weekly' : etfPerf1WUp,       
         'Simple Breakout Scan ETF': etfBrkCht,
         'Simple Breakout Scan STK': stkBrkCht,
         'New High ETF': etfNewHighCht,
@@ -192,8 +192,18 @@ etfLongBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_exchangetraded
 stkLongBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgvol_o400,sh_price_o5,ta_averagetruerange_o1.5,ta_change_u2,ta_highlow20d_b0to3h,ta_highlow50d_b0to3h,ta_sma20_pa,ta_sma200_pa,ta_sma50_pa&ft=4&ta=0&o=-change"
 fatganmsmCht = "https://www.finviz.com/screener.ashx?v=351&t=FB,AAPL,GOOGL,AMZN,NFLX,MSFT,SBUX,NKE,TSLA&o=-change"
 majorNewsCht = "https://www.finviz.com/screener.ashx?v=320&s=n_majornews"
-etfPerfDaily = ""
-etfPerfWeekly = ""
+etfPerf1DUp = ""
+etfPerf1DDw = ""
+etfPerf1WUp = ""
+etfPerf1WDw = ""
+etfPerf1MUp = ""
+etfPerf1MDw = ""
+etfPerf1QUp = ""
+etfPerf1QDw = ""
+etfPerf1HUp = ""
+etfPerf1HDw = ""
+etfPerf1YUp = ""
+etfPerf1YDw = ""
 tkts_up_str = 'tkts_up_str'
 showChartsLnk = "https://www.finviz.com/screener.ashx?v=351&t="
 
@@ -296,8 +306,15 @@ while True:  # Event Loop
 
     if event == 'Execute2':
         etf_df = scetf.ReadSQLTable(kc.db_prefix, kc.db_struc_etf, kc.db_table_etf)
-        print('*** ' + event + ' ***')
-        print(etf_df)
+        sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
+        print('*** ETF ***')
+        etfPerf1DUp, etfPerf1DDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1D)
+        etfPerf1WUp, etfPerf1WDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1W)
+        etfPerf1MUp, etfPerf1MDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1M)
+        etfPerf1QUp, etfPerf1QDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1Q)
+        etfPerf1HUp, etfPerf1HDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1H)
+        etfPerf1YUp, etfPerf1YDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1Y)
+        sys.stdout = sys.__stdout__
 
     if event == 'File':
         fname = sys.argv[1] if len(sys.argv) > 1 else sg.popup_get_file('Document to open', initial_folder=tktPath)

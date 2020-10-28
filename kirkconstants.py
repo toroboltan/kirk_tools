@@ -86,3 +86,11 @@ fileNamePickle = 'etf_screen_df.pickle'
 db_prefix = 'mysql+pymysql://root:@localhost/'
 db_struc_etf = 'etfscreendb'
 db_table_etf = 'etfscreen'
+
+topNumber = 10
+const1D = '1D'
+const1W = '1W'
+const1M = '1M'
+const1Q = '1Q'
+const1H = '1H'
+const1Y = '1Y'
