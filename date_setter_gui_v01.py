@@ -231,9 +231,11 @@ layout = [[sg.Text('*** Posiciones Abiertas ***')],
           [sg.Button(buttonUpdatePrecios), sg.Button(buttonShowCharts)], 
           [sg.Text('*** Chequeo de Indices ***')],
           [sg.Button(buttonChkMarket)], 
-          [sg.Text('*** ETF Performance: ***'), sg.Text(size=(40,1), key='-OUTPUT-')],
-          [sg.Input(key='-IN-')],
-          [sg.Button('Open etfscreen age'), sg.Button('File'), sg.Button('Execute'), sg.Button('scrap etfscreen'), sg.Button('read etfscreendb'),sg.Button('Execute2')], 
+          [sg.Text('*** ETF Performance: ***')],
+          [sg.Button('scrap etfscreen'), sg.Button('read etfscreendb from db'), 
+           sg.Button('read etfscreendb from serial'), 
+           sg.Button('write serial to etfscreendb'),
+           sg.Button('execute')], 
           [sg.Text('*** Sectors Performance ***')], 
           [sg.Button('Sectors Daily'), sg.Button('Sectors 1W'), sg.Button('Sectors 4W'),  
            sg.Button('Sectors 13W'), sg.Button('Sectors 26W'), sg.Button('Sectors 52W'),  
@@ -251,7 +253,6 @@ layout = [[sg.Text('*** Posiciones Abiertas ***')],
           [ sg.Button(buttonChkPlays), sg.Button(buttonChkList)],
           [sg.Text('******************')],         
           [sg.Button('Exit')]]
-
 
 # Main Program V2
 
@@ -291,20 +292,29 @@ while True:  # Event Loop
     if event in buttonChtList:
         openweb("chrome", [chartsArgumnets(event)])
 
-    if event == 'Open etfscreen age':
-        openweb("chrome", [etfPerLnk])
-
     if event == 'scrap etfscreen':
         etf_df = scetf.ProcessEtfscreen()
+        sg.popup('Message!', 'scrap etfscreen finished!, Click on Execute')
         print('*** ' + event + ' ***')
         print(etf_df)
 
-    if event == 'read etfscreendb':
+    if event == 'read etfscreendb from db':
         etf_df = scetf.ReadSQLTable(kc.db_prefix, kc.db_struc_etf, kc.db_table_etf)
         print('*** ' + event + ' ***')
         print(etf_df)
 
-    if event == 'Execute2':
+    if event == 'read etfscreendb from serial':
+        etf_df = scetf.ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
+        print('*** ' + event + ' ***')
+        print(etf_df)
+
+    if event == 'write serial to etfscreendb':
+        etf_df = scetf.ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
+        scetf.WriteSQLTable(etf_df, kc.db_prefix ,kc.db_struc_etf, kc.db_table_etf)
+        print('*** ' + event + ' ***')
+        print(etf_df)
+
+    if event == 'execute':
         etf_df = scetf.ReadSQLTable(kc.db_prefix, kc.db_struc_etf, kc.db_table_etf)
         sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
         print('*** ETF ***')
@@ -315,18 +325,8 @@ while True:  # Event Loop
         etfPerf1HUp, etfPerf1HDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1H)
         etfPerf1YUp, etfPerf1YDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1Y)
         sys.stdout = sys.__stdout__
-
-    if event == 'File':
-        fname = sys.argv[1] if len(sys.argv) > 1 else sg.popup_get_file('Document to open', initial_folder=tktPath)
-        
-        if not fname:
-            sg.popup("Cancel", "No filename supplied")
-            raise SystemExit("Canceling: no filename supplied")
-        else:
-            window['-OUTPUT-'].update(fname)
-            window['-IN-'].update(fname)
             
-    if event == 'Execute':
+    if event == 'Execute_to_fix':
         fileinfo = values['-IN-']
         print(type(fileinfo))
         fileinfoList = fileinfo.split("/")
@@ -364,35 +364,7 @@ while True:  # Event Loop
             # Execute the file
             for script_file in script_list:
                 os.system('python ' + script_file)
-            
-            # Print in a window the result from performance files
-            os.chdir(tktPath)
-            totalLines = ''
-            for etfTf in constList:
-                etfFileName = newDate + midFileName + etfTf + extFileName
-                f = open(etfFileName,"r")
-                lines = f.readlines()
-                for linea in lines:
-                    if ((etfTf == const1D) or (etfTf == const1W)):
-                        print(etfTf)
-                        if (linea.startswith(tkts_up_str)):
-                            print(linea)
-                            linea_link = linea.split(' ')[2].rstrip("\n")
-                            print(linea_link)
-                            if (etfTf == const1D):
-                                etfPerfDaily = linea_link
-                                print('etfPerfDaily ' + etfPerfDaily)
-                            else:
-                                etfPerfWeekly = linea_link
-                                print('etfPerfWeekly ' + etfPerfWeekly)
-                    totalLines += linea
-                f.close()
-            sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
-            print('*** ETF ***')
-            print(totalLines)
-            # set output back to console
-            sys.stdout = sys.__stdout__
-            
+
     # Performance printing on Windows
     if (event in buttonSecList):
         paramList = ScreenerArguments(event)

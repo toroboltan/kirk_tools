@@ -125,17 +125,19 @@ def WriteSQLTable(df, db_prefix ,db_struct, db_table):
 
 def AddPriceEtfScreen():
     df = ReadSQLTable(kc.db_prefix, kc.db_struc_etf, kc.db_table_etf)
+    notFoundEtf = []
     with tqdm.tqdm(total=len(df), file=sys.stdout) as pbar:
         for idx, row in df.iterrows():
             try:
                 df.loc[idx, 'price'] = float(finviz.get_stock(row['symbol'])['Price'])
             except:
-                print('passed ' + row['symbol'])
+                # print('passed ' + row['symbol'])
+                notFoundEtf.append(row['symbol'])
                 pass
             pbar.update()
+    print('etfs not found: ' + str(notFoundEtf))
     WriteSerialEtfScreen(df, kc.fileNamePickle, kc.testPath)
     WriteSQLTable(df, kc.db_prefix ,kc.db_struc_etf, kc.db_table_etf)
-    print('AddPriceEtfScreen')
     return df
 
 def EtfPrintTopBottom(tkt_dataframe, numberToPrintInt, timeRange):
