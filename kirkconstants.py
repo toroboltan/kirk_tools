@@ -84,7 +84,7 @@ fileNamePickle = 'etf_screen_df.pickle'
 
 # SQL information
 db_prefix = 'mysql+pymysql://root:@localhost/'
-db_struc_etf = 'etfscreendb'
+db_struc_etf = 'tradingdb'
 db_table_etf = 'etfscreen'
 
 topNumber = 10
