@@ -125,6 +125,8 @@ def WriteSQLTable(df, db_prefix ,db_struct, db_table):
 
 def AddPriceEtfScreen():
     df = ReadSQLTable(kc.db_prefix, kc.db_struc_etf, kc.db_table_etf)
+    # Removing index received from db read
+    df.drop('index', axis=1, inplace=True)
     notFoundEtf = []
     with tqdm.tqdm(total=len(df), file=sys.stdout) as pbar:
         for idx, row in df.iterrows():
