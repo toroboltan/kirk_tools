@@ -100,8 +100,14 @@ def ConnectSQLDb(db_prefix ,db_struct):
     ''' Connect to SQL database '''
     #Seteo el USER : PASS @ HOST / BBDD_NAME
     #sql_engine = create_engine('mysql+pymysql://root:@localhost/etfscreendb')
+    print('ConnectSQLDb - beg')
+    print('db_prefix ' + db_prefix)
+    print('db_struct ' + db_struct)
     sql_engine = create_engine(db_prefix + db_struct)
+    print('create_engine executed')
     sql_conn = sql_engine.connect()
+    print('sql_engine executed')
+    print('ConnectSQLDb - end')
     return sql_conn
 
 def ProcessEtfscreen():
@@ -119,9 +125,14 @@ def ReadSQLTable(db_prefix ,db_struct, db_table):
     return data_df
 
 def WriteSQLTable(df, db_prefix ,db_struct, db_table):
-    ''' Read data from SQL db and returns pandas df '''
+    ''' Write data from SQL db and returns pandas df '''
+    print('WriteSQLTable - beg')
+    print('db_prefix ' + db_prefix)
+    print('db_struct ' + db_struct)
+    print('db_table ' + db_table)
     sql_conn = ConnectSQLDb(db_prefix, db_struct)
     df.to_sql(con=sql_conn, name=db_table, if_exists='replace')
+    print('WriteSQLTable - end')
 
 def AddPriceEtfScreen():
     df = ReadSQLTable(kc.db_prefix, kc.db_struc_etf, kc.db_table_etf)
@@ -137,9 +148,11 @@ def AddPriceEtfScreen():
                 notFoundEtf.append(row['symbol'])
                 pass
             pbar.update()
-    print('etfs not found: ' + str(notFoundEtf))
+    print('etfs not found in finviz: ' + str(notFoundEtf))
     WriteSerialEtfScreen(df, kc.fileNamePickle, kc.testPath)
+    print('serial output finished')
     WriteSQLTable(df, kc.db_prefix ,kc.db_struc_etf, kc.db_table_etf)
+    print('DB output finished')
     return df
 
 def EtfPrintTopBottom(tkt_dataframe, numberToPrintInt, timeRange):
