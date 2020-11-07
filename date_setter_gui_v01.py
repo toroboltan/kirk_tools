@@ -287,7 +287,8 @@ while True:  # Event Loop
     if event == buttonShowCharts:
         if len(list_tktOpen) > 0:
             print(showChartsLnk + str(list_tktOpen))
-            openweb("chrome", [showChartsLnk + str(list_tktOpen)])
+            delim = ','
+            openweb("chrome", [showChartsLnk + delim.join(list_tktOpen)])
         
     if event in buttonChtList:
         openweb("chrome", [chartsArgumnets(event)])
