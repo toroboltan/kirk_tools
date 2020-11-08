@@ -75,10 +75,13 @@ def GetPriceTkt(tkt, flag='fv'):
         price = GetPriceFvz(tkt)
     return price
 
-# This function update prices and returns a list of
-# open positions
+
 
 def UpdatePrices():
+    '''
+    This function update prices and returns a list of
+    open positions
+    '''
     workbook = ReadWorkbook(tablePath, tableFile)
     trade_log = workbook[tableSheet]
     set_tkt = set()

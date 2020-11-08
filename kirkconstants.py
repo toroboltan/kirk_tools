@@ -4,6 +4,14 @@ Created on Sep 5, 2020
 @author: jeron
 '''
 
+## Parameters & Constants mgtpb
+
+# File information
+pbPath = r'C:\Users\jeron\Google Drive\trading\kirk\2020\active trading'
+pbFile = "2020_KirkCandidatesManagementSpreadsheet_test.xlsx"
+pbSheet = "tkt_tt_py"
+
+
 ## Parameters & Constants update_mms
 
 # File information
@@ -35,7 +43,7 @@ rwd_rsk_factor = 3
 # File information
 candPath = r'C:\Users\jeron\Google Drive\trading\kirk\2020\active trading'
 candFile = "2020_KirkCandidatesManagementSpreadsheet.xlsx"
-candSheet = "tkt_tt_py_2019_msft"
+candSheet = "tkt_tt_py"
 
 bucketPath = r'C:\Users\jeron\Google Drive\trading\kirk\2020\Listas'
 bucketFile = "2018_ListasTrack.xlsx"
@@ -71,7 +79,7 @@ ALPACA_SECRET_KEY = '4flYAGGWHI4eJ81OlBywLK3GTc1Lxu6I6gZgAOHu'
 ALPACA_PAPER_END_POINT = 'https://paper-api.alpaca.markets'
 
 
-## Parameters for scrapeetfscreen
+## Parameters for scrapetfscreen
 
 # File information
 testPath = r'C:\tmp\test'

@@ -1,18 +1,3 @@
-'''
-Created on Apr 11, 2020
-
-
-This window will change the value assigned to new_date and old_date_header in date_setter.py script to the value 
-what the user introduces
-
-new_date = r"'20200409'"
-old_date_header = "filePrefix = '2020"
-
-and then it will run date_setter.py
-''
-
-@author: CEVDEA
-'''
 import PySimpleGUI as sg
 import os
 import sys
@@ -23,6 +8,7 @@ import updatemms as up
 import tradingutils as tu
 import kirkconstants as kc
 import scrapetfscreen as scetf
+import dbhandler as dbh
 
 # Functions
 def ScreenerArguments(eventPressed): 
@@ -174,6 +160,11 @@ buttonShowCharts = 'Show Charts'
 buttonChkPlays = 'Check Playbook'
 buttonChkList = 'Check ETFs Lists'
 buttonChkMarket = 'Check Market'
+buttonScrapEtf = 'scrap etfscreen'
+buttonReadDb = 'read etfscreendb from db'
+buttonReadPicFile = 'read etfscreendb from serial'
+buttonWritePicDb = 'write serial to etfscreendb'
+buttonExec = 'execute'
 
 
 # Parameters to be used for Overview Table
@@ -232,10 +223,11 @@ layout = [[sg.Text('*** Posiciones Abiertas ***')],
           [sg.Text('*** Chequeo de Indices ***')],
           [sg.Button(buttonChkMarket)], 
           [sg.Text('*** ETF Performance: ***')],
-          [sg.Button('scrap etfscreen'), sg.Button('read etfscreendb from db'), 
-           sg.Button('read etfscreendb from serial'), 
-           sg.Button('write serial to etfscreendb'),
-           sg.Button('execute')], 
+          [sg.Button(buttonScrapEtf), 
+           sg.Button(buttonReadDb), 
+           sg.Button(buttonReadPicFile), 
+           sg.Button(buttonWritePicDb),
+           sg.Button(buttonExec)], 
           [sg.Text('*** Sectors Performance ***')], 
           [sg.Button('Sectors Daily'), sg.Button('Sectors 1W'), sg.Button('Sectors 4W'),  
            sg.Button('Sectors 13W'), sg.Button('Sectors 26W'), sg.Button('Sectors 52W'),  
@@ -256,6 +248,8 @@ layout = [[sg.Text('*** Posiciones Abiertas ***')],
 
 # Main Program V2
 
+# Open connection to db
+sql_conn = dbh.ConnectSQLDb(kc.db_prefix, kc.db_struc_etf)
 window = sg.Window('TorolGui', layout)
 
 while True:  # Event Loop
@@ -293,30 +287,33 @@ while True:  # Event Loop
     if event in buttonChtList:
         openweb("chrome", [chartsArgumnets(event)])
 
-    if event == 'scrap etfscreen':
-        etf_df = scetf.ProcessEtfscreen()
-        sg.popup('Message!', 'scrap etfscreen finished!, Click on Execute')
+    if event == buttonScrapEtf:
+        etf_df = scetf.ProcessEtfscreen(sql_conn)
+        if (len(etf_df.index) > 0):
+            sg.popup('Message!', 'scrap etfscreen finished!, Click on Execute')
+        else:
+            sg.popup('Message!', 'etfscreen parsing failed!, Try again in 5 minutes') 
         print('*** ' + event + ' ***')
         print(etf_df)
 
-    if event == 'read etfscreendb from db':
-        etf_df = scetf.ReadSQLTable(kc.db_prefix, kc.db_struc_etf, kc.db_table_etf)
+    if event == buttonReadDb:
+        etf_df = dbh.ReadSQLTable(sql_conn, kc.db_table_etf)
         print('*** ' + event + ' ***')
         print(etf_df)
 
-    if event == 'read etfscreendb from serial':
+    if event == buttonReadPicFile:
         etf_df = scetf.ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
         print('*** ' + event + ' ***')
         print(etf_df)
 
-    if event == 'write serial to etfscreendb':
+    if event == buttonWritePicDb:
         etf_df = scetf.ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
-        scetf.WriteSQLTable(etf_df, kc.db_prefix ,kc.db_struc_etf, kc.db_table_etf)
+        dbh.WriteSQLTable(etf_df, sql_conn, kc.db_table_etf)
         print('*** ' + event + ' ***')
         print(etf_df)
 
-    if event == 'execute':
-        etf_df = scetf.ReadSQLTable(kc.db_prefix, kc.db_struc_etf, kc.db_table_etf)
+    if event == buttonExec:
+        etf_df = dbh.ReadSQLTable(sql_conn, kc.db_table_etf)
         sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
         print('*** ETF ***')
         etfPerf1DUp, etfPerf1DDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1D)

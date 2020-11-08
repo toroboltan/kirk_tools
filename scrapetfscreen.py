@@ -7,7 +7,9 @@ import tqdm
 import os
 import sys
 import finviz
+import dbhandler as dbh
 from sqlalchemy import create_engine
+
 
 url_etf = f'https://www.etfscreen.com/performance.php?wl=0&s=Rtn-1d%7Cdesc&t=6&d=i&ftS=yes&ftL=no&vFf=dolVol21&vFl=gt&vFv=100000&udc=default&d=i'
 
@@ -55,8 +57,13 @@ def ReadEtfScreen(url, header, indexetf):
 def FormatEtfScreen(df):
     # Drop first row
     df.drop(0 ,axis=0 ,inplace=True)
-    # Drop first collum
-    df.drop('✓', axis=1, inplace=True)
+    try:
+        # Drop first collum
+        df.drop('✓', axis=1, inplace=True)
+    except:
+        print('etfscreen parsing failed')
+        df = pd.DataFrame()
+        return df
     # Format column names
     oldColNames_lst = df.columns.to_list()
     newColNames_lst = [x.lower() for x in oldColNames_lst]
@@ -88,54 +95,25 @@ def TestCase01():
     WriteSerialEtfScreen(etf_df, kc.fileNamePickle, kc.testPath)
     return etf_df
 
-def TestCase02():
+def TestCase02(sql_conn):
     ''' Format data from etfscreen.com and stores it into SQL db '''
     etf_df = ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
     etf_df = FormatEtfScreen(etf_df)
-    sql_conn = ConnectSQLDb(kc.db_prefix, kc.db_struc_etf)
-    etf_df.to_sql(con=sql_conn, name=kc.db_table_etf, if_exists='replace')
+    if (len(etf_df.index) > 0):
+        etf_df.to_sql(con=sql_conn, name=kc.db_table_etf, if_exists='replace')
     return etf_df
 
-def ConnectSQLDb(db_prefix ,db_struct):
-    ''' Connect to SQL database '''
-    #Seteo el USER : PASS @ HOST / BBDD_NAME
-    #sql_engine = create_engine('mysql+pymysql://root:@localhost/etfscreendb')
-    print('ConnectSQLDb - beg')
-    print('db_prefix ' + db_prefix)
-    print('db_struct ' + db_struct)
-    sql_engine = create_engine(db_prefix + db_struct)
-    print('create_engine executed')
-    sql_conn = sql_engine.connect()
-    print('sql_engine executed')
-    print('ConnectSQLDb - end')
-    return sql_conn
-
-def ProcessEtfscreen():
+def ProcessEtfscreen(sql_conn):
     ''' Read data from etfscreen.com 
-        Format data from etfscreen.com and stores it into SQL db '''   
+        Format data from etfscreen.com and stores it into SQL db '''
     etf_df = TestCase01()
-    etf_df = TestCase02()
-    etf_df = AddPriceEtfScreen()
+    etf_df = TestCase02(sql_conn)
+    if (len(etf_df.index) > 0):
+        etf_df = AddPriceEtfScreen(sql_conn)
     return etf_df
 
-def ReadSQLTable(db_prefix ,db_struct, db_table):
-    ''' Read data from SQL db and returns pandas df '''
-    sql_conn = ConnectSQLDb(db_prefix, db_struct)
-    data_df = pd.read_sql(db_table, con=sql_conn)
-    return data_df
-
-def WriteSQLTable(df, db_prefix ,db_struct, db_table):
-    ''' Write data from SQL db and returns pandas df '''
-    print('WriteSQLTable - beg')
-    print('db_prefix ' + db_prefix)
-    print('db_struct ' + db_struct)
-    print('db_table ' + db_table)
-    sql_conn = ConnectSQLDb(db_prefix, db_struct)
-    df.to_sql(con=sql_conn, name=db_table, if_exists='replace')
-    print('WriteSQLTable - end')
-
-def AddPriceEtfScreen():
-    df = ReadSQLTable(kc.db_prefix, kc.db_struc_etf, kc.db_table_etf)
+def AddPriceEtfScreen(sql_conn):
+    df = dbh.ReadSQLTable(sql_conn, kc.db_table_etf)
     # Removing index received from db read
     df.drop('index', axis=1, inplace=True)
     notFoundEtf = []
@@ -151,7 +129,7 @@ def AddPriceEtfScreen():
     print('etfs not found in finviz: ' + str(notFoundEtf))
     WriteSerialEtfScreen(df, kc.fileNamePickle, kc.testPath)
     print('serial output finished')
-    WriteSQLTable(df, kc.db_prefix ,kc.db_struc_etf, kc.db_table_etf)
+    dbh.WriteSQLTable(df, sql_conn, kc.db_table_etf)
     print('DB output finished')
     return df
 
@@ -218,13 +196,16 @@ def main(arg):
         etf_df = TestCase01()
     if arg == 'test02':
         print('test 02')
-        etf_df = TestCase02()
+        sql_conn = dbh.ConnectSQLDb(kc.db_prefix, kc.db_struc_etf)
+        etf_df = TestCase02(sql_conn)
     if arg == 'test03':
         print('test 03')
-        etf_df = ProcessEtfscreen()
+        sql_conn = dbh.ConnectSQLDb(kc.db_prefix, kc.db_struc_etf)
+        etf_df = ProcessEtfscreen(sql_conn)
     if arg == 'test04':
         print('test04')
-        AddPriceEtfScreen()
+        sql_conn = dbh.ConnectSQLDb(kc.db_prefix, kc.db_struc_etf)
+        AddPriceEtfScreen(sql_conn)
     print('___End main()___')
 
 if __name__ == "__main__":
