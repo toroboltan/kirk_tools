@@ -18,7 +18,7 @@ pbSheet = "tkt_tt_py"
 tablePath = r'C:\Users\jeron\Google Drive\trading\kirk\2020\active trading'
 tableFile = "2020_MoneyManagementSpreadsheet.xlsx"
 tableSheet = "trade_log"
-tableFileOut = "2020_MoneyManagementSpreadsheet_testb.xlsx"
+tableFileOut = "2020_MoneyManagementSpreadsheet.xlsx"
 
 
 ## Parameters & Constants date_setter_gui_v01
@@ -51,7 +51,7 @@ bucketSheet = "Symbols"
 balanceSheet = "BalancesShort"
 
 actTradesPath = r'C:\Users\jeron\Google Drive\trading\kirk\2020\active trading'
-actTradesFile = "2020_MoneyManagementSpreadsheet_testb.xlsx"
+actTradesFile = "2020_MoneyManagementSpreadsheet.xlsx"
 actTradestSheet = "trade_log"
 
 posTradesPath = r'C:\Users\jeron\Google Drive\trading\kirk\2020\possibleTrades'
@@ -94,6 +94,7 @@ fileNamePickle = 'etf_screen_df.pickle'
 db_prefix = 'mysql+pymysql://root:@localhost/'
 db_struc_etf = 'tradingdb'
 db_table_etf = 'etfscreen'
+db_table_cand = 'tkt_candidates'
 
 topNumber = 10
 const1D = '1D'
