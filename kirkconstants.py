@@ -5,26 +5,23 @@ Created on Sep 5, 2020
 '''
 
 ## Parameters & Constants mgtpb
-
 # File information
-pbPath = r'C:\Users\jeron\Google Drive\trading\kirk\2020\active trading'
-pbFile = "2020_KirkCandidatesManagementSpreadsheet_test.xlsx"
+pbPath = r'C:\Users\jeron\Google Drive\trading\kirk\2021\active trading'
+pbFile = "2021_KirkCandidatesManagementSpreadsheetTest.xlsx"
 pbSheet = "tkt_tt_py"
 
 
 ## Parameters & Constants update_mms
-
 # File information
-tablePath = r'C:\Users\jeron\Google Drive\trading\kirk\2020\active trading'
-tableFile = "2020_MoneyManagementSpreadsheet.xlsx"
+tablePath = r'C:\Users\jeron\Google Drive\trading\kirk\2021\active trading'
+tableFile = "2021_MoneyManagementSpreadsheet.xlsx"
 tableSheet = "trade_log"
-tableFileOut = "2020_MoneyManagementSpreadsheet.xlsx"
+tableFileOut = "2021_MoneyManagementSpreadsheet.xlsx"
 
 
 ## Parameters & Constants date_setter_gui_v01
-
 # Environment variables
-listPath = r'C:\Users\jeron\Google Drive\trading\kirk\2020\Listas'
+listPath = r'C:\Users\jeron\Google Drive\trading\kirk\2021\Listas'
 fileList = "2018_ListasTrack.xlsx"
 sheetList = "Symbols"
 script_path = r'C:\EclipseWorkspaces\csse120\kirk_tools'
@@ -33,7 +30,6 @@ tktPath = r'D:\jeronimo\trading\etf'
 
 
 ## Parameters & Constants tradingutils
-
 # trade parameters
 risk = 1
 commision = 2
@@ -41,24 +37,24 @@ stoploss_perc = 8
 rwd_rsk_factor = 3
 
 # File information
-candPath = r'C:\Users\jeron\Google Drive\trading\kirk\2020\active trading'
-candFile = "2020_KirkCandidatesManagementSpreadsheet.xlsx"
+candPath = r'C:\Users\jeron\Google Drive\trading\kirk\2021\active trading'
+candFile = "2021_KirkCandidatesManagementSpreadsheet.xlsx"
 candSheet = "tkt_tt_py"
 
-bucketPath = r'C:\Users\jeron\Google Drive\trading\kirk\2020\Listas'
+bucketPath = r'C:\Users\jeron\Google Drive\trading\kirk\2021\Listas'
 bucketFile = "2018_ListasTrack.xlsx"
 bucketSheet = "Symbols"
 balanceSheet = "BalancesShort"
 
-actTradesPath = r'C:\Users\jeron\Google Drive\trading\kirk\2020\active trading'
-actTradesFile = "2020_MoneyManagementSpreadsheet.xlsx"
+actTradesPath = r'C:\Users\jeron\Google Drive\trading\kirk\2021\active trading'
+actTradesFile = "2021_MoneyManagementSpreadsheet.xlsx"
 actTradestSheet = "trade_log"
 
-posTradesPath = r'C:\Users\jeron\Google Drive\trading\kirk\2020\possibleTrades'
+posTradesPath = r'C:\Users\jeron\Google Drive\trading\kirk\2021\possibleTrades'
 posTradeRawFileSfx = "PossibleTradesRaw.csv"
 posTradeFinalFileSfx = 'PossibleTradesFinal.csv'
 
-etfChkPath = r'C:\Users\jeron\Google Drive\trading\kirk\2020\possibleTrades'
+etfChkPath = r'C:\Users\jeron\Google Drive\trading\kirk\2021\possibleTrades'
 etfChkFileSfx = "EtfCheckRaw.csv"
 
 # Years to be selected
