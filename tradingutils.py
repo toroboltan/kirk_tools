@@ -132,7 +132,6 @@ def UniqueTradeEvalList(dfTradeEvalLong, activeTkt_list):
         after removing active positions that come in activeTkt_list'''
     indexToDrop = dfTradeEvalLong[dfTradeEvalLong['tkt'].isin(activeTkt_list)].index
     dfTradeEvalLong2 = dfTradeEvalLong.drop(index = indexToDrop)
-    
     return dfTradeEvalLong2
 
 def ExecuteCode(tradeType):
@@ -193,24 +192,32 @@ def ExecuteCode(tradeType):
     dfTradeEval.bucket = dfTradeEval.bucket.fillna(value='Weekly')
     dfTradeEval = pd.merge(left=dfTradeEval, right=dfBalanceT, how='left', left_on='bucket', right_on='bucket')
 
-    dfTradeEvalLong = dfTradeEval[(dfTradeEval['tipo'].str.lower() == tradeType) & (dfTradeEval['flag'].str.lower() == tradeType)]
-    idx_to_drop = dfTradeEvalLong[(dfTradeEvalLong['long_above'].isnull().values == True) | (dfTradeEvalLong['short_below'].isnull().values == True)].index
+    dfTradeEvalType = dfTradeEval[(dfTradeEval['tipo'].str.lower() == tradeType) & (dfTradeEval['flag'].str.lower() == tradeType)]
+    idx_to_drop = dfTradeEvalType[(dfTradeEvalType['long_above'].isnull().values == True) | (dfTradeEvalType['short_below'].isnull().values == True)].index
     
     # Evaluate Long Trades
-    dfTradeEvalLong = dfTradeEvalLong.drop(idx_to_drop).copy()
-    dfTradeEvalLong2 = UniqueTradeEvalList(dfTradeEvalLong, activeTkt_list)
-    dataTradeEval = AddTradingIndToData(dfTradeEvalLong2)
+    dfTradeEvalType = dfTradeEvalType.drop(idx_to_drop).copy()
+    dfTradeEvalType2 = UniqueTradeEvalList(dfTradeEvalType, activeTkt_list)
+    dataTradeEval = AddTradingIndToData(dfTradeEvalType2)
     dfTechToMerge = TailTradingDataWithTkt(dataTradeEval)
-    dfTradeEvalLongPre = pd.merge(left=dfTradeEvalLong2, right=dfTechToMerge, how='left', left_on='tkt', right_on='tkt')
+    dfTradeEvalTypePre = pd.merge(left=dfTradeEvalType2, right=dfTechToMerge, how='left', left_on='tkt', right_on='tkt')
 
-    condition = (dfTradeEvalLongPre.Close > dfTradeEvalLongPre.init_price) & \
-                (dfTradeEvalLongPre.Close > dfTradeEvalLongPre.ema_5) & \
-                (dfTradeEvalLongPre.ema_5 > dfTradeEvalLongPre.ema_13) & \
-                (dfTradeEvalLongPre.ema_13 > dfTradeEvalLongPre.sma_20) & \
-                (dfTradeEvalLongPre['%K'] > 45) & \
-                (dfTradeEvalLongPre['balance'] > 0)
+    if tradeType == 'long':
+        condition = (dfTradeEvalTypePre.Close > dfTradeEvalTypePre.init_price) & \
+                    (dfTradeEvalTypePre.Close > dfTradeEvalTypePre.ema_5) & \
+                    (dfTradeEvalTypePre.ema_5 > dfTradeEvalTypePre.ema_13) & \
+                    (dfTradeEvalTypePre.ema_13 > dfTradeEvalTypePre.sma_20) & \
+                    (dfTradeEvalTypePre['%K'] > 45) & \
+                    (dfTradeEvalTypePre['balance'] > 0)
+    elif tradeType == 'short':
+        condition = (dfTradeEvalTypePre.Close < dfTradeEvalTypePre.init_price) & \
+                    (dfTradeEvalTypePre.Close < dfTradeEvalTypePre.ema_5) & \
+                    (dfTradeEvalTypePre.ema_5 < dfTradeEvalTypePre.ema_13) & \
+                    (dfTradeEvalTypePre.ema_13 < dfTradeEvalTypePre.sma_20) & \
+                    (dfTradeEvalTypePre['%K'] < 55) & \
+                    (dfTradeEvalTypePre['balance'] > 0)        
                 
-    dfPossibleTrades = dfTradeEvalLongPre.loc[condition].sort_values('%K').copy()
+    dfPossibleTrades = dfTradeEvalTypePre.loc[condition].sort_values('%K').copy()
 
     risk = kc.risk
     commision = kc.commision
