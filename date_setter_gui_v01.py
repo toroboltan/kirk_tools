@@ -156,7 +156,8 @@ textBoxList = ['etfUsMarkets',
 buttonProcess = 'Process TKTs'
 buttonUpdatePrecios = 'Update Precios'
 buttonShowCharts = 'Show Charts'
-buttonChkPlays = 'Check Playbook'
+buttonChkPlaysLong = 'Check Playbook Long'
+buttonChkPlaysShort = 'Check Playbook Short'
 buttonChkList = 'Check ETFs Lists'
 buttonChkMarket = 'Check Market'
 buttonScrapEtf = 'scrap etfscreen'
@@ -240,7 +241,7 @@ layout = [[sg.Text('*** Posiciones Abiertas ***')],
           [sg.Button('FATGANMSN'), sg.InputText(key='fatganmsn'), sg.Button('Major News'), sg.InputText(key='majorNewsCht')],
           [sg.Button(buttonProcess), sg.InputText(key='possibleCand')],          
           [sg.Text('******************')],
-          [ sg.Button(buttonChkPlays), sg.Button(buttonChkList)],
+          [ sg.Button(buttonChkPlaysLong), sg.Button(buttonChkPlaysShort), sg.Button(buttonChkList)],
           [sg.Text('******************')],         
           [sg.Button('Exit')]]
 
@@ -266,9 +267,15 @@ while True:  # Event Loop
         if result == 0:
             print('finished')
     
-    if event == buttonChkPlays:
+    if event == buttonChkPlaysLong:
         result = 1
         result = tu.GenerateCandidates(tradeType='Long',tradeFlag='LONG')
+        if result == 0:
+            print('finished')
+    
+    if event == buttonChkPlaysShort:
+        result = 1
+        result = tu.GenerateCandidates(tradeType='Short',tradeFlag='SHORT')
         if result == 0:
             print('finished')
 
