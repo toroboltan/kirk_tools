@@ -4,8 +4,6 @@ import yfinance as yf
 import kirkconstants as kc
 import updatemms as upm
 
-
-
 # This function gets the bucket list value for each tkt
 def GetBucket(tkt, dfBucket):
     print("This is a test")
@@ -122,7 +120,7 @@ def GetActiveTradeList(actTradesPath, actTradesFile, actTradestSheet):
             break
         else:
             cell_date = row[date_col -1]
-            if (cell_date.value.year != year_prefix):
+            if (cell_date.value.year == year_prefix):
                 print(str(cell_tkt.value))
                 tkt.add(cell_tkt.value)
     tkt_list = sorted(list(tkt))
@@ -183,7 +181,7 @@ def ExecuteCode(tradeType, tradeFlag):
     dfTbl = dfTbl.drop(columns=['old_date'])
     
     # select specific year
-    dfTbl = dfTbl[dfTbl['date'].dt.year == year_prefix]
+    # dfTbl = dfTbl[dfTbl['date'].dt.year == year_prefix]
      
     dfTbl = dfTbl.loc[((dfTbl['p1'].isin(['m'])) | \
                        (dfTbl['p2'].isin(['m'])) | \
@@ -198,6 +196,7 @@ def ExecuteCode(tradeType, tradeFlag):
 
     dfTradeEvalLong = dfTradeEval[(dfTradeEval['tipo'] == tradeType) & (dfTradeEval['flag'] == tradeFlag)]
     idx_to_drop = dfTradeEvalLong[(dfTradeEvalLong['long_above'].isnull().values == True) | (dfTradeEvalLong['short_below'].isnull().values == True)].index
+    
     # Evaluate Long Trades
     dfTradeEvalLong = dfTradeEvalLong.drop(idx_to_drop).copy()
     dfTradeEvalLong2 = UniqueTradeEvalList(dfTradeEvalLong, activeTkt_list)
@@ -244,6 +243,28 @@ def ExecuteCode(tradeType, tradeFlag):
     
     print('End - ExecuteOldCode')
 
+def CheckEtfsLists(tradeType='Long',tradeFlag='LONG'):
+    print('Begin CheckEtfsLists')
+
+    # File information
+    bucketPath = kc.bucketPath
+    bucketFile = kc.bucketFile
+    bucketSheet = kc.bucketSheet
+    balanceSheet = kc.balanceSheet
+
+    etfChkPath = kc.etfChkPath
+    etfChkFileSfx = kc.etfChkFileSfx
+
+    # Years to be selected
+    year_prefix = kc.year_prefix
+    
+    # read bucket & balance files
+    dfBucket = upm.OpenExcelFile(bucketPath, bucketFile, bucketSheet)
+    
+    # transform buckets in a more manageable format
+    dfBucketT = TransFormBucket(dfBucket, 'tkt')
+    print('End CheckEtfsLists')
+    return 0
 
 def GenerateCandidates(tradeType='Long',tradeFlag='LONG'):
     print('Begin GenerateCandidates')

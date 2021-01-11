@@ -58,7 +58,8 @@ etfChkPath = r'C:\Users\jeron\Google Drive\trading\kirk\2021\possibleTrades'
 etfChkFileSfx = "EtfCheckRaw.csv"
 
 # Years to be selected
-year_prefix = 2020
+# 1899 is the year that is set when a date type cell in excel is set to -1
+year_prefix = 1899
 
 # Excel info
 code_col = 1
