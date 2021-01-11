@@ -135,7 +135,7 @@ def UniqueTradeEvalList(dfTradeEvalLong, activeTkt_list):
     
     return dfTradeEvalLong2
 
-def ExecuteCode(tradeType, tradeFlag):
+def ExecuteCode(tradeType):
     
     print('Begin - ExecuteOldCode')
     
@@ -157,8 +157,7 @@ def ExecuteCode(tradeType, tradeFlag):
     posTradeRawFileSfx = kc.posTradeRawFileSfx
     posTradeFinalFileSfx = kc.posTradeFinalFileSfx
 
-    # Years to be selected
-    year_prefix = kc.year_prefix
+    # Get Active Trades
     activeTkt_list = GetActiveTradeList(actTradesPath, actTradesFile, actTradestSheet)
     
     # reading original table
@@ -194,7 +193,7 @@ def ExecuteCode(tradeType, tradeFlag):
     dfTradeEval.bucket = dfTradeEval.bucket.fillna(value='Weekly')
     dfTradeEval = pd.merge(left=dfTradeEval, right=dfBalanceT, how='left', left_on='bucket', right_on='bucket')
 
-    dfTradeEvalLong = dfTradeEval[(dfTradeEval['tipo'] == tradeType) & (dfTradeEval['flag'] == tradeFlag)]
+    dfTradeEvalLong = dfTradeEval[(dfTradeEval['tipo'].str.lower() == tradeType) & (dfTradeEval['flag'].str.lower() == tradeType)]
     idx_to_drop = dfTradeEvalLong[(dfTradeEvalLong['long_above'].isnull().values == True) | (dfTradeEvalLong['short_below'].isnull().values == True)].index
     
     # Evaluate Long Trades
@@ -228,20 +227,27 @@ def ExecuteCode(tradeType, tradeFlag):
     dfPossibleTrades['rwd'] = ((dfPossibleTrades['target'] - dfPossibleTrades['Close']) * dfPossibleTrades['shares']) - commision
     dfPossibleTrades['rwd_rsk_ratio'] = abs(dfPossibleTrades['rwd']/dfPossibleTrades['rsk'])
     dfPossibleTrades[['bucket','R','shares', 'rwd_rsk_ratio']]
-    # Trades candidates with no rs/rw filter
-    # Writing file date_posTradeRawFileSfx
-    posTradeRawFile = str(dt.date.today()).replace('-','') + '_' + posTradeRawFileSfx
-    upm.ExportDfToCsv(dfPossibleTrades, posTradesPath, posTradeRawFile)
+
+    # Writing to csv all possible trades   
+    PossibleTradesToFile(dfPossibleTrades, posTradesPath, posTradeRawFileSfx, tradeType)
     
     # Trades candidates with rs/rw filter
     condition = dfPossibleTrades['rwd_rsk_ratio'] > rwd_rsk_factor
     dfPossibleTradesFinal = dfPossibleTrades.loc[condition].copy()
-    
-    # Writing file posTradeFinalFileSfx
-    posTradeFinalFile = str(dt.date.today()).replace('-','') + '_' + posTradeFinalFileSfx
-    upm.ExportDfToCsv(dfPossibleTradesFinal, posTradesPath, posTradeFinalFile)
-    
+
+    # Writing to csv only trades with valid rs/rw    
+    PossibleTradesToFile(dfPossibleTradesFinal, posTradesPath, posTradeFinalFileSfx, tradeType)  
     print('End - ExecuteOldCode')
+
+def PossibleTradesToFile(dfCandidates, tradePath, tradeFile, tradeType):
+    ''' This function takes a dataframe with possible candidates and a file suffix and writes it to a csv file)
+    '''
+    print('Begin - PossibleTradesToFile')
+    fileSuffix = '_' + tradeFile + '_' + tradeType + '.csv'
+    posTradeFile = str(dt.date.today()).replace('-','') + fileSuffix
+    upm.ExportDfToCsv(dfCandidates, tradePath, posTradeFile)
+    print('End - PossibleTradesToFile')
+
 
 def CheckEtfsLists(tradeType='Long',tradeFlag='LONG'):
     print('Begin CheckEtfsLists')
@@ -254,9 +260,6 @@ def CheckEtfsLists(tradeType='Long',tradeFlag='LONG'):
 
     etfChkPath = kc.etfChkPath
     etfChkFileSfx = kc.etfChkFileSfx
-
-    # Years to be selected
-    year_prefix = kc.year_prefix
     
     # read bucket & balance files
     dfBucket = upm.OpenExcelFile(bucketPath, bucketFile, bucketSheet)
@@ -266,9 +269,9 @@ def CheckEtfsLists(tradeType='Long',tradeFlag='LONG'):
     print('End CheckEtfsLists')
     return 0
 
-def GenerateCandidates(tradeType='Long',tradeFlag='LONG'):
+def GenerateCandidates(tradeType='long'):
     print('Begin GenerateCandidates')
-    ExecuteCode(tradeType, tradeFlag)
+    ExecuteCode(tradeType)
     print('End GenerateCandidates')
     return 0
 

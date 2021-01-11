@@ -269,13 +269,13 @@ while True:  # Event Loop
     
     if event == buttonChkPlaysLong:
         result = 1
-        result = tu.GenerateCandidates(tradeType='Long',tradeFlag='LONG')
+        result = tu.GenerateCandidates(tradeType='long')
         if result == 0:
             print('finished')
     
     if event == buttonChkPlaysShort:
         result = 1
-        result = tu.GenerateCandidates(tradeType='Short',tradeFlag='SHORT')
+        result = tu.GenerateCandidates(tradeType='short')
         if result == 0:
             print('finished')
 

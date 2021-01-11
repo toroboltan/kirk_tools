@@ -51,8 +51,8 @@ actTradesFile = "2021_MoneyManagementSpreadsheet.xlsx"
 actTradestSheet = "trade_log"
 
 posTradesPath = r'C:\Users\jeron\Google Drive\trading\kirk\2021\possibleTrades'
-posTradeRawFileSfx = "PossibleTradesRaw.csv"
-posTradeFinalFileSfx = 'PossibleTradesFinal.csv'
+posTradeRawFileSfx = "PossibleTradesRaw"
+posTradeFinalFileSfx = 'PossibleTradesFinal'
 
 etfChkPath = r'C:\Users\jeron\Google Drive\trading\kirk\2021\possibleTrades'
 etfChkFileSfx = "EtfCheckRaw.csv"
