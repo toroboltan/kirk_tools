@@ -94,7 +94,7 @@ def UpdatePrices():
             break
         else:
             cell_date = row[date_col -1]
-            if (cell_date.value.year < year_prefix):
+            if (cell_date.value.year == year_prefix):
                 tkt = cell_tkt.value
                 print('getting price for: ' + tkt)
                 #getting prices using finviz
