@@ -10,14 +10,12 @@ pbPath = r'C:\Users\jeron\Google Drive\trading\kirk\2021\active trading'
 pbFile = "2021_KirkCandidatesManagementSpreadsheetTest.xlsx"
 pbSheet = "tkt_tt_py"
 
-
 ## Parameters & Constants update_mms
 # File information
 tablePath = r'C:\Users\jeron\Google Drive\trading\kirk\2021\active trading'
 tableFile = "2021_MoneyManagementSpreadsheet.xlsx"
 tableSheet = "trade_log"
 tableFileOut = "2021_MoneyManagementSpreadsheet.xlsx"
-
 
 ## Parameters & Constants date_setter_gui_v01
 # Environment variables
@@ -27,7 +25,6 @@ sheetList = "Symbols"
 script_path = r'C:\EclipseWorkspaces\csse120\kirk_tools'
 script_list = ['date_setter.py']
 tktPath = r'D:\jeronimo\trading\etf'
-
 
 ## Parameters & Constants tradingutils
 # trade parameters
@@ -67,17 +64,7 @@ date_col = 10
 price_col = 11
 start_row = 15
 
-# API keys - alphavantage
-alphavantage_key = '3SAVQIE3TDG93UDE'
-
-# API keys - alpaca
-ALPACA_API_KEY = 'PKZRT7YHIDBSQS36RCNX'
-ALPACA_SECRET_KEY = '4flYAGGWHI4eJ81OlBywLK3GTc1Lxu6I6gZgAOHu'
-ALPACA_PAPER_END_POINT = 'https://paper-api.alpaca.markets'
-
-
 ## Parameters for scrapetfscreen
-
 # File information
 testPath = r'C:\tmp\test'
 testFileIn = "testIn.csv"
@@ -100,3 +87,18 @@ const1M = '1M'
 const1Q = '1Q'
 const1H = '1H'
 const1Y = '1Y'
+
+## Parameters & Constants dailycandidates
+# File information
+dcPath = r'C:\Users\jeron\Google Drive\trading\kirk\2021\active trading'
+dcFile = "2021_ActivityTrackerSpreadsheet.xlsx"
+dcSheet = "daily_cand"
+dbCandTable = "daily_tkts"
+
+# API keys - alphavantage
+alphavantage_key = '3SAVQIE3TDG93UDE'
+
+# API keys - alpaca
+ALPACA_API_KEY = 'PKZRT7YHIDBSQS36RCNX'
+ALPACA_SECRET_KEY = '4flYAGGWHI4eJ81OlBywLK3GTc1Lxu6I6gZgAOHu'
+ALPACA_PAPER_END_POINT = 'https://paper-api.alpaca.markets'

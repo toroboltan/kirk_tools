@@ -9,6 +9,8 @@ import tradingutils as tu
 import kirkconstants as kc
 import scrapetfscreen as scetf
 import dbhandler as dbh
+import datetime
+import dailycandidates as dcan
 
 # Functions
 def ScreenerArguments(eventPressed): 
@@ -222,7 +224,7 @@ layout = [[sg.Text('*** Posiciones Abiertas ***')],
           [sg.Button(buttonUpdatePrecios), sg.Button(buttonShowCharts)], 
           [sg.Text('*** Chequeo de Indices ***')],
           [sg.Button(buttonChkMarket)], 
-          [sg.Text('*** ETF Performance: ***')],
+          [sg.Text('*** ETF Performance ***')],
           [sg.Button(buttonScrapEtf), 
            sg.Button(buttonReadDb), 
            sg.Button(buttonReadPicFile), 
@@ -240,7 +242,7 @@ layout = [[sg.Text('*** Posiciones Abiertas ***')],
           [sg.Button('Long Breakout Setup ETF'), sg.InputText(key='etfLongBrkCht'),sg.Button('Long Breakout Setup STK'), sg.InputText(key='stkLongBrkCht')],
           [sg.Button('FATGANMSN'), sg.InputText(key='fatganmsn'), sg.Button('Major News'), sg.InputText(key='majorNewsCht')],
           [sg.Button(buttonProcess), sg.InputText(key='possibleCand')],          
-          [sg.Text('******************')],
+          [sg.Text('*** Generate Candidates ***')],
           [ sg.Button(buttonChkPlaysLong), sg.Button(buttonChkPlaysShort), sg.Button(buttonChkList)],
           [sg.Text('******************')],         
           [sg.Button('Exit')]]
@@ -397,6 +399,7 @@ while True:  # Event Loop
                 finalCand_lst = checkOpenPositions(list(totalSet))
                 candString = ','.join(finalCand_lst)
                 window['possibleCand'].update(candString)
+                dcan.AddRowCandToDb(sql_conn, kc.dbCandTable, datetime.date.today(), candString)
                 print(candString)
             sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
             print('*** CANDIDATES  ***')

@@ -15,8 +15,6 @@ dict_keys = {'KEY0' :'3SAVQIE3TDG93UDE',
              'KEY9' :'CO86E523NQ3GN7V5',
              'KEY10':'P1CL5XXO5JDJUS4N'}
 
-
-
 '''
 Are there usage/frequency limits for the API service?
 
@@ -40,7 +38,7 @@ class alphaKeys():
     callExec = 0
     
     def __init__(self):
-        print('creating object & loading keys')
+        print('*** alphaKeys - creating object & loading keys ***')
         
         self.initTs = datetime.datetime.now().timestamp()
         for i in range(TOTALKEYS):

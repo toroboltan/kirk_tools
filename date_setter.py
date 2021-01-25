@@ -17,7 +17,7 @@ script_list = ['etf_spy_dia_parser.py',
                'stk_technical_parser.py',
                 'etfscreen_parser.py']
 
-new_date = r"'20200612'"
+new_date = r"'20201026'"
 old_date_header = "filePrefix = '2020"
 fileName_s = str(new_date) + '_etfp.txt'
 filePath_s = r'D:\jeronimo\trading\etf'

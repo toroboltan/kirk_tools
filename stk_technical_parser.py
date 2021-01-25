@@ -27,7 +27,7 @@ from etfutils import stkDailyDataT
     Main program
 '''
 filePath_s = r'D:\jeronimo\trading\etf'
-filePrefix = '20200529'
+filePrefix = '20201026'
 fileName_s = filePrefix + '_etfp.txt'
 controlFlag = True
 formatSource = 'txt'

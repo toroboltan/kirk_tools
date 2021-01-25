@@ -1,6 +1,9 @@
 import pandas as pd
 from sqlalchemy import create_engine
 
+def AlterSQLTable(sql_conn, query):
+    sql_conn.execute(query)
+
 def ConnectSQLDb(db_prefix ,db_struct):
     ''' Connect to SQL database '''
     #Seteo el USER : PASS @ HOST / BBDD_NAME

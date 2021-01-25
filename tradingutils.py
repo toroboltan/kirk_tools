@@ -192,7 +192,8 @@ def ExecuteCode(tradeType):
     dfTradeEval.bucket = dfTradeEval.bucket.fillna(value='Weekly')
     dfTradeEval = pd.merge(left=dfTradeEval, right=dfBalanceT, how='left', left_on='bucket', right_on='bucket')
 
-    dfTradeEvalType = dfTradeEval[(dfTradeEval['tipo'].str.lower() == tradeType) & (dfTradeEval['flag'].str.lower() == tradeType)]
+    # dfTradeEvalType = dfTradeEval[(dfTradeEval['tipo'].str.lower() == tradeType) & (dfTradeEval['flag'].str.lower() == tradeType)]
+    dfTradeEvalType = dfTradeEval[dfTradeEval['flag'].str.lower() == tradeType]
     idx_to_drop = dfTradeEvalType[(dfTradeEvalType['long_above'].isnull().values == True) | (dfTradeEvalType['short_below'].isnull().values == True)].index
     
     # Evaluate Long Trades

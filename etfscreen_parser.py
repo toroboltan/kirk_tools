@@ -32,7 +32,7 @@ cons_flag_proto = 1
     Main program
 '''
 filePath_s = r'D:\jeronimo\trading\etf'
-filePrefix = '20200723'
+filePrefix = '20201026'
 fileName_s = filePrefix + '_etfp.txt'
 
 controlFlag = True
