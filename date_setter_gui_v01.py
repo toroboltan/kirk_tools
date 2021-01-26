@@ -167,6 +167,7 @@ buttonReadDb = 'read etfscreendb from db'
 buttonReadPicFile = 'read etfscreendb from serial'
 buttonWritePicDb = 'write serial to etfscreendb'
 buttonExec = 'execute'
+buttonConnectDb = 'Conectar DB'
 
 
 # Parameters to be used for Overview Table
@@ -220,7 +221,9 @@ constList = [const1D,
 # GUI
 sg.theme('BluePurple')
 
-layout = [[sg.Text('*** Posiciones Abiertas ***')],
+layout = [[sg.Text('*** Conexion DB ***')],
+          [sg.Button(buttonConnectDb)], 
+          [sg.Text('*** Posiciones Abiertas ***')],
           [sg.Button(buttonUpdatePrecios), sg.Button(buttonShowCharts)], 
           [sg.Text('*** Chequeo de Indices ***')],
           [sg.Button(buttonChkMarket)], 
@@ -250,7 +253,6 @@ layout = [[sg.Text('*** Posiciones Abiertas ***')],
 # Main Program V2
 
 # Open connection to db
-sql_conn = dbh.ConnectSQLDb(kc.db_prefix, kc.db_struc_etf)
 window = sg.Window('TorolGui', layout)
 
 while True:  # Event Loop
@@ -259,6 +261,9 @@ while True:  # Event Loop
     
     if event in (None, 'Exit'):
         break
+
+    if event == buttonConnectDb:
+        sql_conn = dbh.ConnectSQLDb(kc.db_prefix, kc.db_struc_etf)
 
     if event == buttonChkMarket:
         print('test check market')
