@@ -75,7 +75,7 @@ testFileOut = "testOut.csv"
 fileNamePickle = 'etf_screen_df.pickle'
 
 # SQL information
-db_prefix = 'mysql+pymysql://root:@localhost/'
+db_prefix = 'mysql+pymysql://root:@localhost:3360/'
 db_struc_etf = 'tradingdb'
 db_table_etf = 'etfscreen'
 db_table_cand = 'tkt_candidates'
