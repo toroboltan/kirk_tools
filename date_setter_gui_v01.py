@@ -48,7 +48,9 @@ def chartsArgumnets(eventPressed):
         'FATGANMSN': fatganmsmCht,
         'Long Breakout Setup ETF': etfLongBrkCht,
         'Long Breakout Setup STK': stkLongBrkCht,
-        'Major News':majorNewsCht
+        'Major News': majorNewsCht,
+        'Most Shorted Stocks': stkShortSquz,
+        'Break Down Setups' : stkShortBrkCht
     }
     # get() method of dictionary data type returns  
     # value of passed argument if it is present  
@@ -134,8 +136,10 @@ buttonChtList = ['US Markets',
                  'FATGANMSN',
                  'Long Breakout Setup ETF',
                  'Long Breakout Setup STK',
-                 'Major News']
-
+                 'Major News',
+                 'Most Shorted Stocks',
+                 'Break Down Setups']
+                 
 sectorsTktList = ['XLF','EEM','XLE','XLK',
                   'XLV','IYT','XLU','XLI',
                   'XLY','IYR','XLP','XLB',
@@ -153,7 +157,9 @@ textBoxList = ['etfUsMarkets',
                'etfLongBrkCht', 
                'stkLongBrkCht', 
                'fatganmsn',
-               'majorNewsCht']
+               'majorNewsCht',
+               'stkShortSquz',
+               'stkShortBrkCht']
 
 buttonProcess = 'Process TKTs'
 buttonUpdatePrecios = 'Update Precios'
@@ -178,14 +184,19 @@ change = "-change"
 etfPerLnk = "https://www.etfscreen.com/performance.php?wl=0&s=Rtn-1d%7Cdesc&t=6&d=e&ftS=yes&ftL=no&vFf=dolVol21&vFl=gt&vFv=500000&udc=default&d=i"
 etfUsMarkets = "https://www.finviz.com/screener.ashx?v=351&ft=4&t=SPY,IWC,IWM,DIA,OEF,MDY,QQQ&o=-change"
 etfSecCht = "https://www.finviz.com/screener.ashx?v=351&ft=4&t=XLF,EEM,XLE,XLK,XLV,IYT,XLU,XLI,XLY,IYR,XLP,XLB,TLT,GLD,UUP,RTH,IYZ,SMH,DBC,USO&o=-change"
-stkBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgvol_o100,sh_curvol_o500,sh_price_o5,ta_change_u2,ta_changeopen_u3,ta_highlow52w_nh,ta_perf_dup&ft=4&o=-change"
-etfBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_exchangetradedfund,sh_avgvol_o100,sh_curvol_o500,sh_price_o5,ta_changeopen_u3,ta_highlow52w_nh,ta_perf_dup&ft=4&o=-change"
 etfNewHighCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_exchangetradedfund,sh_avgvol_o100,ta_change_u2,ta_highlow52w_nh&ft=4&o=-change"
 stkNewHighCht ="https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgvol_o100,ta_change_u2,ta_highlow52w_nh&ft=4&o=-change"
-etfLongBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_exchangetradedfund,sh_avgvol_o400,sh_price_o5,ta_averagetruerange_o1.5,ta_change_u2,ta_highlow20d_b0to3h,ta_highlow50d_b0to3h,ta_sma20_pa,ta_sma200_pa,ta_sma50_pa&ft=4&o=-change"
-stkLongBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgvol_o400,sh_price_o5,ta_averagetruerange_o1.5,ta_change_u2,ta_highlow20d_b0to3h,ta_highlow50d_b0to3h,ta_sma20_pa,ta_sma200_pa,ta_sma50_pa&ft=4&o=-change"
 fatganmsmCht = "https://www.finviz.com/screener.ashx?v=351&t=FB,AAPL,GOOGL,AMZN,NFLX,MSFT,SBUX,NKE,TSLA&o=-change"
 majorNewsCht = "https://www.finviz.com/screener.ashx?v=320&s=n_majornews"
+
+# Scans
+etfLongBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_exchangetradedfund,sh_avgvol_o400,sh_price_o5,ta_averagetruerange_o1.5,ta_change_u2,ta_highlow20d_b0to3h,ta_highlow50d_b0to3h,ta_sma20_pa,ta_sma200_pa,ta_sma50_pa&ft=4&o=-change"
+stkLongBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgvol_o400,sh_price_o5,ta_averagetruerange_o1.5,ta_change_u2,ta_highlow20d_b0to3h,ta_highlow50d_b0to3h,ta_sma20_pa,ta_sma200_pa,ta_sma50_pa&ft=4&o=-change"
+stkBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgvol_o100,sh_curvol_o500,sh_price_o5,ta_change_u2,ta_changeopen_u3,ta_highlow52w_nh,ta_perf_dup&ft=4&o=-change"
+etfBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_exchangetradedfund,sh_avgvol_o100,sh_curvol_o500,sh_price_o5,ta_changeopen_u3,ta_highlow52w_nh,ta_perf_dup&ft=4&o=-change"
+stkShortSquz = "https://finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgvol_o50,sh_price_o10,sh_relvol_o1,sh_short_o15,ta_change_u2,ta_changeopen_u2,ta_highlow20d_nh,ta_sma50_sb20&ft=4&ta=0&o=perf4w"
+stkShortBrkCht = "https://finviz.com/screener.ashx?v=111&f=cap_mid,sh_avgvol_o1000,sh_price_o7,ta_highlow20d_a0to3h,ta_sma20_pb,ta_sma200_pb,ta_sma50_pb&ft=4&o=-change"
+
 etfPerf1DUp = ""
 etfPerf1DDw = ""
 etfPerf1WUp = ""
@@ -240,11 +251,14 @@ layout = [[sg.Text('*** Conexion DB ***')],
           [sg.Text('*** Select TKTs Per Chart ***')],
           [sg.Button('US Markets'), sg.InputText(key='etfUsMarkets'),sg.Button('Sector ETF'), sg.InputText(key='etfSecCht')],
           [sg.Button('ETF Perf Daily'), sg.InputText(key='etfPerfDaily'),sg.Button('ETF Perf Weekly'), sg.InputText(key='etfPerfWeekly')],
-          [sg.Button('Simple Breakout Scan ETF'), sg.InputText(key='etfBrkCht'),sg.Button('Simple Breakout Scan STK'), sg.InputText(key='stkBrkCht')],
           [sg.Button('New High ETF'), sg.InputText(key='etfNewHighCht'),sg.Button('New High STK'), sg.InputText(key='stkNewHighCht')],
-          [sg.Button('Long Breakout Setup ETF'), sg.InputText(key='etfLongBrkCht'),sg.Button('Long Breakout Setup STK'), sg.InputText(key='stkLongBrkCht')],
           [sg.Button('FATGANMSN'), sg.InputText(key='fatganmsn'), sg.Button('Major News'), sg.InputText(key='majorNewsCht')],
-          [sg.Button(buttonProcess), sg.InputText(key='possibleCand')],          
+          [sg.Text('*** Scans ***')],
+          [sg.Button('Simple Breakout Scan ETF'), sg.InputText(key='etfBrkCht'),sg.Button('Simple Breakout Scan STK'), sg.InputText(key='stkBrkCht')],
+          [sg.Button('Long Breakout Setup ETF'), sg.InputText(key='etfLongBrkCht'),sg.Button('Long Breakout Setup STK'), sg.InputText(key='stkLongBrkCht')],
+          [sg.Button('Most Shorted Stocks'), sg.InputText(key='stkShortSquz'),sg.Button('Break Down Setups'), sg.InputText(key='stkShortBrkCht')],          
+          [sg.Text('*** Assign Bucket ***')],
+          [sg.Button(buttonProcess), sg.InputText(key='possibleCand')],
           [sg.Text('*** Generate Candidates ***')],
           [ sg.Button(buttonChkPlaysLong), sg.Button(buttonChkPlaysShort), sg.Button(buttonChkList)],
           [sg.Text('******************')],         
