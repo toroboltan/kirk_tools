@@ -289,7 +289,6 @@ window = sg.Window('TorolGui', layout)
 
 while True:  # Event Loop
     event, values = window.read()
-    print(event, values)
     
     if event in (None, 'Exit'):
         break
