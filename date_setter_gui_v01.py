@@ -404,6 +404,7 @@ while True:  # Event Loop
     else:
         if (event == buttonProcess):
             for textTkts in textBoxList:
+                print(textTkts + ': '  + values[textTkts])
                 if (len(values[textTkts]) > 0):
                     listCand = candList(values[textTkts])
                     if (len(listCand) > 0):
