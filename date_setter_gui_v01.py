@@ -197,6 +197,18 @@ etfBrkCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_exchangetradedfund
 stkShortSquz = "https://finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgvol_o50,sh_price_o10,sh_relvol_o1,sh_short_o15,ta_change_u2,ta_changeopen_u2,ta_highlow20d_nh,ta_sma50_sb20&ft=4&ta=0&o=perf4w"
 stkShortBrkCht = "https://finviz.com/screener.ashx?v=111&f=cap_mid,sh_avgvol_o1000,sh_price_o7,ta_highlow20d_a0to3h,ta_sma20_pb,ta_sma200_pb,ta_sma50_pb&ft=4&o=-change"
 
+# Kirk Daily Check
+kirkWlIndexes = "https://finviz.com/screener.ashx?v=111&t=QQQ,IWC,OEF,IWM,SPY,MDY,DIA&o=-change"
+kirkWlSectors = "https://finviz.com/screener.ashx?v=111&o=-change&t=XLC,%20XLK,%20XLY,%20XLRE,%20XLV,%20XLU,%20XLI,%20XLP,%20XLB,%20XLE,%20XLF"
+kirkWlIndustries = "https://finviz.com/screener.ashx?v=111&o=-change&t=TAN,%20PBW,%20SOCL,%20XHB,%20ESPO,%20FDN,%20XRT,%20SKYY,%20AIEQ,%20HACK,%20WFH,%20ROBO,%20PBS,%20IGV,%20ARKK,%20BETZ,%20SMH,%20GDX,%20PEJ,%20IBB,%20CUT,%20IYR,%20PJP,%20IHI,%20PBJ,%20IHF,%20JETS,%20ITA,%20IYT,%20KRE,%20IGE,%20IGF,%20KIE,%20KBE,%20IYM,%20XOP,%20IAI,%20MJ,%20XME,%20OIH"
+kirkWlFactors = "https://finviz.com/screener.ashx?v=111&o=-change&t=USMV,GVIP,SPHB,MTUM,IWD,VYM,IWF,IPO,PSP,SPCX,GURU,CSD,PKW,QUAL"
+kirkWlFixIncome = "https://finviz.com/screener.ashx?v=111&o=-change&t=TIP,%20EMB,%20HYG,%20IEF,%20IEI,%20ZROZ,%20TLT,%20SHY,%20AGG,%20MUB,%20TLH,%20IGOV,%20LQD"
+kirkWlCurrencies = "https://finviz.com/screener.ashx?v=111&o=-change&t=FXE,%20FXB,%20FXF,%20FXA,%20CYB,%20FXC,%20FXY,%20CEW,%20UUP"
+kirkWlCommodities = "https://finviz.com/screener.ashx?v=111&o=-change&t=LIT,%20SLV,%20WOOD,%20PPLT,%20GLD,%20UGA,%20BAL,%20MOO,%20VEGI,%20JJC,%20USO,%20NIB,%20PALL,%20DBC,%20URA,%20JO,%20SGG,%20WEAT,%20CORN,%20SOYB,%20UNG"
+kirkWlGlobalMarkets = "https://finviz.com/screener.ashx?v=111&o=-change&t=FXI,%20EWN,%20EWO,%20EZA,%20EWD,%20IOO,%20EEM,%20EWT,%20TUR,%20EWG,%20SPY,%20EWY,%20EWA,%20VEU,%20EWH,%20EWL,%20GAL,%20EWK,%20FEZ,%20EFA,%20EPU,%20VEA,%20INDA,%20EWJ,%20EWU,%20EWQ,%20EWI,%20EWS,%20EPOL,%20EIDO,%20EUFN,%20VNM,%20ECH,%20EWC,%20FM,%20EIRL,%20THD,%20EWM,%20GREK,%20EWP,%20EPHE,%20EWW,%20ILF,%20RSX,%20EWZ,%20GXG"
+kirkWlLeveraged = "https://finviz.com/screener.ashx?v=111&t=BRZU,CURE,DFEN,DPST,DRIP,DRN,DRV,DUSL,DUST,DZK,EDC,EDZ,ERX,ERY,EURL,FAS,FAZ,FNGD,FNGU,GUSH,INDL,JDST,JNUG,JPNL,KORU,LABD,LABU,LBJ,MEXX,MIDU,NAIL,NUGT,PILL,RETL,RUSL,SDOW,SMDD,SOXL,SOXS,SPXL,SPXS,SPXU,SQQQ,SRTY,TECL,TECS,TMF,TMV,TNA,TPOR,TQQQ,TTT,TYD,TYO,TZA,UBOT,UDOW,UMDD,UPRO,URTY,UTSL,YANG,YINN,&o=-change"
+
+
 etfPerf1DUp = ""
 etfPerf1DDw = ""
 etfPerf1WUp = ""
