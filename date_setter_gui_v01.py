@@ -50,7 +50,16 @@ def chartsArgumnets(eventPressed):
         'Long Breakout Setup STK': stkLongBrkCht,
         'Major News': majorNewsCht,
         'Most Shorted Stocks': stkShortSquz,
-        'Break Down Setups' : stkShortBrkCht
+        'Break Down Setups' : stkShortBrkCht,
+        'indexes': kirkWlIndexes,
+        'sectors': kirkWlSectors,
+        'industries': kirkWlIndustries,
+        'factors': kirkWlFactors,
+        'fixed income': kirkWlFixIncome,
+        'currencies': kirkWlCurrencies,
+        'commodities': kirkWlCommodities,
+        'global markets': kirkWlGlobalMarkets,
+        'leveraged': kirkWlLeveraged
     }
     # get() method of dictionary data type returns  
     # value of passed argument if it is present  
@@ -138,7 +147,16 @@ buttonChtList = ['US Markets',
                  'Long Breakout Setup STK',
                  'Major News',
                  'Most Shorted Stocks',
-                 'Break Down Setups']
+                 'Break Down Setups',
+                 'indexes',
+                 'sectors',
+                 'industries',
+                 'factors',
+                 'fixed income',
+                 'currencies',
+                 'commodities',
+                 'global markets',
+                 'leveraged']
                  
 sectorsTktList = ['XLF','EEM','XLE','XLK',
                   'XLV','IYT','XLU','XLI',
@@ -159,7 +177,16 @@ textBoxList = ['etfUsMarkets',
                'fatganmsn',
                'majorNewsCht',
                'stkShortSquz',
-               'stkShortBrkCht']
+               'stkShortBrkCht',
+               'kirkWlIndexes',
+               'kirkWlSectors',
+               'kirkWlIndustries',
+               'kirkWlFactors',
+               'kirkWlFixIncome',
+               'kirkWlCurrencies',
+               'kirkWlCommodities',
+               'kirkWlGlobalMarkets',
+               'kirkWlLeveraged']
 
 buttonProcess = 'Process TKTs'
 buttonUpdatePrecios = 'Update Precios'
