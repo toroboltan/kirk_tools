@@ -313,163 +313,165 @@ layout = [[sg.Text('*** Conexion DB ***')],
 
 # Open connection to db
 window = sg.Window('TorolGui', layout)
-
-while True:  # Event Loop
-    event, values = window.read()
-    
-    if event in (None, 'Exit'):
-        break
-
-    if event == buttonConnectDb:
-        sql_conn = dbh.ConnectSQLDb(kc.db_prefix, kc.db_struc_etf)
-
-    if event == buttonChkMarket:
-        print('test check market')
-
-    if event == buttonChkList:
-        result = 1
-        result = tu.CheckEtfsLists(tradeType='Long',tradeFlag='LONG')
-        if result == 0:
-            print('finished')
-    
-    if event == buttonChkPlaysLong:
-        result = 1
-        result = tu.GenerateCandidates(tradeType='long')
-        if result == 0:
-            print('finished')
-    
-    if event == buttonChkPlaysShort:
-        result = 1
-        result = tu.GenerateCandidates(tradeType='short')
-        if result == 0:
-            print('finished')
-
-    if event == buttonUpdatePrecios:
-        list_tktOpen = up.UpdatePrices()
-        print(list_tktOpen)
-   
-    if event == buttonShowCharts:
-        if len(list_tktOpen) > 0:
-            print(showChartsLnk + str(list_tktOpen))
-            delim = ','
-            openweb("chrome", [showChartsLnk + delim.join(list_tktOpen)])
+try:
+    while True:  # Event Loop
+        event, values = window.read()
         
-    if event in buttonChtList:
-        openweb("chrome", [chartsArgumnets(event)])
-
-    if event == buttonScrapEtf:
-        etf_df = scetf.ProcessEtfscreen(sql_conn)
-        if (len(etf_df.index) > 0):
-            sg.popup('Message!', 'scrap etfscreen finished!, Click on Execute')
+        if event == 'Exit':
+            break
+    
+        if event == buttonConnectDb:
+            sql_conn = dbh.ConnectSQLDb(kc.db_prefix, kc.db_struc_etf)
+    
+        if event == buttonChkMarket:
+            print('test check market')
+    
+        if event == buttonChkList:
+            result = 1
+            result = tu.CheckEtfsLists(tradeType='Long',tradeFlag='LONG')
+            if result == 0:
+                print('finished')
+        
+        if event == buttonChkPlaysLong:
+            result = 1
+            result = tu.GenerateCandidates(tradeType='long')
+            if result == 0:
+                print('finished')
+        
+        if event == buttonChkPlaysShort:
+            result = 1
+            result = tu.GenerateCandidates(tradeType='short')
+            if result == 0:
+                print('finished')
+    
+        if event == buttonUpdatePrecios:
+            list_tktOpen = up.UpdatePrices()
+            print(list_tktOpen)
+       
+        if event == buttonShowCharts:
+            if len(list_tktOpen) > 0:
+                print(showChartsLnk + str(list_tktOpen))
+                delim = ','
+                openweb("chrome", [showChartsLnk + delim.join(list_tktOpen)])
+            
+        if event in buttonChtList:
+            openweb("chrome", [chartsArgumnets(event)])
+    
+        if event == buttonScrapEtf:
+            etf_df = scetf.ProcessEtfscreen(sql_conn)
+            if (len(etf_df.index) > 0):
+                sg.popup('Message!', 'scrap etfscreen finished!, Click on Execute')
+            else:
+                sg.popup('Message!', 'etfscreen parsing failed!, Try again in 5 minutes') 
+            print('*** ' + event + ' ***')
+            print(etf_df)
+    
+        if event == buttonReadDb:
+            etf_df = dbh.ReadSQLTable(sql_conn, kc.db_table_etf)
+            print('*** ' + event + ' ***')
+            print(etf_df)
+    
+        if event == buttonReadPicFile:
+            etf_df = scetf.ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
+            print('*** ' + event + ' ***')
+            print(etf_df)
+    
+        if event == buttonWritePicDb:
+            etf_df = scetf.ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
+            dbh.WriteSQLTable(etf_df, sql_conn, kc.db_table_etf)
+            print('*** ' + event + ' ***')
+            print(etf_df)
+    
+        if event == buttonExec:
+            etf_df = dbh.ReadSQLTable(sql_conn, kc.db_table_etf)
+            sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
+            print('*** ETF ***')
+            etfPerf1DUp, etfPerf1DDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1D)
+            etfPerf1WUp, etfPerf1WDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1W)
+            etfPerf1MUp, etfPerf1MDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1M)
+            etfPerf1QUp, etfPerf1QDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1Q)
+            etfPerf1HUp, etfPerf1HDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1H)
+            etfPerf1YUp, etfPerf1YDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1Y)
+            sys.stdout = sys.__stdout__
+                
+        if event == 'Execute_to_fix':
+            fileinfo = values['-IN-']
+            print(type(fileinfo))
+            fileinfoList = fileinfo.split("/")
+            if len(fileinfoList) > 0:
+                newDate = fileinfoList[len(fileinfoList) - 1].split("_")[0]
+                print('this is new date')
+                print(newDate)
+    
+                os.chdir(script_path)
+            
+                for script_file in script_list:
+                    print('BEGIN Filename is ' + script_file)
+                    f = open(script_file,"r")
+                    lines = f.readlines()
+                    f.close()
+                    for i, line in enumerate(lines):
+                        if(line.startswith(lineStartToChange1) or line.startswith(lineStartToChange2)):
+                            line_list = line.split("=")
+                            if line.startswith(lineStartToChange1):
+                                print("line 1 before" + line_list[1])
+                                newString = newDate
+                                olString = line_list[1][4:12]
+                                line_list[1] = line_list[1].replace(olString, newString)
+                                print("line 1 after" + line_list[1])
+                            if line.startswith(lineStartToChange2):
+                                newString = newDate[0:4]
+                                olString = line_list[2][2:6]
+                                line_list[2] = line_list[2].replace(olString, newString)
+                            lines[i] =  "=".join(line_list)
+                    f = open(script_file, "w")
+                    f.write("".join(lines))
+                    f.close()
+                    print('END Filename is ' + script_file)
+                
+                # Execute the file
+                for script_file in script_list:
+                    os.system('python ' + script_file)
+    
+        # Performance printing on Windows
+        if (event in buttonSecList):
+            paramList = ScreenerArguments(event)
+            print(paramList)
+            if len(paramList) > 1:
+                screenResult = TktScreeenTable(sectorsTktList, paramList[0], paramList[1])
+                sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
+                print('*** ' + event.upper()  + ' ***')
+                print(' ')
+                print(screenResult)
+                # set output back to console
+                sys.stdout = sys.__stdout__
         else:
-            sg.popup('Message!', 'etfscreen parsing failed!, Try again in 5 minutes') 
-        print('*** ' + event + ' ***')
-        print(etf_df)
-
-    if event == buttonReadDb:
-        etf_df = dbh.ReadSQLTable(sql_conn, kc.db_table_etf)
-        print('*** ' + event + ' ***')
-        print(etf_df)
-
-    if event == buttonReadPicFile:
-        etf_df = scetf.ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
-        print('*** ' + event + ' ***')
-        print(etf_df)
-
-    if event == buttonWritePicDb:
-        etf_df = scetf.ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
-        dbh.WriteSQLTable(etf_df, sql_conn, kc.db_table_etf)
-        print('*** ' + event + ' ***')
-        print(etf_df)
-
-    if event == buttonExec:
-        etf_df = dbh.ReadSQLTable(sql_conn, kc.db_table_etf)
-        sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
-        print('*** ETF ***')
-        etfPerf1DUp, etfPerf1DDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1D)
-        etfPerf1WUp, etfPerf1WDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1W)
-        etfPerf1MUp, etfPerf1MDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1M)
-        etfPerf1QUp, etfPerf1QDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1Q)
-        etfPerf1HUp, etfPerf1HDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1H)
-        etfPerf1YUp, etfPerf1YDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1Y)
-        sys.stdout = sys.__stdout__
-            
-    if event == 'Execute_to_fix':
-        fileinfo = values['-IN-']
-        print(type(fileinfo))
-        fileinfoList = fileinfo.split("/")
-        if len(fileinfoList) > 0:
-            newDate = fileinfoList[len(fileinfoList) - 1].split("_")[0]
-            print('this is new date')
-            print(newDate)
-
-            os.chdir(script_path)
-        
-            for script_file in script_list:
-                print('BEGIN Filename is ' + script_file)
-                f = open(script_file,"r")
-                lines = f.readlines()
-                f.close()
-                for i, line in enumerate(lines):
-                    if(line.startswith(lineStartToChange1) or line.startswith(lineStartToChange2)):
-                        line_list = line.split("=")
-                        if line.startswith(lineStartToChange1):
-                            print("line 1 before" + line_list[1])
-                            newString = newDate
-                            olString = line_list[1][4:12]
-                            line_list[1] = line_list[1].replace(olString, newString)
-                            print("line 1 after" + line_list[1])
-                        if line.startswith(lineStartToChange2):
-                            newString = newDate[0:4]
-                            olString = line_list[2][2:6]
-                            line_list[2] = line_list[2].replace(olString, newString)
-                        lines[i] =  "=".join(line_list)
-                f = open(script_file, "w")
-                f.write("".join(lines))
-                f.close()
-                print('END Filename is ' + script_file)
-            
-            # Execute the file
-            for script_file in script_list:
-                os.system('python ' + script_file)
-
-    # Performance printing on Windows
-    if (event in buttonSecList):
-        paramList = ScreenerArguments(event)
-        print(paramList)
-        if len(paramList) > 1:
-            screenResult = TktScreeenTable(sectorsTktList, paramList[0], paramList[1])
-            sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
-            print('*** ' + event.upper()  + ' ***')
-            print(' ')
-            print(screenResult)
-            # set output back to console
-            sys.stdout = sys.__stdout__
-    else:
-        if (event == buttonProcess):
-            for textTkts in textBoxList:
-                print(textTkts + ': '  + values[textTkts])
-                if (len(values[textTkts]) > 0):
-                    listCand = candList(values[textTkts])
-                    if (len(listCand) > 0):
-                        if (textTkts.startswith(etfPref)):
-                            etfSet.update(listCand)
-                        else:
-                            stkSet.update(listCand)
-            print("etfSet" + ' ' + str(etfSet))
-            print("stkSet" + ' ' + str(stkSet))
-            if((len(etfSet) > 0) | (len(stkSet) > 0)):
-                totalSet = etfSet.union(stkSet)
-                finalCand_lst = checkOpenPositions(list(totalSet))
-                candString = ','.join(finalCand_lst)
-                window['possibleCand'].update(candString)
-                dcan.AddRowCandToDb(sql_conn, kc.dbCandTable, datetime.date.today(), candString)
-                print(candString)
-            sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
-            print('*** CANDIDATES  ***')
-            printBuckets(etfSet, stkSet, listPath, fileList, sheetList)
-            # set output back to console
-            sys.stdout = sys.__stdout__
-            initializeSets()
-            
+            if (event == buttonProcess):
+                for textTkts in textBoxList:
+                    print(textTkts + ': '  + values[textTkts])
+                    if (len(values[textTkts]) > 0):
+                        listCand = candList(values[textTkts])
+                        if (len(listCand) > 0):
+                            if (textTkts.startswith(etfPref)):
+                                etfSet.update(listCand)
+                            else:
+                                stkSet.update(listCand)
+                print("etfSet" + ' ' + str(etfSet))
+                print("stkSet" + ' ' + str(stkSet))
+                if((len(etfSet) > 0) | (len(stkSet) > 0)):
+                    totalSet = etfSet.union(stkSet)
+                    finalCand_lst = checkOpenPositions(list(totalSet))
+                    candString = ','.join(finalCand_lst)
+                    window['possibleCand'].update(candString)
+                    dcan.AddRowCandToDb(sql_conn, kc.dbCandTable, datetime.date.today(), candString)
+                    print(candString)
+                sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
+                print('*** CANDIDATES  ***')
+                printBuckets(etfSet, stkSet, listPath, fileList, sheetList)
+                # set output back to console
+                sys.stdout = sys.__stdout__
+                initializeSets()
+except:
+    print('exception generated')
+print('last event ' + event)
 window.close()
