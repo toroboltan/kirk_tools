@@ -317,6 +317,9 @@ try:
     while True:  # Event Loop
         event, values = window.read()
         
+        if event == WIN_CLOSED:
+            break
+        
         if event == 'Exit':
             break
     
