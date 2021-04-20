@@ -286,22 +286,20 @@ layout = [[sg.Text('*** Conexion DB ***')],
           [sg.Text('*** Sectors Performance ***')], 
           [sg.Button('Sectors Daily'), sg.Button('Sectors 1W'), sg.Button('Sectors 4W'),  
            sg.Button('Sectors 13W'), sg.Button('Sectors 26W'), sg.Button('Sectors 52W'),  
-           sg.Button('Sectors YTD')],
-          [sg.Text('*** Select TKTs Per Chart ***')],
-          [sg.Button('US Markets'), sg.InputText(key='etfUsMarkets'),sg.Button('Sector ETF'), sg.InputText(key='etfSecCht')],
-          [sg.Button('ETF Perf Daily'), sg.InputText(key='etfPerfDaily'),sg.Button('ETF Perf Weekly'), sg.InputText(key='etfPerfWeekly')],
-          [sg.Button('New High ETF'), sg.InputText(key='etfNewHighCht'),sg.Button('New High STK'), sg.InputText(key='stkNewHighCht')],
-          [sg.Button('FATGANMSN'), sg.InputText(key='fatganmsn'), sg.Button('Major News'), sg.InputText(key='majorNewsCht')],
+           sg.Button('Sectors YTD')],\
           [sg.Text('*** Kirk Watchlist ***')],
           [sg.Button('indexes'), sg.InputText(key='kirkWlIndexes'),sg.Button('sectors'), sg.InputText(key='kirkWlSectors')],
           [sg.Button('industries'), sg.InputText(key='kirkWlIndustries'),sg.Button('factors'), sg.InputText(key='kirkWlFactors')],
           [sg.Button('fixed income'), sg.InputText(key='kirkWlFixIncome'),sg.Button('currencies'), sg.InputText(key='kirkWlCurrencies')],
           [sg.Button('commodities'), sg.InputText(key='kirkWlCommodities'),sg.Button('global markets'), sg.InputText(key='kirkWlGlobalMarkets')],
-          [sg.Button('leveraged'), sg.InputText(key='kirkWlLeveraged')],          
+          [sg.Button('leveraged'), sg.InputText(key='kirkWlLeveraged')],
+          [sg.Button('ETF Perf Daily'), sg.InputText(key='etfPerfDaily'),sg.Button('ETF Perf Weekly'), sg.InputText(key='etfPerfWeekly')],
           [sg.Text('*** Scans ***')],
           [sg.Button('Simple Breakout Scan ETF'), sg.InputText(key='etfBrkCht'),sg.Button('Simple Breakout Scan STK'), sg.InputText(key='stkBrkCht')],
           [sg.Button('Long Breakout Setup ETF'), sg.InputText(key='etfLongBrkCht'),sg.Button('Long Breakout Setup STK'), sg.InputText(key='stkLongBrkCht')],
-          [sg.Button('Most Shorted Stocks'), sg.InputText(key='stkShortSquz'),sg.Button('Break Down Setups'), sg.InputText(key='stkShortBrkCht')],        
+          [sg.Button('Most Shorted Stocks'), sg.InputText(key='stkShortSquz'),sg.Button('Break Down Setups'), sg.InputText(key='stkShortBrkCht')],
+          [sg.Button('New High ETF'), sg.InputText(key='etfNewHighCht'),sg.Button('New High STK'), sg.InputText(key='stkNewHighCht')],
+          [sg.Button('FATGANMSN'), sg.InputText(key='fatganmsn'), sg.Button('Major News'), sg.InputText(key='majorNewsCht')],   
           [sg.Text('*** Assign Bucket ***')],
           [sg.Button(buttonProcess), sg.InputText(key='possibleCand')],
           [sg.Text('*** Generate Candidates ***')],
@@ -316,10 +314,7 @@ window = sg.Window('TorolGui', layout)
 try:
     while True:  # Event Loop
         event, values = window.read()
-        
-        if event == WIN_CLOSED:
-            break
-        
+
         if event == 'Exit':
             break
     
