@@ -164,21 +164,7 @@ sectorsTktList = ['XLF','EEM','XLE','XLK',
                   'TLT','GLD','UUP','RTH',
                   'IYZ','SMH','DBC','USO']
 
-textBoxList = ['etfUsMarkets',
-               'etfSecCht',
-               'etfPerfDaily',
-               'etfPerfWeekly',
-               'etfBrkCht',
-               'stkBrkCht',
-               'etfNewHighCht', 
-               'stkNewHighCht', 
-               'etfLongBrkCht', 
-               'stkLongBrkCht', 
-               'fatganmsn',
-               'majorNewsCht',
-               'stkShortSquz',
-               'stkShortBrkCht',
-               'kirkWlIndexes',
+textBoxList = ['kirkWlIndexes',
                'kirkWlSectors',
                'kirkWlIndustries',
                'kirkWlFactors',
@@ -186,7 +172,19 @@ textBoxList = ['etfUsMarkets',
                'kirkWlCurrencies',
                'kirkWlCommodities',
                'kirkWlGlobalMarkets',
-               'kirkWlLeveraged']
+               'kirkWlLeveraged',
+               'etfPerfDaily',
+               'etfPerfWeekly',
+               'etfBrkCht',
+               'stkBrkCht',
+               'etfLongBrkCht', 
+               'stkLongBrkCht', 
+               'stkShortSquz',
+               'stkShortBrkCht',
+               'etfNewHighCht', 
+               'stkNewHighCht', 
+               'fatganmsn',
+               'majorNewsCht']
 
 buttonProcess = 'Process TKTs'
 buttonUpdatePrecios = 'Update Precios'
@@ -446,7 +444,6 @@ try:
         else:
             if (event == buttonProcess):
                 for textTkts in textBoxList:
-                    print(textTkts + ': '  + values[textTkts])
                     if (len(values[textTkts]) > 0):
                         listCand = candList(values[textTkts])
                         if (len(listCand) > 0):
@@ -454,8 +451,6 @@ try:
                                 etfSet.update(listCand)
                             else:
                                 stkSet.update(listCand)
-                print("etfSet" + ' ' + str(etfSet))
-                print("stkSet" + ' ' + str(stkSet))
                 if((len(etfSet) > 0) | (len(stkSet) > 0)):
                     totalSet = etfSet.union(stkSet)
                     finalCand_lst = checkOpenPositions(list(totalSet))
@@ -463,7 +458,15 @@ try:
                     window['possibleCand'].update(candString)
                     dcan.AddRowCandToDb(sql_conn, kc.dbCandTable, datetime.date.today(), candString)
                     print(candString)
+                # send output to window
                 sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
+                print('*** SCREENS ***')
+                for textTkts in textBoxList:
+                    print(textTkts + ': '  + values[textTkts])
+                print("etfSet" + ' ' + str(etfSet))
+                print("stkSet" + ' ' + str(stkSet))
+                print('******')
+                print(' ')
                 print('*** CANDIDATES  ***')
                 printBuckets(etfSet, stkSet, listPath, fileList, sheetList)
                 # set output back to console
