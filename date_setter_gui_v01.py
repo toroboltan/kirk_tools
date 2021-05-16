@@ -59,6 +59,7 @@ def chartsArgumnets(eventPressed):
         'currencies': kirkWlCurrencies,
         'commodities': kirkWlCommodities,
         'global markets': kirkWlGlobalMarkets,
+        'AwesomePort': kirkWlEvryAwsome,
         'leveraged': kirkWlLeveraged
     }
     # get() method of dictionary data type returns  
@@ -156,7 +157,8 @@ buttonChtList = ['US Markets',
                  'currencies',
                  'commodities',
                  'global markets',
-                 'leveraged']
+                 'leveraged',
+                 'AwesomePort']
                  
 sectorsTktList = ['XLF','EEM','XLE','XLK',
                   'XLV','IYT','XLU','XLI',
@@ -173,6 +175,7 @@ textBoxList = ['kirkWlIndexes',
                'kirkWlCommodities',
                'kirkWlGlobalMarkets',
                'kirkWlLeveraged',
+               'kirkWlEvryAwsome',
                'etfPerfDaily',
                'etfPerfWeekly',
                'etfBrkCht',
@@ -211,7 +214,7 @@ etfUsMarkets = "https://www.finviz.com/screener.ashx?v=351&ft=4&t=SPY,IWC,IWM,DI
 etfSecCht = "https://www.finviz.com/screener.ashx?v=351&ft=4&t=XLF,EEM,XLE,XLK,XLV,IYT,XLU,XLI,XLY,IYR,XLP,XLB,TLT,GLD,UUP,RTH,IYZ,SMH,DBC,USO&o=-change"
 etfNewHighCht = "https://www.finviz.com/screener.ashx?v=351&f=ind_exchangetradedfund,sh_avgvol_o100,ta_change_u2,ta_highlow52w_nh&ft=4&o=-change"
 stkNewHighCht ="https://www.finviz.com/screener.ashx?v=351&f=ind_stocksonly,sh_avgvol_o100,ta_change_u2,ta_highlow52w_nh&ft=4&o=-change"
-fatganmsmCht = "https://www.finviz.com/screener.ashx?v=351&t=FB,AAPL,GOOGL,AMZN,NFLX,MSFT,SBUX,NKE,TSLA,BIDU,TWTR,NVDA,BABA&o=-change"
+fatganmsmCht = "https://www.finviz.com/screener.ashx?v=351&t=FB,AAPL,GOOGL,AMZN,NFLX,MSFT,SBUX,NKE,TSLA&o=-change"
 majorNewsCht = "https://www.finviz.com/screener.ashx?v=320&s=n_majornews"
 
 # Scans
@@ -232,7 +235,7 @@ kirkWlCurrencies = "https://finviz.com/screener.ashx?v=111&o=-change&t=FXE,%20FX
 kirkWlCommodities = "https://finviz.com/screener.ashx?v=111&o=-change&t=LIT,%20SLV,%20WOOD,%20PPLT,%20GLD,%20UGA,%20BAL,%20MOO,%20VEGI,%20JJC,%20USO,%20NIB,%20PALL,%20DBC,%20URA,%20JO,%20SGG,%20WEAT,%20CORN,%20SOYB,%20UNG"
 kirkWlGlobalMarkets = "https://finviz.com/screener.ashx?v=111&o=-change&t=FXI,%20EWN,%20EWO,%20EZA,%20EWD,%20IOO,%20EEM,%20EWT,%20TUR,%20EWG,%20SPY,%20EWY,%20EWA,%20VEU,%20EWH,%20EWL,%20GAL,%20EWK,%20FEZ,%20EFA,%20EPU,%20VEA,%20INDA,%20EWJ,%20EWU,%20EWQ,%20EWI,%20EWS,%20EPOL,%20EIDO,%20EUFN,%20VNM,%20ECH,%20EWC,%20FM,%20EIRL,%20THD,%20EWM,%20GREK,%20EWP,%20EPHE,%20EWW,%20ILF,%20RSX,%20EWZ,%20GXG"
 kirkWlLeveraged = "https://finviz.com/screener.ashx?v=111&t=BRZU,CURE,DFEN,DPST,DRIP,DRN,DRV,DUSL,DUST,DZK,EDC,EDZ,ERX,ERY,EURL,FAS,FAZ,FNGD,FNGU,GUSH,INDL,JDST,JNUG,JPNL,KORU,LABD,LABU,LBJ,MEXX,MIDU,NAIL,NUGT,PILL,RETL,RUSL,SDOW,SMDD,SOXL,SOXS,SPXL,SPXS,SPXU,SQQQ,SRTY,TECL,TECS,TMF,TMV,TNA,TPOR,TQQQ,TTT,TYD,TYO,TZA,UBOT,UDOW,UMDD,UPRO,URTY,UTSL,YANG,YINN,&o=-change"
-
+kirkWlEvryAwsome = "https://finviz.com/screener.ashx?v=111&t=UDOW,SPXL,MIDU,TNA,TQQQ,EDC,FNGU,&o=-change"
 
 etfPerf1DUp = ""
 etfPerf1DDw = ""
@@ -290,7 +293,7 @@ layout = [[sg.Text('*** Conexion DB ***')],
           [sg.Button('industries'), sg.InputText(key='kirkWlIndustries'),sg.Button('factors'), sg.InputText(key='kirkWlFactors')],
           [sg.Button('fixed income'), sg.InputText(key='kirkWlFixIncome'),sg.Button('currencies'), sg.InputText(key='kirkWlCurrencies')],
           [sg.Button('commodities'), sg.InputText(key='kirkWlCommodities'),sg.Button('global markets'), sg.InputText(key='kirkWlGlobalMarkets')],
-          [sg.Button('leveraged'), sg.InputText(key='kirkWlLeveraged')],
+          [sg.Button('leveraged'), sg.InputText(key='kirkWlLeveraged'),sg.Button('AwesomePort'), sg.InputText(key='kirkWlEvryAwsome')],
           [sg.Button('ETF Perf Daily'), sg.InputText(key='etfPerfDaily'),sg.Button('ETF Perf Weekly'), sg.InputText(key='etfPerfWeekly')],
           [sg.Text('*** Scans ***')],
           [sg.Button('Simple Breakout Scan ETF'), sg.InputText(key='etfBrkCht'),sg.Button('Simple Breakout Scan STK'), sg.InputText(key='stkBrkCht')],
