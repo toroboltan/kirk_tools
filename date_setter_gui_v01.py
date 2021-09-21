@@ -196,7 +196,6 @@ buttonChkPlaysLong = 'Check Playbook Long'
 buttonChkPlaysShort = 'Check Playbook Short'
 buttonChkList = 'Check ETFs Lists'
 buttonChkMarket = 'Check Market'
-buttonScrapEtf = 'scrap etfscreen'
 buttonReadDb = 'read etfscreendb from db'
 buttonReadPicFile = 'read etfscreendb from serial'
 buttonWritePicDb = 'write serial to etfscreendb'
@@ -272,18 +271,16 @@ constList = [const1D,
 # GUI
 sg.theme('BluePurple')
 
-layout = [[sg.Text('*** Conexion DB ***')],
-          [sg.Button(buttonConnectDb)], 
+layout = [[sg.Text('*** Conexion DB & ETF Performance ***')],
+          [sg.Button(buttonConnectDb),
+           sg.Button(buttonReadDb),
+           sg.Button(buttonReadPicFile),
+           sg.Button(buttonWritePicDb),
+           sg.Button(buttonExec)], 
           [sg.Text('*** Posiciones Abiertas ***')],
           [sg.Button(buttonUpdatePrecios), sg.Button(buttonShowCharts)], 
           [sg.Text('*** Chequeo de Indices ***')],
           [sg.Button(buttonChkMarket)], 
-          [sg.Text('*** ETF Performance ***')],
-          [sg.Button(buttonScrapEtf), 
-           sg.Button(buttonReadDb), 
-           sg.Button(buttonReadPicFile), 
-           sg.Button(buttonWritePicDb),
-           sg.Button(buttonExec)], 
           [sg.Text('*** Sectors Performance ***')], 
           [sg.Button('Sectors Daily'), sg.Button('Sectors 1W'), sg.Button('Sectors 4W'),  
            sg.Button('Sectors 13W'), sg.Button('Sectors 26W'), sg.Button('Sectors 52W'),  
@@ -355,16 +352,7 @@ try:
             
         if event in buttonChtList:
             openweb("chrome", [chartsArgumnets(event)])
-    
-        if event == buttonScrapEtf:
-            etf_df = scetf.ProcessEtfscreen(sql_conn)
-            if (len(etf_df.index) > 0):
-                sg.popup('Message!', 'scrap etfscreen finished!, Click on Execute')
-            else:
-                sg.popup('Message!', 'etfscreen parsing failed!, Try again in 5 minutes') 
-            print('*** ' + event + ' ***')
-            print(etf_df)
-    
+        
         if event == buttonReadDb:
             etf_df = dbh.ReadSQLTable(sql_conn, kc.db_table_etf)
             print('*** ' + event + ' ***')
