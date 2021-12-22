@@ -125,6 +125,28 @@ def UpdatePrices():
     SaveWorkbook(workbook, tablePath, tableFileOut)
     return list(set_tkt)
 
+def UpdateExcelTradeFiles(file_list):
+    '''
+    This function updates excel files passed
+    as argument 
+    '''
+    from win32com.client import Dispatch
+    xl = Dispatch("Excel.Application")
+    xl.Visible = True # otherwise excel is hidden
+
+    for item in file_list:
+        print('opening ' + item)
+        wb = xl.Workbooks.Open(item)
+        print('refreshing ' + item)
+        wb.RefreshAll()
+        xl.CalculateUntilAsyncQueriesDone()
+        xl.DisplayAlerts = False
+        wb.Save()
+        wb.Close()
+        print('closing ' + item)
+    
+    xl.Quit()
+
 def main():
     UpdatePrices()
 

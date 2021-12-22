@@ -192,6 +192,7 @@ textBoxList = ['kirkWlIndexes',
 buttonProcess = 'Process TKTs'
 buttonUpdatePrecios = 'Update Precios'
 buttonShowCharts = 'Show Charts'
+buttonUpdateExcelList = 'Update Excel Files'
 buttonChkPlaysLong = 'Check Playbook Long'
 buttonChkPlaysShort = 'Check Playbook Short'
 buttonChkList = 'Check ETFs Lists'
@@ -268,6 +269,23 @@ constList = [const1D,
              const1H,
              const1Y]
 
+# Constants related to update Excel files
+
+TRADE_LOSS_LIST_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2021\active trading'
+TRADE_LOSS_LIST_FILE = '2021_LossTradesAlert.xlsx'
+
+CAND_LIST_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2021\active trading'
+CAND_LIST_FILE = '2021_KirkCandidatesManagementSpreadsheet.xlsx'
+
+WIN_NOT_COMP_LIST_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2021\active trading'
+WIN_NOT_COMP_LIST_FILE = '2021_WonNotCompleteTradesAlert.xlsx'
+
+TRADE_LOSS_LDN = TRADE_LOSS_LIST_PATH + '\\' + TRADE_LOSS_LIST_FILE
+CAND_LIST_LDN = CAND_LIST_PATH + '\\' + CAND_LIST_FILE
+WIN_NOT_COMP_LDN = WIN_NOT_COMP_LIST_PATH + '\\' + WIN_NOT_COMP_LIST_FILE
+
+EXCEL_FILES_LIST = [TRADE_LOSS_LDN, CAND_LIST_LDN, WIN_NOT_COMP_LDN]
+
 # GUI
 sg.theme('BluePurple')
 
@@ -277,8 +295,8 @@ layout = [[sg.Text('*** Conexion DB & ETF Performance ***')],
            sg.Button(buttonReadPicFile),
            sg.Button(buttonWritePicDb),
            sg.Button(buttonExec)], 
-          [sg.Text('*** Posiciones Abiertas ***')],
-          [sg.Button(buttonUpdatePrecios), sg.Button(buttonShowCharts)], 
+          [sg.Text('*** Posiciones Abiertas & Excel Files***')],
+          [sg.Button(buttonUpdatePrecios), sg.Button(buttonShowCharts), sg.Button(buttonUpdateExcelList)], 
           [sg.Text('*** Chequeo de Indices ***')],
           [sg.Button(buttonChkMarket)], 
           [sg.Text('*** Sectors Performance ***')], 
@@ -349,6 +367,10 @@ try:
                 print(showChartsLnk + str(list_tktOpen))
                 delim = ','
                 openweb("chrome", [showChartsLnk + delim.join(list_tktOpen)])
+        
+        if event == buttonUpdateExcelList:
+            up.UpdateExcelTradeFiles(file_list=EXCEL_FILES_LIST)
+            print('*** Excels Updates ***')
             
         if event in buttonChtList:
             openweb("chrome", [chartsArgumnets(event)])
