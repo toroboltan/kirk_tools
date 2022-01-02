@@ -271,20 +271,20 @@ constList = [const1D,
 
 # Constants related to update Excel files
 
-TRADE_LOSS_LIST_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2021\active trading'
-TRADE_LOSS_LIST_FILE = '2021_LossTradesAlert.xlsx'
+TRADE_LOSS_LIST_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2022\active trading'
+TRADE_LOSS_LIST_FILE = '2022_LossTradesAlert.xlsx'
 
-CAND_LIST_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2021\active trading'
-CAND_LIST_FILE = '2021_KirkCandidatesManagementSpreadsheet.xlsx'
+CAND_LIST_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2022\active trading'
+CAND_LIST_FILE = '2022_KirkCandidatesManagementSpreadsheet.xlsx'
 
-WIN_NOT_COMP_LIST_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2021\active trading'
-WIN_NOT_COMP_LIST_FILE = '2021_WonNotCompleteTradesAlert.xlsx'
+WIN_NOT_COMP_LIST_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2022\active trading'
+WIN_NOT_COMP_LIST_FILE = '2022_WonNotCompleteTradesAlert.xlsx'
 
 TRADE_LOSS_LDN = TRADE_LOSS_LIST_PATH + '\\' + TRADE_LOSS_LIST_FILE
 CAND_LIST_LDN = CAND_LIST_PATH + '\\' + CAND_LIST_FILE
 WIN_NOT_COMP_LDN = WIN_NOT_COMP_LIST_PATH + '\\' + WIN_NOT_COMP_LIST_FILE
 
-EXCEL_FILES_LIST = [TRADE_LOSS_LDN, CAND_LIST_LDN, WIN_NOT_COMP_LDN]
+EXCEL_FILES_LIST = [TRADE_LOSS_LDN, WIN_NOT_COMP_LDN, CAND_LIST_LDN]
 
 # GUI
 sg.theme('BluePurple')
