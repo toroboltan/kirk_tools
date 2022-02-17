@@ -193,6 +193,7 @@ buttonProcess = 'Process TKTs'
 buttonUpdatePrecios = 'Update Precios'
 buttonShowCharts = 'Show Charts'
 buttonUpdateExcelList = 'Update Excel Files'
+buttonOpenChartsScreen = 'Open Charts Screen'
 buttonChkPlaysLong = 'Check Playbook Long'
 buttonChkPlaysShort = 'Check Playbook Short'
 buttonChkList = 'Check ETFs Lists'
@@ -296,7 +297,7 @@ layout = [[sg.Text('*** Conexion DB & ETF Performance ***')],
            sg.Button(buttonWritePicDb),
            sg.Button(buttonExec)], 
           [sg.Text('*** Posiciones Abiertas & Excel Files***')],
-          [sg.Button(buttonUpdatePrecios), sg.Button(buttonShowCharts), sg.Button(buttonUpdateExcelList)], 
+          [sg.Button(buttonUpdatePrecios), sg.Button(buttonShowCharts), sg.Button(buttonUpdateExcelList), sg.Button(buttonOpenChartsScreen)], 
           [sg.Text('*** Chequeo de Indices ***')],
           [sg.Button(buttonChkMarket)], 
           [sg.Text('*** Sectors Performance ***')], 
@@ -371,17 +372,36 @@ try:
         if event == buttonUpdateExcelList:
             up.UpdateExcelTradeFiles(file_list=EXCEL_FILES_LIST)
             print('*** Excels Updates ***')
-            
+
+        if event == buttonOpenChartsScreen:
+            print('*** Open Charts Screen ***')
+            etf_df = scetf.ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
+            for item in buttonChtList:
+                openweb("chrome", [chartsArgumnets(item)])
+
         if event in buttonChtList:
             openweb("chrome", [chartsArgumnets(event)])
         
         if event == buttonReadDb:
             etf_df = dbh.ReadSQLTable(sql_conn, kc.db_table_etf)
+            etf_df = scetf.ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
+            etfPerf1DUp, etfPerf1DDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1D)
+            etfPerf1WUp, etfPerf1WDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1W)
+            etfPerf1MUp, etfPerf1MDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1M)
+            etfPerf1QUp, etfPerf1QDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1Q)
+            etfPerf1HUp, etfPerf1HDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1H)
+            etfPerf1YUp, etfPerf1YDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1Y)
             print('*** ' + event + ' ***')
             print(etf_df)
     
         if event == buttonReadPicFile:
             etf_df = scetf.ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
+            etfPerf1DUp, etfPerf1DDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1D)
+            etfPerf1WUp, etfPerf1WDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1W)
+            etfPerf1MUp, etfPerf1MDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1M)
+            etfPerf1QUp, etfPerf1QDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1Q)
+            etfPerf1HUp, etfPerf1HDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1H)
+            etfPerf1YUp, etfPerf1YDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1Y)
             print('*** ' + event + ' ***')
             print(etf_df)
     
@@ -464,6 +484,7 @@ try:
                                 etfSet.update(listCand)
                             else:
                                 stkSet.update(listCand)
+                candString = ''
                 if((len(etfSet) > 0) | (len(stkSet) > 0)):
                     totalSet = etfSet.union(stkSet)
                     finalCand_lst = checkOpenPositions(list(totalSet))
@@ -473,6 +494,8 @@ try:
                     print(candString)
                 # send output to window
                 sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
+                print('*** TKTS LIST ***')
+                print(candString)
                 print('*** SCREENS ***')
                 for textTkts in textBoxList:
                     print(textTkts + ': '  + values[textTkts])
