@@ -135,21 +135,7 @@ buttonSecList = ['Sectors Daily',
                  'Sectors 52W',
                  'Sectors YTD']
 
-buttonChtList = ['US Markets',
-                 'Sector ETF',
-                 'ETF Perf Daily',
-                 'ETF Perf Weekly',                 
-                 'Simple Breakout Scan STK',
-                 'Simple Breakout Scan ETF',
-                 'New High STK',
-                 'New High ETF',
-                 'FATGANMSN',
-                 'Long Breakout Setup ETF',
-                 'Long Breakout Setup STK',
-                 'Major News',
-                 'Most Shorted Stocks',
-                 'Break Down Setups',
-                 'indexes',
+buttonChtList = ['indexes',
                  'sectors',
                  'industries',
                  'factors',
@@ -158,7 +144,19 @@ buttonChtList = ['US Markets',
                  'commodities',
                  'global markets',
                  'leveraged',
-                 'AwesomePort']
+                 'AwesomePort',
+                 'ETF Perf Daily',
+                 'ETF Perf Weekly',
+                 'New High ETF',
+                 'New High STK',
+                 'Simple Breakout Scan ETF',
+                 'Simple Breakout Scan STK',
+                 'Long Breakout Setup ETF',
+                 'Long Breakout Setup STK',
+                 'FATGANMSN',
+                 'Major News',
+                 'Most Shorted Stocks',
+                 'Break Down Setups',]
                  
 sectorsTktList = ['XLF','EEM','XLE','XLK',
                   'XLV','IYT','XLU','XLI',
@@ -197,7 +195,6 @@ buttonOpenChartsScreen = 'Open Charts Screen'
 buttonChkPlaysLong = 'Check Playbook Long'
 buttonChkPlaysShort = 'Check Playbook Short'
 buttonChkList = 'Check ETFs Lists'
-buttonChkMarket = 'Check Market'
 buttonReadDb = 'read etfscreendb from db'
 buttonReadPicFile = 'read etfscreendb from serial'
 buttonWritePicDb = 'write serial to etfscreendb'
@@ -296,10 +293,12 @@ layout = [[sg.Text('*** Conexion DB & ETF Performance ***')],
            sg.Button(buttonReadPicFile),
            sg.Button(buttonWritePicDb),
            sg.Button(buttonExec)], 
-          [sg.Text('*** Posiciones Abiertas & Excel Files***')],
-          [sg.Button(buttonUpdatePrecios), sg.Button(buttonShowCharts), sg.Button(buttonUpdateExcelList), sg.Button(buttonOpenChartsScreen)], 
-          [sg.Text('*** Chequeo de Indices ***')],
-          [sg.Button(buttonChkMarket)], 
+          [sg.Text('*** Posiciones Abiertas ***')],
+          [sg.Button(buttonUpdatePrecios), sg.Button(buttonShowCharts)],
+          [sg.Text('*** Supporting Excel Files ***')],
+          [sg.Button(buttonUpdateExcelList)],
+          [sg.Text('*** Buckets Charts ***')],
+          [sg.Button(buttonOpenChartsScreen)],
           [sg.Text('*** Sectors Performance ***')], 
           [sg.Button('Sectors Daily'), sg.Button('Sectors 1W'), sg.Button('Sectors 4W'),  
            sg.Button('Sectors 13W'), sg.Button('Sectors 26W'), sg.Button('Sectors 52W'),  
@@ -312,11 +311,11 @@ layout = [[sg.Text('*** Conexion DB & ETF Performance ***')],
           [sg.Button('leveraged'), sg.InputText(key='kirkWlLeveraged'),sg.Button('AwesomePort'), sg.InputText(key='kirkWlEvryAwsome')],
           [sg.Button('ETF Perf Daily'), sg.InputText(key='etfPerfDaily'),sg.Button('ETF Perf Weekly'), sg.InputText(key='etfPerfWeekly')],
           [sg.Text('*** Scans ***')],
+          [sg.Button('New High ETF'), sg.InputText(key='etfNewHighCht'),sg.Button('New High STK'), sg.InputText(key='stkNewHighCht')],
           [sg.Button('Simple Breakout Scan ETF'), sg.InputText(key='etfBrkCht'),sg.Button('Simple Breakout Scan STK'), sg.InputText(key='stkBrkCht')],
           [sg.Button('Long Breakout Setup ETF'), sg.InputText(key='etfLongBrkCht'),sg.Button('Long Breakout Setup STK'), sg.InputText(key='stkLongBrkCht')],
+          [sg.Button('FATGANMSN'), sg.InputText(key='fatganmsn'), sg.Button('Major News'), sg.InputText(key='majorNewsCht')],
           [sg.Button('Most Shorted Stocks'), sg.InputText(key='stkShortSquz'),sg.Button('Break Down Setups'), sg.InputText(key='stkShortBrkCht')],
-          [sg.Button('New High ETF'), sg.InputText(key='etfNewHighCht'),sg.Button('New High STK'), sg.InputText(key='stkNewHighCht')],
-          [sg.Button('FATGANMSN'), sg.InputText(key='fatganmsn'), sg.Button('Major News'), sg.InputText(key='majorNewsCht')],   
           [sg.Text('*** Assign Bucket ***')],
           [sg.Button(buttonProcess), sg.InputText(key='possibleCand')],
           [sg.Text('*** Generate Candidates ***')],
@@ -337,9 +336,6 @@ try:
     
         if event == buttonConnectDb:
             sql_conn = dbh.ConnectSQLDb(kc.db_prefix, kc.db_struc_etf)
-    
-        if event == buttonChkMarket:
-            print('test check market')
     
         if event == buttonChkList:
             result = 1
