@@ -203,6 +203,7 @@ buttonUpdateLostTradesTracker = 'Update Lost Trades'
 buttonUpdateWonNotCompletedTracker = 'Update Won Not Completed'
 buttonUpdateWonCompletedTracker = 'Update Won Completed'
 buttonUpdateCandidatesTracker = 'Update Candidates'
+buttonMoneyManagementSpsht = 'Money Mgmnt Spsht'
 
 
 # Parameters to be used for Overview Table
@@ -284,10 +285,15 @@ WIN_LIST_FILE = '2022_WonTrades.xlsx'
 CAND_LIST_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2022\active trading'
 CAND_LIST_FILE = '2022_KirkCandidatesManagementSpreadsheet.xlsx'
 
+MONEYMGMT_SPSHT_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2022\active trading'
+MONEYMGMT_SPSHT_FILE = '2022_MoneyManagementSpreadsheet.xlsx'
+
+
 TRADE_LOSS_LDN = TRADE_LOSS_LIST_PATH + '\\' + TRADE_LOSS_LIST_FILE
 WIN_NOT_COMP_LDN = WIN_NOT_COMP_LIST_PATH + '\\' + WIN_NOT_COMP_LIST_FILE
 WIN_LDN = WIN_LIST_PATH + '\\' + WIN_LIST_FILE
 CAND_LIST_LDN = CAND_LIST_PATH + '\\' + CAND_LIST_FILE
+MONEYMGMT_SPSHT_LDN = MONEYMGMT_SPSHT_PATH + '\\' + MONEYMGMT_SPSHT_FILE
 
 # GUI
 sg.theme('BluePurple')
@@ -296,7 +302,8 @@ layout = [[sg.Text('*** Conexion DB & ETF Performance ***')],
           [sg.Button(buttonConnectDb),sg.Button(buttonReadDb),sg.Button(buttonReadPicFile),
            sg.Button(buttonWritePicDb),sg.Button(buttonExec)], 
           [sg.Text('*** Posiciones Abiertas ***')],
-          [sg.Button(buttonUpdatePrecios), sg.Button(buttonShowCharts)],
+          [sg.Button(buttonUpdatePrecios), sg.Button(buttonShowCharts),
+           sg.Button(buttonMoneyManagementSpsht)],
           [sg.Text('*** Supporting Excel Files ***')],
           [sg.Button(buttonUpdateLostTradesTracker), sg.Button(buttonUpdateWonNotCompletedTracker),
            sg.Button(buttonUpdateWonCompletedTracker),sg.Button(buttonUpdateCandidatesTracker)],
@@ -376,19 +383,23 @@ try:
 
         if event == buttonUpdateLostTradesTracker:
             up.UpdateExcelTradeFiles(file_list=[TRADE_LOSS_LDN])
-            print('*** Excels Updates ***' + ' ' + buttonUpdateLostTradesTracker)
+            print('*** Excel Update ***' + ' ' + buttonUpdateLostTradesTracker)
 
         if event == buttonUpdateWonNotCompletedTracker:
             up.UpdateExcelTradeFiles(file_list=[WIN_NOT_COMP_LDN])
-            print('*** Excels Updates ***' + ' ' + buttonUpdateWonNotCompletedTracker)
+            print('*** Excel Update ***' + ' ' + buttonUpdateWonNotCompletedTracker)
 
         if event == buttonUpdateWonCompletedTracker:
             up.UpdateExcelTradeFiles(file_list=[WIN_LDN])
-            print('*** Excels Updates ***' + ' ' + buttonUpdateWonCompletedTracker)
+            print('*** Excel Update ***' + ' ' + buttonUpdateWonCompletedTracker)
 
         if event == buttonUpdateCandidatesTracker:
             up.UpdateExcelTradeFiles(file_list=[CAND_LIST_LDN])
-            print('*** Excels Updates ***' + ' ' + buttonUpdateCandidatesTracker)
+            print('*** Excel Update ***' + ' ' + buttonUpdateCandidatesTracker)
+        
+        if event == buttonMoneyManagementSpsht:
+            up.OpenExcelSupportFile(excelFile=MONEYMGMT_SPSHT_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonUpdateCandidatesTracker)            
 
         if event in buttonChtList:
             openweb("chrome", [chartsArgumnets(event)])

@@ -147,6 +147,22 @@ def UpdateExcelTradeFiles(file_list):
     
     xl.Quit()
 
+def OpenExcelSupportFile(excelFile):
+    '''
+    This function opens excel files passed
+    as argument 
+    '''
+    from win32com.client import Dispatch
+    xl = Dispatch("Excel.Application")
+    xl.Visible = True # otherwise excel is hidden
+
+    print('opening ' + excelFile)
+    wb = xl.Workbooks.Open(excelFile)
+    print('refreshing ' + excelFile)
+    wb.RefreshAll()
+    xl.CalculateUntilAsyncQueriesDone()
+    xl.DisplayAlerts = False
+
 def main():
     UpdatePrices()
 
