@@ -190,7 +190,6 @@ textBoxList = ['kirkWlIndexes',
 buttonProcess = 'Process TKTs'
 buttonUpdatePrecios = 'Update Precios'
 buttonShowCharts = 'Show Charts'
-buttonUpdateExcelList = 'Update Excel Files'
 buttonOpenChartsScreen = 'Open Charts Screen'
 buttonChkPlaysLong = 'Check Playbook Long'
 buttonChkPlaysShort = 'Check Playbook Short'
@@ -200,6 +199,10 @@ buttonReadPicFile = 'read etfscreendb from serial'
 buttonWritePicDb = 'write serial to etfscreendb'
 buttonExec = 'execute'
 buttonConnectDb = 'Conectar DB'
+buttonUpdateLostTradesTracker = 'Update Lost Trades'
+buttonUpdateWonNotCompletedTracker = 'Update Won Not Completed'
+buttonUpdateWonCompletedTracker = 'Update Won Completed'
+buttonUpdateCandidatesTracker = 'Update Candidates'
 
 
 # Parameters to be used for Overview Table
@@ -269,34 +272,34 @@ constList = [const1D,
 
 # Constants related to update Excel files
 
-TRADE_LOSS_LIST_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2022\active trading'
+TRADE_LOSS_LIST_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2022\active trading\tracking'
 TRADE_LOSS_LIST_FILE = '2022_LossTradesAlert.xlsx'
+
+WIN_NOT_COMP_LIST_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2022\active trading\tracking'
+WIN_NOT_COMP_LIST_FILE = '2022_WonNotCompleteTradesAlert.xlsx'
+
+WIN_LIST_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2022\active trading\tracking'
+WIN_LIST_FILE = '2022_WonTrades.xlsx'
 
 CAND_LIST_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2022\active trading'
 CAND_LIST_FILE = '2022_KirkCandidatesManagementSpreadsheet.xlsx'
 
-WIN_NOT_COMP_LIST_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2022\active trading'
-WIN_NOT_COMP_LIST_FILE = '2022_WonNotCompleteTradesAlert.xlsx'
-
 TRADE_LOSS_LDN = TRADE_LOSS_LIST_PATH + '\\' + TRADE_LOSS_LIST_FILE
-CAND_LIST_LDN = CAND_LIST_PATH + '\\' + CAND_LIST_FILE
 WIN_NOT_COMP_LDN = WIN_NOT_COMP_LIST_PATH + '\\' + WIN_NOT_COMP_LIST_FILE
-
-EXCEL_FILES_LIST = [TRADE_LOSS_LDN, WIN_NOT_COMP_LDN, CAND_LIST_LDN]
+WIN_LDN = WIN_LIST_PATH + '\\' + WIN_LIST_FILE
+CAND_LIST_LDN = CAND_LIST_PATH + '\\' + CAND_LIST_FILE
 
 # GUI
 sg.theme('BluePurple')
 
 layout = [[sg.Text('*** Conexion DB & ETF Performance ***')],
-          [sg.Button(buttonConnectDb),
-           sg.Button(buttonReadDb),
-           sg.Button(buttonReadPicFile),
-           sg.Button(buttonWritePicDb),
-           sg.Button(buttonExec)], 
+          [sg.Button(buttonConnectDb),sg.Button(buttonReadDb),sg.Button(buttonReadPicFile),
+           sg.Button(buttonWritePicDb),sg.Button(buttonExec)], 
           [sg.Text('*** Posiciones Abiertas ***')],
           [sg.Button(buttonUpdatePrecios), sg.Button(buttonShowCharts)],
           [sg.Text('*** Supporting Excel Files ***')],
-          [sg.Button(buttonUpdateExcelList)],
+          [sg.Button(buttonUpdateLostTradesTracker), sg.Button(buttonUpdateWonNotCompletedTracker),
+           sg.Button(buttonUpdateWonCompletedTracker),sg.Button(buttonUpdateCandidatesTracker)],
           [sg.Text('*** Buckets Charts ***')],
           [sg.Button(buttonOpenChartsScreen)],
           [sg.Text('*** Sectors Performance ***')], 
@@ -365,15 +368,27 @@ try:
                 delim = ','
                 openweb("chrome", [showChartsLnk + delim.join(list_tktOpen)])
         
-        if event == buttonUpdateExcelList:
-            up.UpdateExcelTradeFiles(file_list=EXCEL_FILES_LIST)
-            print('*** Excels Updates ***')
-
         if event == buttonOpenChartsScreen:
             print('*** Open Charts Screen ***')
             etf_df = scetf.ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
             for item in buttonChtList:
                 openweb("chrome", [chartsArgumnets(item)])
+
+        if event == buttonUpdateLostTradesTracker:
+            up.UpdateExcelTradeFiles(file_list=[TRADE_LOSS_LDN])
+            print('*** Excels Updates ***' + ' ' + buttonUpdateLostTradesTracker)
+
+        if event == buttonUpdateWonNotCompletedTracker:
+            up.UpdateExcelTradeFiles(file_list=[WIN_NOT_COMP_LDN])
+            print('*** Excels Updates ***' + ' ' + buttonUpdateWonNotCompletedTracker)
+
+        if event == buttonUpdateWonCompletedTracker:
+            up.UpdateExcelTradeFiles(file_list=[WIN_LDN])
+            print('*** Excels Updates ***' + ' ' + buttonUpdateWonCompletedTracker)
+
+        if event == buttonUpdateCandidatesTracker:
+            up.UpdateExcelTradeFiles(file_list=[CAND_LIST_LDN])
+            print('*** Excels Updates ***' + ' ' + buttonUpdateCandidatesTracker)
 
         if event in buttonChtList:
             openweb("chrome", [chartsArgumnets(event)])
