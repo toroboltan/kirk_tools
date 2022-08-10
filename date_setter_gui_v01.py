@@ -205,6 +205,19 @@ buttonUpdateWonCompletedTracker = 'Update Won Completed'
 buttonUpdateCandidatesTracker = 'Update Candidates'
 buttonMoneyManagementSpsht = 'Money Mgmnt Spsht'
 
+buttonBktCommodities = 'Commodities'
+buttonBktCurrencies = 'Currencies'
+buttonBktFANGAM = 'FANGAM'
+buttonBktFixedIncome = 'Fixed Income'
+buttonBktForeignMarktes = 'Foreign Markets'
+buttonBktIndustries = 'Industries'
+buttonBktMegatrends = 'Megatrends'
+buttonBktLeveraged = 'Leveraged'
+buttonBktSectors = 'Sectors'
+buttonBktStyles = 'Styles'
+buttonBktUsMarkets = 'US Markets'
+buttonBktStocks = 'Stocks'
+
 
 # Parameters to be used for Overview Table
 overviewTable = "Overview"
@@ -288,12 +301,40 @@ CAND_LIST_FILE = '2022_KirkCandidatesManagementSpreadsheet.xlsx'
 MONEYMGMT_SPSHT_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2022\active trading'
 MONEYMGMT_SPSHT_FILE = '2022_MoneyManagementSpreadsheet.xlsx'
 
-
 TRADE_LOSS_LDN = TRADE_LOSS_LIST_PATH + '\\' + TRADE_LOSS_LIST_FILE
 WIN_NOT_COMP_LDN = WIN_NOT_COMP_LIST_PATH + '\\' + WIN_NOT_COMP_LIST_FILE
 WIN_LDN = WIN_LIST_PATH + '\\' + WIN_LIST_FILE
 CAND_LIST_LDN = CAND_LIST_PATH + '\\' + CAND_LIST_FILE
 MONEYMGMT_SPSHT_LDN = MONEYMGMT_SPSHT_PATH + '\\' + MONEYMGMT_SPSHT_FILE
+
+# Constants related to buckets
+
+BKT_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2022\listas'
+BKT_COMMODITIES_FILE = '2022_POS_Commodities.xlsx'
+BKT_CURRENCIES_FILE = '2022_POS_Currencies.xlsx'
+BKT_FANGAM_FILE = '2022_POS_FANGAM.xlsx'
+BKT_FIXEDINCOME_FILE = '2022_POS_Fixed_Income.xlsx'
+BKT_FOREIGNMARKETS_FILE = '2022_POS_Foreign_Markets.xlsx'
+BKT_INDUSTRIES_FILE = '2022_POS_Industries.xlsx'
+BKT_MEGATRENDS_FILE = '2022_POS_Megatrends.xlsx'
+BKT_LEVERAGED_FILE = '2022_POS_Other.xlsx'
+BKT_SECTORS_FILE = '2022_POS_Sectors.xlsx'
+BKT_STYLES_FILE = '2022_POS_Styles.xlsx'
+BKT_USMARKETS_FILE = '2022_POS_US_Markets.xlsx'
+BKT_STOCKS_FILE = '2022_POS_Weekly.xlsx'
+
+BKT_COMMODITIES_LDN = BKT_PATH + '\\' + BKT_COMMODITIES_FILE
+BKT_CURRENCIES_LDN = BKT_PATH + '\\' + BKT_CURRENCIES_FILE
+BKT_FANGAM_LDN = BKT_PATH + '\\' + BKT_FANGAM_FILE
+BKT_FIXEDINCOME_LDN = BKT_PATH + '\\' + BKT_FIXEDINCOME_FILE
+BKT_FOREIGNMARKETS_LDN = BKT_PATH + '\\' + BKT_FOREIGNMARKETS_FILE
+BKT_INDUSTRIES_LDN = BKT_PATH + '\\' + BKT_INDUSTRIES_FILE
+BKT_MEGATRENDS_LDN = BKT_PATH + '\\' + BKT_MEGATRENDS_FILE
+BKT_LEVERAGED_LDN = BKT_PATH + '\\' + BKT_LEVERAGED_FILE
+BKT_SECTORS_LDN = BKT_PATH + '\\' + BKT_SECTORS_FILE
+BKT_STYLES_LDN = BKT_PATH + '\\' + BKT_STYLES_FILE
+BKT_USMARKETS_LDN = BKT_PATH + '\\' + BKT_USMARKETS_FILE
+BKT_STOCKS_LDN = BKT_PATH + '\\' + BKT_STOCKS_FILE
 
 # GUI
 sg.theme('BluePurple')
@@ -309,6 +350,11 @@ layout = [[sg.Text('*** Conexion DB & ETF Performance ***')],
            sg.Button(buttonUpdateWonCompletedTracker),sg.Button(buttonUpdateCandidatesTracker)],
           [sg.Text('*** Buckets Charts ***')],
           [sg.Button(buttonOpenChartsScreen)],
+          [sg.Text('*** Buckets Excel Files ***')],
+          [sg.Button(buttonBktCommodities), sg.Button(buttonBktCurrencies), sg.Button(buttonBktFANGAM),
+           sg.Button(buttonBktFixedIncome), sg.Button(buttonBktForeignMarktes), sg.Button(buttonBktIndustries)],
+          [sg.Button(buttonBktMegatrends), sg.Button(buttonBktLeveraged), sg.Button(buttonBktSectors),
+           sg.Button(buttonBktStyles), sg.Button(buttonBktUsMarkets), sg.Button(buttonBktStocks)],
           [sg.Text('*** Sectors Performance ***')], 
           [sg.Button('Sectors Daily'), sg.Button('Sectors 1W'), sg.Button('Sectors 4W'),  
            sg.Button('Sectors 13W'), sg.Button('Sectors 26W'), sg.Button('Sectors 52W'),  
@@ -400,6 +446,54 @@ try:
         if event == buttonMoneyManagementSpsht:
             up.OpenExcelSupportFile(excelFile=MONEYMGMT_SPSHT_LDN)
             print('*** OpenExcelSupportFile ***' + ' ' + buttonUpdateCandidatesTracker)            
+
+        if event == buttonBktCommodities:
+            up.OpenExcelSupportFile(excelFile=BKT_COMMODITIES_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktCommodities)
+
+        if event == buttonBktCurrencies:
+            up.OpenExcelSupportFile(excelFile=BKT_CURRENCIES_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktCurrencies)
+
+        if event == buttonBktFANGAM:
+            up.OpenExcelSupportFile(excelFile=BKT_FANGAM_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktFANGAM)
+
+        if event == buttonBktFixedIncome:
+            up.OpenExcelSupportFile(excelFile=BKT_FIXEDINCOME_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktFixedIncome)
+
+        if event == buttonBktForeignMarktes:
+            up.OpenExcelSupportFile(excelFile=BKT_FOREIGNMARKETS_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktForeignMarktes)
+
+        if event == buttonBktIndustries:
+            up.OpenExcelSupportFile(excelFile=BKT_INDUSTRIES_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktIndustries)
+
+        if event == buttonBktMegatrends:
+            up.OpenExcelSupportFile(excelFile=BKT_MEGATRENDS_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktMegatrends)
+
+        if event == buttonBktLeveraged:
+            up.OpenExcelSupportFile(excelFile=BKT_LEVERAGED_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktLeveraged)
+
+        if event == buttonBktSectors:
+            up.OpenExcelSupportFile(excelFile=BKT_SECTORS_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktSectors)
+
+        if event == buttonBktStyles:
+            up.OpenExcelSupportFile(excelFile=BKT_STYLES_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktStyles)
+
+        if event == buttonBktUsMarkets:
+            up.OpenExcelSupportFile(excelFile=BKT_USMARKETS_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktUsMarkets)
+
+        if event == buttonBktStocks:
+            up.OpenExcelSupportFile(excelFile=BKT_STOCKS_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktStocks)
 
         if event in buttonChtList:
             openweb("chrome", [chartsArgumnets(event)])
