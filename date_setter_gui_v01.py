@@ -199,11 +199,14 @@ buttonReadPicFile = 'read etfscreendb from serial'
 buttonWritePicDb = 'write serial to etfscreendb'
 buttonExec = 'execute'
 buttonConnectDb = 'Conectar DB'
+
 buttonUpdateLostTradesTracker = 'Update Lost Trades'
 buttonUpdateWonNotCompletedTracker = 'Update Won Not Completed'
 buttonUpdateWonCompletedTracker = 'Update Won Completed'
 buttonUpdateCandidatesTracker = 'Update Candidates'
 buttonMoneyManagementSpsht = 'Money Mgmnt Spsht'
+buttonOpenOrderManagementSpsht = 'Open Order Management'
+buttonOpenBktListSpsht = 'Open Listas'
 
 buttonBktCommodities = 'Commodities'
 buttonBktCurrencies = 'Currencies'
@@ -300,12 +303,15 @@ CAND_LIST_FILE = '2022_KirkCandidatesManagementSpreadsheet.xlsx'
 
 MONEYMGMT_SPSHT_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2022\active trading'
 MONEYMGMT_SPSHT_FILE = '2022_MoneyManagementSpreadsheet.xlsx'
+ORDERMGMT_SPSHT_FILE = '2022_OrderManagementSpreadsheet.xlsx'
 
 TRADE_LOSS_LDN = TRADE_LOSS_LIST_PATH + '\\' + TRADE_LOSS_LIST_FILE
 WIN_NOT_COMP_LDN = WIN_NOT_COMP_LIST_PATH + '\\' + WIN_NOT_COMP_LIST_FILE
 WIN_LDN = WIN_LIST_PATH + '\\' + WIN_LIST_FILE
 CAND_LIST_LDN = CAND_LIST_PATH + '\\' + CAND_LIST_FILE
 MONEYMGMT_SPSHT_LDN = MONEYMGMT_SPSHT_PATH + '\\' + MONEYMGMT_SPSHT_FILE
+ORDERMGMT_SPSHT_LDN = MONEYMGMT_SPSHT_PATH + '\\' + ORDERMGMT_SPSHT_FILE
+
 
 # Constants related to buckets
 
@@ -347,7 +353,8 @@ layout = [[sg.Text('*** Conexion DB & ETF Performance ***')],
            sg.Button(buttonMoneyManagementSpsht)],
           [sg.Text('*** Supporting Excel Files ***')],
           [sg.Button(buttonUpdateLostTradesTracker), sg.Button(buttonUpdateWonNotCompletedTracker),
-           sg.Button(buttonUpdateWonCompletedTracker),sg.Button(buttonUpdateCandidatesTracker)],
+           sg.Button(buttonUpdateWonCompletedTracker),sg.Button(buttonUpdateCandidatesTracker),
+           sg.Button(buttonOpenOrderManagementSpsht),sg.Button(buttonOpenBktListSpsht)],
           [sg.Text('*** Buckets Charts ***')],
           [sg.Button(buttonOpenChartsScreen)],
           [sg.Text('*** Buckets Excel Files ***')],
@@ -439,13 +446,17 @@ try:
             up.UpdateExcelTradeFiles(file_list=[WIN_LDN])
             print('*** Excel Update ***' + ' ' + buttonUpdateWonCompletedTracker)
 
+        if event == buttonOpenOrderManagementSpsht:
+            up.OpenExcelSupportFile(excelFile=ORDERMGMT_SPSHT_LDN)
+            print('*** Excel Update ***' + ' ' + buttonOpenOrderManagementSpsht)
+
         if event == buttonUpdateCandidatesTracker:
             up.UpdateExcelTradeFiles(file_list=[CAND_LIST_LDN])
             print('*** Excel Update ***' + ' ' + buttonUpdateCandidatesTracker)
         
         if event == buttonMoneyManagementSpsht:
             up.OpenExcelSupportFile(excelFile=MONEYMGMT_SPSHT_LDN)
-            print('*** OpenExcelSupportFile ***' + ' ' + buttonUpdateCandidatesTracker)            
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonMoneyManagementSpsht)            
 
         if event == buttonBktCommodities:
             up.OpenExcelSupportFile(excelFile=BKT_COMMODITIES_LDN)
