@@ -152,16 +152,22 @@ def OpenExcelSupportFile(excelFile):
     This function opens excel files passed
     as argument 
     '''
-    from win32com.client import Dispatch
-    xl = Dispatch("Excel.Application")
-    xl.Visible = True # otherwise excel is hidden
+    try:
+        from win32com.client import Dispatch
+        #from pywintypes import com_error
 
-    print('opening ' + excelFile)
-    wb = xl.Workbooks.Open(excelFile)
-    print('refreshing ' + excelFile)
-    wb.RefreshAll()
-    xl.CalculateUntilAsyncQueriesDone()
-    xl.DisplayAlerts = False
+        xl = Dispatch("Excel.Application")
+        xl.Visible = True # otherwise excel is hidden
+    
+        print('opening ' + excelFile)
+        wb = xl.Workbooks.Open(excelFile)
+        print('refreshing ' + excelFile)
+        wb.RefreshAll()
+        xl.CalculateUntilAsyncQueriesDone()
+        xl.DisplayAlerts = False
+    except Exception:
+        print(' Exception in OpenExcelSupportFile ')
+        pass
 
 def main():
     UpdatePrices()
