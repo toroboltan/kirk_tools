@@ -328,6 +328,7 @@ BKT_SECTORS_FILE = '2022_POS_Sectors.xlsx'
 BKT_STYLES_FILE = '2022_POS_Styles.xlsx'
 BKT_USMARKETS_FILE = '2022_POS_US_Markets.xlsx'
 BKT_STOCKS_FILE = '2022_POS_Weekly.xlsx'
+BKT_LISTS_FILE = '2022_ListasTrack.xlsx'
 
 BKT_COMMODITIES_LDN = BKT_PATH + '\\' + BKT_COMMODITIES_FILE
 BKT_CURRENCIES_LDN = BKT_PATH + '\\' + BKT_CURRENCIES_FILE
@@ -341,6 +342,7 @@ BKT_SECTORS_LDN = BKT_PATH + '\\' + BKT_SECTORS_FILE
 BKT_STYLES_LDN = BKT_PATH + '\\' + BKT_STYLES_FILE
 BKT_USMARKETS_LDN = BKT_PATH + '\\' + BKT_USMARKETS_FILE
 BKT_STOCKS_LDN = BKT_PATH + '\\' + BKT_STOCKS_FILE
+BKT_LISTS_LDN = BKT_PATH + '\\' + BKT_LISTS_FILE
 
 # GUI
 sg.theme('BluePurple')
@@ -449,6 +451,10 @@ try:
         if event == buttonOpenOrderManagementSpsht:
             up.OpenExcelSupportFile(excelFile=ORDERMGMT_SPSHT_LDN)
             print('*** Excel Update ***' + ' ' + buttonOpenOrderManagementSpsht)
+
+        if event == buttonOpenBktListSpsht:
+            up.OpenExcelSupportFile(excelFile=BKT_LISTS_LDN)
+            print('*** Excel Update ***' + ' ' + buttonOpenBktListSpsht)
 
         if event == buttonUpdateCandidatesTracker:
             up.UpdateExcelTradeFiles(file_list=[CAND_LIST_LDN])
@@ -637,5 +643,10 @@ try:
                 initializeSets()
 except:
     print('exception generated')
-print('last event ' + event)
+    e = sys.exc_info()[0]
+    print('Exception ' + e)
+    print('last event ' + event)
+    pass
+
+
 window.close()
