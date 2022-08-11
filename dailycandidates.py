@@ -81,12 +81,15 @@ def main(arg):
         sql_conn = dbh.ConnectSQLDb(db_prefix ,db_struc_etf)
         dateToUse = datetime.date.today()
         AddRowCandToDb(sql_conn, db_table, dateToUse, cands)
-    if arg == 'test04':
-        print('test04')
+    if arg == 'test05':
+        #data = yf.download("SPY", start="2017-01-01", group_by="ticker")
+        print('test05')
+    if arg == 'testXX':
+        print('testXX')
     print('___End main()___')
 
 if __name__ == "__main__":
-    arg = 'test03'
+    arg = 'test05'
     try:
         main(arg)
     except SystemExit as e:
