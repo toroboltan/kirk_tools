@@ -188,7 +188,6 @@ textBoxList = ['kirkWlIndexes',
                'majorNewsCht']
 
 buttonProcess = 'Process TKTs'
-buttonUpdatePrecios = 'Update Precios'
 buttonShowCharts = 'Show Charts'
 buttonOpenChartsScreen = 'Open Charts Screen'
 buttonChkPlaysLong = 'Check Playbook Long'
@@ -351,8 +350,7 @@ layout = [[sg.Text('*** Conexion DB & ETF Performance ***')],
           [sg.Button(buttonConnectDb),sg.Button(buttonReadDb),sg.Button(buttonReadPicFile),
            sg.Button(buttonWritePicDb),sg.Button(buttonExec)], 
           [sg.Text('*** Posiciones Abiertas ***')],
-          [sg.Button(buttonUpdatePrecios), sg.Button(buttonShowCharts),
-           sg.Button(buttonMoneyManagementSpsht)],
+          [sg.Button(buttonShowCharts),sg.Button(buttonMoneyManagementSpsht)],
           [sg.Text('*** Supporting Excel Files ***')],
           [sg.Button(buttonUpdateLostTradesTracker), sg.Button(buttonUpdateWonNotCompletedTracker),
            sg.Button(buttonUpdateWonCompletedTracker),sg.Button(buttonUpdateCandidatesTracker),
@@ -419,11 +417,7 @@ try:
             result = tu.GenerateCandidates(tradeType='short')
             if result == 0:
                 print('finished')
-    
-        if event == buttonUpdatePrecios:
-            list_tktOpen = up.UpdatePrices()
-            print(list_tktOpen)
-       
+           
         if event == buttonShowCharts:
             if len(list_tktOpen) > 0:
                 print(showChartsLnk + str(list_tktOpen))
