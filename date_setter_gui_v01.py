@@ -200,8 +200,8 @@ buttonExec = 'execute'
 buttonConnectDb = 'Conectar DB'
 
 buttonOpenLostTradesTracker = 'Open Lost Trades Tracker'
-buttonUpdateWonNotCompletedTracker = 'Update Won Not Completed'
-buttonUpdateWonCompletedTracker = 'Update Won Completed'
+buttonOpenWonNotCompletedTracker = 'Open Won Not Completed'
+buttonOpenWonCompletedTracker = 'Open Won Completed'
 buttonOpenCandidatesTracker = 'Open Candidates'
 buttonMoneyManagementSpsht = 'Money Mgmnt Spsht'
 buttonOpenOrderManagementSpsht = 'Open Order Management'
@@ -352,8 +352,8 @@ layout = [[sg.Text('*** Conexion DB & ETF Performance ***')],
           [sg.Text('*** Posiciones Abiertas ***')],
           [sg.Button(buttonShowCharts),sg.Button(buttonMoneyManagementSpsht)],
           [sg.Text('*** Supporting Excel Files ***')],
-          [sg.Button(buttonOpenLostTradesTracker), sg.Button(buttonUpdateWonNotCompletedTracker),
-           sg.Button(buttonUpdateWonCompletedTracker),sg.Button(buttonOpenCandidatesTracker),
+          [sg.Button(buttonOpenLostTradesTracker), sg.Button(buttonOpenWonNotCompletedTracker),
+           sg.Button(buttonOpenWonCompletedTracker),sg.Button(buttonOpenCandidatesTracker),
            sg.Button(buttonOpenOrderManagementSpsht),sg.Button(buttonOpenBktListSpsht)],
           [sg.Text('*** Buckets Charts ***')],
           [sg.Button(buttonOpenChartsScreen)],
@@ -434,13 +434,13 @@ try:
             up.OpenExcelSupportFile(excelFile=TRADE_LOSS_LDN)
             print('*** Excel Update ***' + ' ' + buttonOpenLostTradesTracker)
 
-        if event == buttonUpdateWonNotCompletedTracker:
-            up.UpdateExcelTradeFiles(file_list=[WIN_NOT_COMP_LDN])
-            print('*** Excel Update ***' + ' ' + buttonUpdateWonNotCompletedTracker)
+        if event == buttonOpenWonNotCompletedTracker:
+            up.OpenExcelSupportFile(excelFile=WIN_NOT_COMP_LDN)
+            print('*** Excel Update ***' + ' ' + buttonOpenWonNotCompletedTracker)
 
-        if event == buttonUpdateWonCompletedTracker:
-            up.UpdateExcelTradeFiles(file_list=[WIN_LDN])
-            print('*** Excel Update ***' + ' ' + buttonUpdateWonCompletedTracker)
+        if event == buttonOpenWonCompletedTracker:
+            up.OpenExcelSupportFile(excelFile=WIN_LDN)
+            print('*** Excel Update ***' + ' ' + buttonOpenWonCompletedTracker)
 
         if event == buttonOpenOrderManagementSpsht:
             up.OpenExcelSupportFile(excelFile=ORDERMGMT_SPSHT_LDN)
