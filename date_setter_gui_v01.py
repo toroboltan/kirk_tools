@@ -202,7 +202,7 @@ buttonConnectDb = 'Conectar DB'
 buttonOpenLostTradesTracker = 'Open Lost Trades Tracker'
 buttonUpdateWonNotCompletedTracker = 'Update Won Not Completed'
 buttonUpdateWonCompletedTracker = 'Update Won Completed'
-buttonUpdateCandidatesTracker = 'Update Candidates'
+buttonOpenCandidatesTracker = 'Open Candidates'
 buttonMoneyManagementSpsht = 'Money Mgmnt Spsht'
 buttonOpenOrderManagementSpsht = 'Open Order Management'
 buttonOpenBktListSpsht = 'Open Listas'
@@ -353,7 +353,7 @@ layout = [[sg.Text('*** Conexion DB & ETF Performance ***')],
           [sg.Button(buttonShowCharts),sg.Button(buttonMoneyManagementSpsht)],
           [sg.Text('*** Supporting Excel Files ***')],
           [sg.Button(buttonOpenLostTradesTracker), sg.Button(buttonUpdateWonNotCompletedTracker),
-           sg.Button(buttonUpdateWonCompletedTracker),sg.Button(buttonUpdateCandidatesTracker),
+           sg.Button(buttonUpdateWonCompletedTracker),sg.Button(buttonOpenCandidatesTracker),
            sg.Button(buttonOpenOrderManagementSpsht),sg.Button(buttonOpenBktListSpsht)],
           [sg.Text('*** Buckets Charts ***')],
           [sg.Button(buttonOpenChartsScreen)],
@@ -450,9 +450,9 @@ try:
             up.OpenExcelSupportFile(excelFile=BKT_LISTS_LDN)
             print('*** Excel Update ***' + ' ' + buttonOpenBktListSpsht)
 
-        if event == buttonUpdateCandidatesTracker:
-            up.UpdateExcelTradeFiles(file_list=[CAND_LIST_LDN])
-            print('*** Excel Update ***' + ' ' + buttonUpdateCandidatesTracker)
+        if event == buttonOpenCandidatesTracker:
+            up.OpenExcelSupportFile(excelFile=CAND_LIST_LDN)
+            print('*** Excel Update ***' + ' ' + buttonOpenCandidatesTracker)
         
         if event == buttonMoneyManagementSpsht:
             up.OpenExcelSupportFile(excelFile=MONEYMGMT_SPSHT_LDN)
