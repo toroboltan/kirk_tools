@@ -199,7 +199,7 @@ buttonWritePicDb = 'write serial to etfscreendb'
 buttonExec = 'execute'
 buttonConnectDb = 'Conectar DB'
 
-buttonUpdateLostTradesTracker = 'Update Lost Trades'
+buttonOpenLostTradesTracker = 'Open Lost Trades Tracker'
 buttonUpdateWonNotCompletedTracker = 'Update Won Not Completed'
 buttonUpdateWonCompletedTracker = 'Update Won Completed'
 buttonUpdateCandidatesTracker = 'Update Candidates'
@@ -352,7 +352,7 @@ layout = [[sg.Text('*** Conexion DB & ETF Performance ***')],
           [sg.Text('*** Posiciones Abiertas ***')],
           [sg.Button(buttonShowCharts),sg.Button(buttonMoneyManagementSpsht)],
           [sg.Text('*** Supporting Excel Files ***')],
-          [sg.Button(buttonUpdateLostTradesTracker), sg.Button(buttonUpdateWonNotCompletedTracker),
+          [sg.Button(buttonOpenLostTradesTracker), sg.Button(buttonUpdateWonNotCompletedTracker),
            sg.Button(buttonUpdateWonCompletedTracker),sg.Button(buttonUpdateCandidatesTracker),
            sg.Button(buttonOpenOrderManagementSpsht),sg.Button(buttonOpenBktListSpsht)],
           [sg.Text('*** Buckets Charts ***')],
@@ -430,9 +430,9 @@ try:
             for item in buttonChtList:
                 openweb("chrome", [chartsArgumnets(item)])
 
-        if event == buttonUpdateLostTradesTracker:
-            up.UpdateExcelTradeFiles(file_list=[TRADE_LOSS_LDN])
-            print('*** Excel Update ***' + ' ' + buttonUpdateLostTradesTracker)
+        if event == buttonOpenLostTradesTracker:
+            up.OpenExcelSupportFile(excelFile=TRADE_LOSS_LDN)
+            print('*** Excel Update ***' + ' ' + buttonOpenLostTradesTracker)
 
         if event == buttonUpdateWonNotCompletedTracker:
             up.UpdateExcelTradeFiles(file_list=[WIN_NOT_COMP_LDN])
