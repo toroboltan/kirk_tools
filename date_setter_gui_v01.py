@@ -247,7 +247,7 @@ stkShortBrkCht = "https://finviz.com/screener.ashx?v=111&f=cap_mid,sh_avgvol_o10
 kirkWlIndexes = "https://finviz.com/screener.ashx?v=111&t=QQQ,IWC,OEF,IWM,SPY,MDY,DIA&o=-change"
 kirkWlSectors = "https://finviz.com/screener.ashx?v=111&o=-change&t=XLC,%20XLK,%20XLY,%20XLRE,%20XLV,%20XLU,%20XLI,%20XLP,%20XLB,%20XLE,%20XLF"
 kirkWlIndustries = "https://finviz.com/screener.ashx?v=111&o=-change&t=TAN,%20PBW,%20SOCL,%20XHB,%20ESPO,%20FDN,%20XRT,%20SKYY,%20AIEQ,%20HACK,%20WFH,%20ROBO,%20PBS,%20IGV,%20ARKK,%20BETZ,%20SMH,%20GDX,%20PEJ,%20IBB,%20CUT,%20IYR,%20PJP,%20IHI,%20PBJ,%20IHF,%20JETS,%20ITA,%20IYT,%20KRE,%20IGE,%20IGF,%20KIE,%20KBE,%20IYM,%20XOP,%20IAI,%20MJ,%20XME,%20OIH"
-kirkWlFactors = "https://finviz.com/screener.ashx?v=111&o=-change&t=USMV,GVIP,SPHB,MTUM,IWD,VYM,IWF,IPO,PSP,SPCX,GURU,CSD,PKW,QUAL"
+kirkWlFactors = "https://finviz.com/screener.ashx?v=111&o=-change&t=SPHB,SPGP,QUAL,SPVU,PKW,RPV,IVW,RPG,RWL,SPYD,RSP,SPY,SPVM,SPMV,NOBL,SPYV,SPLV,SPMO,SPHD"
 kirkWlFixIncome = "https://finviz.com/screener.ashx?v=111&o=-change&t=TIP,%20EMB,%20HYG,%20IEF,%20IEI,%20ZROZ,%20TLT,%20SHY,%20AGG,%20MUB,%20TLH,%20IGOV,%20LQD"
 kirkWlCurrencies = "https://finviz.com/screener.ashx?v=111&o=-change&t=FXE,%20FXB,%20FXF,%20FXA,%20CYB,%20FXC,%20FXY,%20CEW,%20UUP"
 kirkWlCommodities = "https://finviz.com/screener.ashx?v=111&o=-change&t=LIT,%20SLV,%20WOOD,%20PPLT,%20GLD,%20UGA,%20BAL,%20MOO,%20VEGI,%20JJC,%20USO,%20NIB,%20PALL,%20DBC,%20URA,%20JO,%20SGG,%20WEAT,%20CORN,%20SOYB,%20UNG"
