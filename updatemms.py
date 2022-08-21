@@ -198,8 +198,6 @@ def main():
                                       nameSheet=kirkconstants.tableSheet)
     print(listTktOpen)
 
-
-
 if __name__ == "__main__":
     try:
         main()
