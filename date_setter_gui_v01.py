@@ -422,6 +422,8 @@ try:
                 print('finished')
            
         if event == buttonShowCharts:
+            print('*** Open Charts Positions Open ***')
+            list_tktOpen = up.GetTktPositionsOpen(pathFile=kc.tablePath,nameFile=kc.tableFile,nameSheet=kc.tableSheet)
             if len(list_tktOpen) > 0:
                 print(showChartsLnk + str(list_tktOpen))
                 delim = ','
