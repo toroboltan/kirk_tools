@@ -60,8 +60,8 @@ year_prefix = 1899
 
 # Excel info
 code_col = 1
-date_col = 10
-price_col = 11
+date_col = 11
+price_col = 12
 start_row = 15
 
 ## Parameters for scrapetfscreen

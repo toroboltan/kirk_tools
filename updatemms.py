@@ -169,8 +169,36 @@ def OpenExcelSupportFile(excelFile):
         print(' Exception in OpenExcelSupportFile ')
         pass
 
+
+def GetTktPositionsOpen(pathFile,nameFile,nameSheet):
+    '''
+    This function update prices and returns a list of
+    open positions
+    '''
+    workbook = ReadWorkbook(pathFile, nameFile)
+    trade_log = workbook[nameSheet]
+    set_tkt = set()
+
+    for row in trade_log.iter_rows(min_row=start_row, 
+                                   min_col=code_col,
+                                   max_col=price_col):
+        cell_tkt = row[code_col -1]
+        if cell_tkt.value is None:
+            break
+        else:
+            cell_date = row[date_col -1]
+            if (cell_date.value.year == year_prefix):
+                tkt = cell_tkt.value
+                set_tkt.add(tkt)
+
+    return list(set_tkt)
+
 def main():
-    UpdatePrices()
+    listTktOpen = GetTktPositionsOpen(pathFile=kirkconstants.tablePath,nameFile=kirkconstants.tableFile,
+                                      nameSheet=kirkconstants.tableSheet)
+    print(listTktOpen)
+
+
 
 if __name__ == "__main__":
     try:
