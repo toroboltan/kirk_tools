@@ -207,6 +207,7 @@ buttonMoneyManagementSpsht = 'Money Mgmnt Spsht'
 buttonOpenOrderManagementSpsht = 'Open Order Mgmnt'
 buttonOpenBktListSpsht = 'Open Listas'
 buttonOpenMonitorManagementSpsht = 'Open Monitor Mgmnt'
+buttonOpenChangeTrackerSpsht = 'Open Change Tracker'
 
 buttonBktCommodities = 'Commodities'
 buttonBktCurrencies = 'Currencies'
@@ -305,6 +306,7 @@ MONEYMGMT_SPSHT_PATH = r'C:\Users\jeron\Google Drive\trading\kirk\2022\active tr
 MONEYMGMT_SPSHT_FILE = '2022_MoneyManagementSpreadsheet.xlsx'
 ORDERMGMT_SPSHT_FILE = '2022_OrderManagementSpreadsheet.xlsx'
 MONTRMGMT_SPSHT_FILE = '2022_MonitorManagementSpreadsheet.xlsx'
+TRACKERMT_SPSHT_FILE = '2022_ChangeTracker.xlsx'
 
 TRADE_LOSS_LDN = TRADE_LOSS_LIST_PATH + '\\' + TRADE_LOSS_LIST_FILE
 WIN_NOT_COMP_LDN = WIN_NOT_COMP_LIST_PATH + '\\' + WIN_NOT_COMP_LIST_FILE
@@ -313,6 +315,8 @@ CAND_LIST_LDN = CAND_LIST_PATH + '\\' + CAND_LIST_FILE
 MONEYMGMT_SPSHT_LDN = MONEYMGMT_SPSHT_PATH + '\\' + MONEYMGMT_SPSHT_FILE
 ORDERMGMT_SPSHT_LDN = MONEYMGMT_SPSHT_PATH + '\\' + ORDERMGMT_SPSHT_FILE
 MONTRMGMT_SPSHT_LDN = MONEYMGMT_SPSHT_PATH + '\\' + MONTRMGMT_SPSHT_FILE
+TRACKERMT_SPSHT_LDN = MONEYMGMT_SPSHT_PATH + '\\' + TRACKERMT_SPSHT_FILE
+
 
 
 # Constants related to buckets
@@ -354,7 +358,7 @@ layout = [[sg.Text('*** Conexion DB & ETF Performance ***')],
            sg.Button(buttonWritePicDb),sg.Button(buttonExec)], 
           [sg.Text('*** Posiciones Abiertas ***')],
           [sg.Button(buttonShowCharts),sg.Button(buttonMoneyManagementSpsht),sg.Button(buttonOpenOrderManagementSpsht),
-           sg.Button(buttonOpenMonitorManagementSpsht)],
+           sg.Button(buttonOpenMonitorManagementSpsht),sg.Button(buttonOpenChangeTrackerSpsht)],
           [sg.Text('*** Supporting Excel Files ***')],
           [sg.Button(buttonOpenLostTradesTracker), sg.Button(buttonOpenWonNotCompletedTracker),
            sg.Button(buttonOpenWonCompletedTracker),sg.Button(buttonOpenCandidatesTracker)],
@@ -465,7 +469,11 @@ try:
 
         if event == buttonOpenMonitorManagementSpsht:
             up.OpenExcelSupportFile(excelFile=MONTRMGMT_SPSHT_LDN)
-            print('*** OpenExcelSupportFile ***' + ' ' + buttonOpenMonitorManagementSpsht) 
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonOpenMonitorManagementSpsht)
+
+        if event == buttonOpenChangeTrackerSpsht:
+            up.OpenExcelSupportFile(excelFile=TRACKERMT_SPSHT_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonOpenChangeTrackerSpsht)
 
         if event == buttonBktCommodities:
             up.OpenExcelSupportFile(excelFile=BKT_COMMODITIES_LDN)
