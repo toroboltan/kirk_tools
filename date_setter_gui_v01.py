@@ -403,7 +403,10 @@ try:
 
         if event == 'Exit':
             break
-    
+
+        if event == sg.WIN_CLOSED:
+            break
+
         if event == buttonConnectDb:
             sql_conn = dbh.ConnectSQLDb(kc.db_prefix, kc.db_struc_etf)
     
