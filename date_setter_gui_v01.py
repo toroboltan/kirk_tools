@@ -221,6 +221,12 @@ buttonBktSectors = 'Sectors'
 buttonBktStyles = 'Styles'
 buttonBktUsMarkets = 'US Markets'
 buttonBktStocks = 'Stocks'
+buttonBktPool01 = 'Pool 01'
+buttonBktPool02 = 'Pool 02'
+buttonBktPool03 = 'Pool 03'
+buttonBktPool04 = 'Pool 04'
+
+
 
 
 # Parameters to be used for Overview Table
@@ -335,6 +341,13 @@ BKT_STYLES_FILE = '2022_POS_Styles.xlsx'
 BKT_USMARKETS_FILE = '2022_POS_US_Markets.xlsx'
 BKT_STOCKS_FILE = '2022_POS_Weekly.xlsx'
 BKT_LISTS_FILE = '2022_ListasTrack.xlsx'
+BKT_POOL01_FILE = 'POS_pool_01.xlsx'
+BKT_POOL02_FILE = 'POS_pool_02.xlsx'
+BKT_POOL03_FILE = 'POS_pool_03.xlsx'
+BKT_POOL04_FILE = 'POS_pool_04.xlsx'
+
+
+
 
 BKT_COMMODITIES_LDN = BKT_PATH + '\\' + BKT_COMMODITIES_FILE
 BKT_CURRENCIES_LDN = BKT_PATH + '\\' + BKT_CURRENCIES_FILE
@@ -349,6 +362,10 @@ BKT_STYLES_LDN = BKT_PATH + '\\' + BKT_STYLES_FILE
 BKT_USMARKETS_LDN = BKT_PATH + '\\' + BKT_USMARKETS_FILE
 BKT_STOCKS_LDN = BKT_PATH + '\\' + BKT_STOCKS_FILE
 BKT_LISTS_LDN = BKT_PATH + '\\' + BKT_LISTS_FILE
+BKT_POOL01_LDN = BKT_PATH + '\\' + BKT_POOL01_FILE
+BKT_POOL02_LDN = BKT_PATH + '\\' + BKT_POOL02_FILE
+BKT_POOL03_LDN = BKT_PATH + '\\' + BKT_POOL03_FILE
+BKT_POOL04_LDN = BKT_PATH + '\\' + BKT_POOL04_FILE
 
 # GUI
 sg.theme('BluePurple')
@@ -366,9 +383,10 @@ layout = [[sg.Text('*** Conexion DB & ETF Performance ***')],
           [sg.Button(buttonOpenChartsScreen)],
           [sg.Text('*** Buckets Excel Files ***')],
           [sg.Button(buttonBktCommodities), sg.Button(buttonBktCurrencies), sg.Button(buttonBktFANGAM),
-           sg.Button(buttonBktFixedIncome), sg.Button(buttonBktForeignMarktes), sg.Button(buttonBktIndustries)],
-          [sg.Button(buttonBktMegatrends), sg.Button(buttonBktLeveraged), sg.Button(buttonBktSectors),
+           sg.Button(buttonBktFixedIncome), sg.Button(buttonBktForeignMarktes), sg.Button(buttonBktIndustries),
+           sg.Button(buttonBktMegatrends), sg.Button(buttonBktLeveraged), sg.Button(buttonBktSectors),
            sg.Button(buttonBktStyles), sg.Button(buttonBktUsMarkets), sg.Button(buttonBktStocks),sg.Button(buttonOpenBktListSpsht)],
+          [sg.Button(buttonBktPool01), sg.Button(buttonBktPool02), sg.Button(buttonBktPool03), sg.Button(buttonBktPool04)],
           [sg.Text('*** Sectors Performance ***')], 
           [sg.Button('Sectors Daily'), sg.Button('Sectors 1W'), sg.Button('Sectors 4W'),  
            sg.Button('Sectors 13W'), sg.Button('Sectors 26W'), sg.Button('Sectors 52W'),  
@@ -525,6 +543,22 @@ try:
         if event == buttonBktStocks:
             up.OpenExcelSupportFile(excelFile=BKT_STOCKS_LDN)
             print('*** OpenExcelSupportFile ***' + ' ' + buttonBktStocks)
+
+        if event == buttonBktPool01:
+            up.OpenExcelSupportFile(excelFile=BKT_POOL01_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktPool01)
+
+        if event == buttonBktPool02:
+            up.OpenExcelSupportFile(excelFile=BKT_POOL02_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktPool02)
+
+        if event == buttonBktPool03:
+            up.OpenExcelSupportFile(excelFile=BKT_POOL03_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktPool03)
+
+        if event == buttonBktPool04:
+            up.OpenExcelSupportFile(excelFile=BKT_POOL04_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktPool04)
 
         if event in buttonChtList:
             openweb("chrome", [chartsArgumnets(event)])
