@@ -221,10 +221,10 @@ buttonBktSectors = 'Sectors'
 buttonBktStyles = 'Styles'
 buttonBktUsMarkets = 'US Markets'
 buttonBktStocks = 'Stocks'
-buttonBktPool1 = 'Pool 01'
-buttonBktPool2 = 'Pool 02'
-buttonBktPool3 = 'Pool 03'
-buttonBktPool4 = 'Pool 04'
+buttonBktPool01 = 'Pool 01'
+buttonBktPool02 = 'Pool 02'
+buttonBktPool03 = 'Pool 03'
+buttonBktPool04 = 'Pool 04'
 
 
 
@@ -362,6 +362,10 @@ BKT_STYLES_LDN = BKT_PATH + '\\' + BKT_STYLES_FILE
 BKT_USMARKETS_LDN = BKT_PATH + '\\' + BKT_USMARKETS_FILE
 BKT_STOCKS_LDN = BKT_PATH + '\\' + BKT_STOCKS_FILE
 BKT_LISTS_LDN = BKT_PATH + '\\' + BKT_LISTS_FILE
+BKT_POOL01_LDN = BKT_PATH + '\\' + BKT_POOL01_FILE
+BKT_POOL02_LDN = BKT_PATH + '\\' + BKT_POOL02_FILE
+BKT_POOL03_LDN = BKT_PATH + '\\' + BKT_POOL03_FILE
+BKT_POOL04_LDN = BKT_PATH + '\\' + BKT_POOL04_FILE
 
 # GUI
 sg.theme('BluePurple')
@@ -382,7 +386,7 @@ layout = [[sg.Text('*** Conexion DB & ETF Performance ***')],
            sg.Button(buttonBktFixedIncome), sg.Button(buttonBktForeignMarktes), sg.Button(buttonBktIndustries),
            sg.Button(buttonBktMegatrends), sg.Button(buttonBktLeveraged), sg.Button(buttonBktSectors),
            sg.Button(buttonBktStyles), sg.Button(buttonBktUsMarkets), sg.Button(buttonBktStocks),sg.Button(buttonOpenBktListSpsht)],
-          [sg.Button(buttonBktPool1), sg.Button(buttonBktPool2), sg.Button(buttonBktPool3), sg.Button(buttonBktPool4)],
+          [sg.Button(buttonBktPool01), sg.Button(buttonBktPool02), sg.Button(buttonBktPool03), sg.Button(buttonBktPool04)],
           [sg.Text('*** Sectors Performance ***')], 
           [sg.Button('Sectors Daily'), sg.Button('Sectors 1W'), sg.Button('Sectors 4W'),  
            sg.Button('Sectors 13W'), sg.Button('Sectors 26W'), sg.Button('Sectors 52W'),  
@@ -539,6 +543,22 @@ try:
         if event == buttonBktStocks:
             up.OpenExcelSupportFile(excelFile=BKT_STOCKS_LDN)
             print('*** OpenExcelSupportFile ***' + ' ' + buttonBktStocks)
+
+        if event == buttonBktPool01:
+            up.OpenExcelSupportFile(excelFile=BKT_POOL01_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktPool01)
+
+        if event == buttonBktPool02:
+            up.OpenExcelSupportFile(excelFile=BKT_POOL02_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktPool02)
+
+        if event == buttonBktPool03:
+            up.OpenExcelSupportFile(excelFile=BKT_POOL03_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktPool03)
+
+        if event == buttonBktPool04:
+            up.OpenExcelSupportFile(excelFile=BKT_POOL04_LDN)
+            print('*** OpenExcelSupportFile ***' + ' ' + buttonBktPool04)
 
         if event in buttonChtList:
             openweb("chrome", [chartsArgumnets(event)])
