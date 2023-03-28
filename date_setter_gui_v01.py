@@ -370,7 +370,20 @@ BKT_POOL04_LDN = BKT_PATH + '\\' + BKT_POOL04_FILE
 # GUI
 sg.theme('BluePurple')
 
+
+def handle_radio_selection(event):
+    if event in  ['RADIO1_YES', 'RADIO2_NO']:
+        for radio_key in ['RADIO1_YES', 'RADIO2_NO']:
+            if radio_key != event:
+                window[radio_key].update(False)
+        return 1
+    else: 
+        return 0
+
 layout = [[sg.Text('*** Conexion DB & ETF Performance ***')],
+          [sg.Text('Do you want to connect to DB'), 
+           sg.Radio('Yes', "RADIO1_YES",enable_events=True, key='RADIO1_YES'),
+           sg.Radio('No', "RADIO2_NO", enable_events=True, default=True, key='RADIO2_NO')],
           [sg.Button(buttonConnectDb),sg.Button(buttonReadDb),sg.Button(buttonReadPicFile),
            sg.Button(buttonWritePicDb),sg.Button(buttonExec)], 
           [sg.Text('*** Posiciones Abiertas ***')],
@@ -411,22 +424,30 @@ layout = [[sg.Text('*** Conexion DB & ETF Performance ***')],
           [sg.Text('******************')],         
           [sg.Button('Exit')]]
 
+
 # Main Program V2
 
 # Open connection to db
 window = sg.Window('TorolGui', layout)
+dbFlag = 'RADIO2_NO'
 try:
     while True:  # Event Loop
         event, values = window.read()
+
+        print('event ' + event)
+        radioButtonPressed = handle_radio_selection(event)
+        if radioButtonPressed == 1:
+            dbFlag = event
 
         if event == 'Exit':
             break
 
         if event == sg.WIN_CLOSED:
             break
-
+       
         if event == buttonConnectDb:
-            sql_conn = dbh.ConnectSQLDb(kc.db_prefix, kc.db_struc_etf)
+            if dbFlag == 'RADIO1_YES':
+                sql_conn = dbh.ConnectSQLDb(kc.db_prefix, kc.db_struc_etf)
     
         if event == buttonChkList:
             result = 1
@@ -564,16 +585,16 @@ try:
             openweb("chrome", [chartsArgumnets(event)])
         
         if event == buttonReadDb:
-            etf_df = dbh.ReadSQLTable(sql_conn, kc.db_table_etf)
-            etf_df = scetf.ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
-            etfPerf1DUp, etfPerf1DDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1D)
-            etfPerf1WUp, etfPerf1WDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1W)
-            etfPerf1MUp, etfPerf1MDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1M)
-            etfPerf1QUp, etfPerf1QDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1Q)
-            etfPerf1HUp, etfPerf1HDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1H)
-            etfPerf1YUp, etfPerf1YDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1Y)
-            print('*** ' + event + ' ***')
-            print(etf_df)
+            if dbFlag == 'RADIO1_YES':
+                etf_df = dbh.ReadSQLTable(sql_conn, kc.db_table_etf)
+                etfPerf1DUp, etfPerf1DDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1D)
+                etfPerf1WUp, etfPerf1WDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1W)
+                etfPerf1MUp, etfPerf1MDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1M)
+                etfPerf1QUp, etfPerf1QDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1Q)
+                etfPerf1HUp, etfPerf1HDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1H)
+                etfPerf1YUp, etfPerf1YDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1Y)
+                print('*** ' + event + ' ***')
+                print(etf_df)
     
         if event == buttonReadPicFile:
             etf_df = scetf.ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
@@ -587,13 +608,18 @@ try:
             print(etf_df)
     
         if event == buttonWritePicDb:
-            etf_df = scetf.ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
-            dbh.WriteSQLTable(etf_df, sql_conn, kc.db_table_etf)
-            print('*** ' + event + ' ***')
-            print(etf_df)
+            if dbFlag == 'RADIO1_YES':
+                etf_df = scetf.ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
+                dbh.WriteSQLTable(etf_df, sql_conn, kc.db_table_etf)
+                print('*** ' + event + ' ***')
+                print(etf_df)
     
         if event == buttonExec:
-            etf_df = dbh.ReadSQLTable(sql_conn, kc.db_table_etf)
+            etf_df = pd.DataFrame()
+            if dbFlag == 'RADIO1_YES':
+                 etf_df = dbh.ReadSQLTable(sql_conn, kc.db_table_etf)
+            if dbFlag == 'RADIO2_NO':
+                etf_df = scetf.ReadSerialEtfScreen(kc.fileNamePickle, kc.testPath)
             sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
             print('*** ETF ***')
             etfPerf1DUp, etfPerf1DDw = scetf.EtfPrintTopBottom(etf_df, kc.topNumber, kc.const1D)
@@ -671,7 +697,8 @@ try:
                     finalCand_lst = checkOpenPositions(list(totalSet))
                     candString = ','.join(finalCand_lst)
                     window['possibleCand'].update(candString)
-                    dcan.AddRowCandToDb(sql_conn, kc.dbCandTable, datetime.date.today(), candString)
+                    if dbFlag == 'RADIO1_YES':
+                        dcan.AddRowCandToDb(sql_conn, kc.dbCandTable, datetime.date.today(), candString)
                     print(candString)
                 # send output to window
                 sg.Print(size=sectorsPerfWindow, do_not_reroute_stdout=False)
